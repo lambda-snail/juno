@@ -8,18 +8,18 @@ namespace LambdaSnail::Juno
 {
     void LSMainWindow::setUpToolMenu()
     {
-
+        // Filer dates set to current year for convenience
+        int const currentYear = QDate::currentDate().year();
+        ui->fromDate->setDate(QDate(currentYear, 1, 1));
+        ui->toDate->setDate(QDate(currentYear, 12, 31));
     }
 
     LSMainWindow::LSMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::LSMainWindow)
     {
-        ui->setupUi(this);
-
         setWindowTitle("Juno Expense Tracker");
 
-        int const currentYear = QDate::currentDate().year();
-        ui->fromDate->setDate(QDate(currentYear, 1, 1));
-        ui->toDate->setDate(QDate(currentYear, 12, 31));
+        ui->setupUi(this);
+        setUpToolMenu();
     }
 
     LSMainWindow::~LSMainWindow()
