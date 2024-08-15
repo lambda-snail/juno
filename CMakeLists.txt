@@ -22,6 +22,8 @@ add_executable(juno main.cpp
         ui/mainwindow.cpp
         ui/mainwindow.h
         ui/mainwindow.ui
+        src/expenses/expensemodel.cpp
+        src/expenses/expensemodel.h
 
 )
 
