@@ -6,14 +6,8 @@
 
 namespace LS = LambdaSnail::Juno::expenses;
 
-int LS::ExpenseModel::rowCount(const QModelIndex &parent) const
+void LS::LSExpenseModel::initialize()
 {
-}
-
-int LS::ExpenseModel::columnCount(const QModelIndex &parent) const
-{
-}
-
-QVariant LS::ExpenseModel::data(const QModelIndex &index, int role) const
-{
+    setTable("expenses");
+    select();
 }

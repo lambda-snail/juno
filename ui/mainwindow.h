@@ -5,7 +5,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QAbstractTableModel>
 #include <QMainWindow>
+
+#include "expenses/expensemodel.h"
 
 namespace LambdaSnail::Juno {
 QT_BEGIN_NAMESPACE
@@ -18,11 +21,13 @@ Q_OBJECT
 public:
 void setUpToolMenu();
 
-    explicit LSMainWindow(QWidget *parent = nullptr);
+    explicit LSMainWindow(expenses::LSExpenseModel* expenseModel);
     ~LSMainWindow() override;
 
 private:
     Ui::LSMainWindow *ui;
+
+    expenses::LSExpenseModel* m_expenseModel;
 };
 } // LambdaSnail::Juno
 

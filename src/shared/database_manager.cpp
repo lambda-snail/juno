@@ -48,6 +48,13 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
             )
         )");
 
+        result = result && query.exec(
+            R"(insert into expenses (id,date,recipient,description,category,amount)
+            values
+            (1,"2024-08-18","Espresso House","","Dining Out",34),
+            (2,"2024-08-18","Ica","Groceries for dinner","Groceries",150);
+        )");
+
         if (not result)
         {
             auto le = db.lastError();

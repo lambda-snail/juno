@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QPushButton>
+#include <QTableView>
 #include <QListWidget>
 
 namespace LambdaSnail::Juno
@@ -14,12 +14,21 @@ namespace LambdaSnail::Juno
         ui->toDate->setDate(QDate(currentYear, 12, 31));
     }
 
-    LSMainWindow::LSMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::LSMainWindow)
+    LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel) :
+        QMainWindow(nullptr),
+        ui(new Ui::LSMainWindow),
+        m_expenseModel(expenseModel)
     {
         setWindowTitle("Juno Expense Tracker");
 
         ui->setupUi(this);
         setUpToolMenu();
+
+        QTableView* expensesTableView = new QTableView(this);
+        expensesTableView->setModel(expenseModel);
+        ui->mdiArea->addSubWindow(expensesTableView);
+
+        expenses::LSExpenseModel* m = new expenses::LSExpenseModel();
     }
 
     LSMainWindow::~LSMainWindow()
