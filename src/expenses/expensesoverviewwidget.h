@@ -18,6 +18,8 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
+        void setUpToolbar();
+
         explicit LSExpensesOverviewWidget(QWidget *parent, class LSExpenseModel *model);
 
         ~LSExpensesOverviewWidget() override;
