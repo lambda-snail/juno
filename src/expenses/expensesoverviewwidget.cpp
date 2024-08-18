@@ -17,9 +17,6 @@ namespace LambdaSnail::Juno::expenses
     {
         ui->toolBar->addSeparator();
 
-        auto* fromDate = new QDateEdit(this);
-        auto* toDate = new QDateEdit(this);
-
         fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
         toDate->setDisplayFormat("yyyy-MM-dd");
 
@@ -33,15 +30,20 @@ namespace LambdaSnail::Juno::expenses
 
         ui->toolBar->addWidget(fromDate);
         ui->toolBar->addWidget(toDate);
+
+        // TODO: Add signals and slots to listen to date change
     }
 
     LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel* model) : QWidget(parent), ui(new Ui::ExpensesOverviewWidget), m_model(model)
     {
         ui->setupUi(this);
 
-        ui->tableView->setModel(model);
+        fromDate = new QDateEdit(this);
+        toDate = new QDateEdit(this);
 
         setUpToolbar();
+
+        ui->tableView->setModel(model);
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()

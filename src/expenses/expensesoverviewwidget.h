@@ -1,5 +1,6 @@
 #pragma once
 
+#include <qdatetimeedit.h>
 #include <QWidget>
 
 namespace LambdaSnail::Juno::expenses
@@ -20,12 +21,14 @@ namespace LambdaSnail::Juno::expenses
     public:
         void setUpToolbar();
 
-        explicit LSExpensesOverviewWidget(QWidget *parent, class LSExpenseModel *model);
+        explicit LSExpensesOverviewWidget(QWidget* parent, class LSExpenseModel* model);
 
         ~LSExpensesOverviewWidget() override;
 
     private:
-        Ui::ExpensesOverviewWidget *ui;
-        LSExpenseModel *m_model;
+        Ui::ExpensesOverviewWidget* ui;
+        LSExpenseModel* m_model;
+        QDateEdit* fromDate;
+        QDateEdit* toDate;
     };
 } // LambdaSnail::Juno::expenses
