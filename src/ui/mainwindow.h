@@ -1,17 +1,18 @@
-//
-// Created by niclas on 8/15/24.
-//
+#pragma once
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
 
-#include <QAbstractTableModel>
 #include <QMainWindow>
 
-#include "../expenses/expensemodel.h"
+#include "expenses/expensemodel.h"
 
 namespace LambdaSnail::Juno {
-QT_BEGIN_NAMESPACE
+
+    namespace expenses
+    {
+        class LSExpensesOverviewWidget;
+    }
+
+    QT_BEGIN_NAMESPACE
 namespace Ui { class LSMainWindow; }
 QT_END_NAMESPACE
 
@@ -28,7 +29,7 @@ private:
     Ui::LSMainWindow *ui;
 
     expenses::LSExpenseModel* m_expenseModel;
+    expenses::LSExpensesOverviewWidget* expensesOverview;
 };
-} // LambdaSnail::Juno
+}
 
-#endif //MAINWINDOW_H

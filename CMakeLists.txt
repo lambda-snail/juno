@@ -19,15 +19,23 @@ add_executable(juno main.cpp
         src/expenses/expense.h
         src/shared/database_manager.cpp
         src/shared/database_manager.h
+
         src/ui/mainwindow.cpp
         src/ui/mainwindow.h
         src/ui/mainwindow.ui
+
         src/expenses/expensemodel.cpp
         src/expenses/expensemodel.h
+        src/expenses/expensesoverviewwidget.cpp
+        src/expenses/expensesoverviewwidget.h
+        src/expenses/ExpensesOverviewWidget.ui
 
 )
 
-target_include_directories(juno PRIVATE src)
+# https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
+set(LS_AUTOGEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/juno_autogen)
+
+target_include_directories(juno PRIVATE src LS_AUTOGEN_DIR/include)
 
 target_link_libraries(juno
         PRIVATE
