@@ -11,10 +11,11 @@ class LSExpensesOverviewWidget : public QWidget {
 Q_OBJECT
 
 public:
-    explicit LSExpensesOverviewWidget(QWidget *parent = nullptr);
+    explicit LSExpensesOverviewWidget(QWidget *parent, class LSExpenseModel* model);
     ~LSExpensesOverviewWidget() override;
 
 private:
     Ui::ExpensesOverviewWidget *ui;
+    LSExpenseModel* m_model;
 };
 } // LambdaSnail::Juno::expenses

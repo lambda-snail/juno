@@ -29,7 +29,7 @@ private:
     Ui::LSMainWindow *ui;
 
     expenses::LSExpenseModel* m_expenseModel;
-    expenses::LSExpensesOverviewWidget* expensesOverview;
+    expenses::LSExpensesOverviewWidget* expensesOverviewWidget;
 };
 }
 

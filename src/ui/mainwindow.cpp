@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 #include "../../cmake-build-debug/cmake-build-debug/juno_autogen/include/ui_mainwindow.h"
 
-#include <QTableView>
-#include <QListWidget>
+#include "expenses/expensesoverviewwidget.h"
 
 namespace LambdaSnail::Juno
 {
@@ -24,11 +23,8 @@ namespace LambdaSnail::Juno
         ui->setupUi(this);
         setUpToolMenu();
 
-        QTableView* expensesTableView = new QTableView(this);
-        expensesTableView->setModel(expenseModel);
-        ui->mdiArea->addSubWindow(expensesTableView);
-
-        expenses::LSExpenseModel* m = new expenses::LSExpenseModel();
+        expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(this, expenseModel);
+        ui->mdiArea->addSubWindow(expensesOverviewWidget);
     }
 
     LSMainWindow::~LSMainWindow()
