@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "../../cmake-build-debug/cmake-build-debug/juno_autogen/include/ui_mainwindow.h"
 
 #include <QTableView>
 #include <QListWidget>

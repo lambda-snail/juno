@@ -19,9 +19,9 @@ add_executable(juno main.cpp
         src/expenses/expense.h
         src/shared/database_manager.cpp
         src/shared/database_manager.h
-        ui/mainwindow.cpp
-        ui/mainwindow.h
-        ui/mainwindow.ui
+        src/ui/mainwindow.cpp
+        src/ui/mainwindow.h
+        src/ui/mainwindow.ui
         src/expenses/expensemodel.cpp
         src/expenses/expensemodel.h
 

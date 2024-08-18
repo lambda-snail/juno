@@ -6,6 +6,8 @@
 
 namespace LS = LambdaSnail::Juno::expenses;
 
+// setFilter
+
 void LS::LSExpenseModel::initialize()
 {
     setTable("expenses");

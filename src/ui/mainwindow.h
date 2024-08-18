@@ -8,7 +8,7 @@
 #include <QAbstractTableModel>
 #include <QMainWindow>
 
-#include "expenses/expensemodel.h"
+#include "../expenses/expensemodel.h"
 
 namespace LambdaSnail::Juno {
 QT_BEGIN_NAMESPACE
