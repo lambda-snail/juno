@@ -1,13 +1,9 @@
-//
-// Created by niclas on 8/18/24.
-//
-
-// You may need to build the project (run Qt uic code generator) to get "ui_ExpensesOverviewWidget.h" resolved
-
 #include "expensemodel.h"
 #include "expensesoverviewwidget.h"
 
 #include <QDateEdit>
+#include <QPushButton>
+#include <QSqlError>
 
 #include "ui_expensesoverviewwidget.h"
 
@@ -15,6 +11,11 @@ namespace LambdaSnail::Juno::expenses
 {
     void LSExpensesOverviewWidget::setUpToolbar()
     {
+        searchButton = new QPushButton();
+        searchButton->setText("Search");
+
+        ui->toolBar->addWidget(searchButton);
+
         ui->toolBar->addSeparator();
 
         fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
@@ -32,6 +33,7 @@ namespace LambdaSnail::Juno::expenses
         ui->toolBar->addWidget(toDate);
 
         // TODO: Add signals and slots to listen to date change
+        connect(fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
     }
 
     LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel* model) : QWidget(parent), ui(new Ui::ExpensesOverviewWidget), m_model(model)
@@ -50,4 +52,9 @@ namespace LambdaSnail::Juno::expenses
     {
         delete ui;
     }
-} // LambdaSnail::Juno::expenses
+
+    void LSExpensesOverviewWidget::onSearchDatesChanged()
+    {
+        m_model->setDateFilter(fromDate->date(), toDate->date());
+    }
+}

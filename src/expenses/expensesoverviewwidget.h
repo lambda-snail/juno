@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qdatetimeedit.h>
+#include <qpushbutton.h>
 #include <QWidget>
 
 namespace LambdaSnail::Juno::expenses
@@ -30,5 +31,9 @@ namespace LambdaSnail::Juno::expenses
         LSExpenseModel* m_model;
         QDateEdit* fromDate;
         QDateEdit* toDate;
+        QPushButton * searchButton;
+
+    private slots:
+        void onSearchDatesChanged();
     };
 } // LambdaSnail::Juno::expenses
