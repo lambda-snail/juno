@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <qstackedwidget.h>
+#include <qsystemtrayicon.h>
 
 #include "expenses/expensemodel.h"
 
@@ -36,6 +37,10 @@ namespace LambdaSnail::Juno
 
         explicit LSMainWindow(expenses::LSExpenseModel *expenseModel, fa::QtAwesome* qtAwesome);
 
+        void createActions();
+
+        void createTrayIcon();
+
         ~LSMainWindow() override;
 
     private:
@@ -48,6 +53,15 @@ namespace LambdaSnail::Juno
 
         int m_chartsIndex{};
         QWidget * chartsWidget;
+
+        // System tray icon and menu
+        QSystemTrayIcon *   trayIcon;
+        QAction *           minimizeAction;
+        QAction *           maximizeAction;
+        QAction *           restoreAction;
+        QAction *           quitAction;
+        QMenu*              trayIconMenu;
+
 
     private slots:
             void onExpenseMenuClicked();

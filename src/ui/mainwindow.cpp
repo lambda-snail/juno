@@ -1,4 +1,7 @@
 #include "mainwindow.h"
+
+#include <QSystemTrayIcon>
+
 #include "ui_mainwindow.h"
 #include "../../external/QtAwesome/QtAwesome/QtAwesome.h"
 
@@ -33,7 +36,46 @@ namespace LambdaSnail::Juno
 
         setupMenu();
 
+        createActions(); // TODO: Reuse for menu bar
+        createTrayIcon();
+
         //ui->mdiArea->addSubWindow(expensesOverviewWidget);
+    }
+
+    void LSMainWindow::createActions()
+    {
+        minimizeAction = new QAction(tr("Mi&nimize"), this);
+        connect(minimizeAction, &QAction::triggered, this, &QWidget::hide);
+
+        maximizeAction = new QAction(tr("Ma&ximize"), this);
+        connect(maximizeAction, &QAction::triggered, this, &QWidget::showMaximized);
+
+        restoreAction = new QAction(tr("&Restore"), this);
+        connect(restoreAction, &QAction::triggered, this, &QWidget::showNormal);
+
+        quitAction = new QAction(tr("&Quit"), this);
+        connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+    }
+
+    void LSMainWindow::createTrayIcon()
+    {
+        trayIconMenu = new QMenu(this);
+        trayIconMenu->addAction(minimizeAction);
+        trayIconMenu->addAction(maximizeAction);
+        trayIconMenu->addAction(restoreAction);
+        trayIconMenu->addSeparator();
+        trayIconMenu->addAction(quitAction);
+
+        trayIcon = new QSystemTrayIcon(this);
+        trayIcon->setContextMenu(trayIconMenu);
+
+        QIcon icon = m_qtAwesome->icon(fa::fa_solid, fa::fa_chart_simple);
+        trayIcon->setIcon(icon);
+        trayIcon->show();
+
+        setWindowIcon(icon);
+
+        //trayIcon->setToolTip(iconComboBox->itemText(index));
     }
 
     LSMainWindow::~LSMainWindow()
@@ -50,4 +92,6 @@ namespace LambdaSnail::Juno
     {
         ui->widgetStack->setCurrentIndex(m_chartsIndex);
     }
+
+
 }

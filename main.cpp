@@ -1,9 +1,12 @@
 #include <QApplication>
+#include <QSystemTrayIcon>
 
 #include "expenses/expensemodel.h"
 #include "external/QtAwesome/QtAwesome/QtAwesome.h"
 #include "shared/database_manager.h"
 #include "ui/mainwindow.h"
+
+
 
 int main(int argc, char *argv[]) {
     using namespace LambdaSnail::Juno::expenses;
@@ -22,6 +25,8 @@ int main(int argc, char *argv[]) {
 
     LSExpenseModel model;
     model.initialize();
+
+    qInfo() << QSystemTrayIcon::isSystemTrayAvailable();
 
     LambdaSnail::Juno::LSMainWindow mainWindow(&model, qtAwesome);
     mainWindow.show();
