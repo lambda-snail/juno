@@ -6,6 +6,11 @@
 
 #include "expenses/expensemodel.h"
 
+namespace fa
+{
+    class QtAwesome;
+}
+
 namespace LambdaSnail::Juno
 {
     namespace expenses
@@ -29,12 +34,13 @@ namespace LambdaSnail::Juno
     public:
         void setupMenu();
 
-        explicit LSMainWindow(expenses::LSExpenseModel *expenseModel);
+        explicit LSMainWindow(expenses::LSExpenseModel *expenseModel, fa::QtAwesome* qtAwesome);
 
         ~LSMainWindow() override;
 
     private:
         Ui::LSMainWindow *ui;
+        fa::QtAwesome * m_qtAwesome;
 
         int m_expensesIndex;
         expenses::LSExpenseModel *m_expenseModel;

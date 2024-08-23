@@ -15,6 +15,8 @@ find_package(Qt6 COMPONENTS
         Sql
         REQUIRED)
 
+add_subdirectory(external)
+
 add_executable(juno main.cpp
         src/expenses/expense.h
         src/shared/database_manager.cpp
@@ -44,5 +46,6 @@ target_link_libraries(juno
         Qt::Gui
         Qt::Widgets
         Qt::Sql
+        QtAwesome
 )
 

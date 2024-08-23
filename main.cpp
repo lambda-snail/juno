@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include "expenses/expensemodel.h"
+#include "external/QtAwesome/QtAwesome/QtAwesome.h"
 #include "shared/database_manager.h"
 #include "ui/mainwindow.h"
 
@@ -13,13 +14,16 @@ int main(int argc, char *argv[]) {
     // button.show();
     // return QApplication::exec();
 
+    fa::QtAwesome* qtAwesome = new fa::QtAwesome();
+    qtAwesome->initFontAwesome();
+
     LambdaSnail::Juno::shared::LSDatabaseManager db;
     auto result = db.setDatabase("test.db");
 
     LSExpenseModel model;
     model.initialize();
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&model);
+    LambdaSnail::Juno::LSMainWindow mainWindow(&model, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();
