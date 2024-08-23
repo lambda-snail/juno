@@ -34,6 +34,7 @@ add_executable(juno main.cpp
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
 set(LS_AUTOGEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/juno_autogen)
+message(${LS_AUTOGEN_DIR})
 
 target_include_directories(juno PRIVATE src LS_AUTOGEN_DIR/include)
 

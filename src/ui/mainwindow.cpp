@@ -1,16 +1,18 @@
 #include "mainwindow.h"
-#include "../../cmake-build-debug/cmake-build-debug/juno_autogen/include/ui_mainwindow.h"
+#include "ui_mainwindow.h"
 
 #include "expenses/expensesoverviewwidget.h"
 
 namespace LambdaSnail::Juno
 {
-    void LSMainWindow::setUpToolMenu()
+    void LSMainWindow::setupMenu()
     {
-        // Filer dates set to current year for convenience
-        int const currentYear = QDate::currentDate().year();
-        ui->fromDate->setDate(QDate(currentYear, 1, 1));
-        ui->toDate->setDate(QDate(currentYear, 12, 31));
+        connect(ui->expensesButton, &QPushButton::pressed, this, &LSMainWindow::onExpenseMenuClicked);
+        connect(ui->chartsButton, &QPushButton::pressed, this, &LSMainWindow::onChartsMenuClicked);
+
+
+        m_expensesIndex = ui->widgetStack->addWidget(expensesOverviewWidget);
+        m_chartsIndex = ui->widgetStack->addWidget(chartsWidget);
     }
 
     LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel) :
@@ -21,14 +23,27 @@ namespace LambdaSnail::Juno
         setWindowTitle("Juno Expense Tracker");
 
         ui->setupUi(this);
-        setUpToolMenu();
 
-        expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(this, expenseModel);
-        ui->mdiArea->addSubWindow(expensesOverviewWidget);
+        expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, expenseModel);
+        chartsWidget = new QWidget(this);
+
+        setupMenu();
+
+        //ui->mdiArea->addSubWindow(expensesOverviewWidget);
     }
 
     LSMainWindow::~LSMainWindow()
     {
         delete ui;
+    }
+
+    void LSMainWindow::onExpenseMenuClicked()
+    {
+        ui->widgetStack->setCurrentIndex(m_expensesIndex);
+    }
+
+    void LSMainWindow::onChartsMenuClicked()
+    {
+        ui->widgetStack->setCurrentIndex(m_chartsIndex);
     }
 }
