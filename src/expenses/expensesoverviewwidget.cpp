@@ -5,14 +5,16 @@
 #include <QPushButton>
 #include <QSqlError>
 
+#include "QtAwesome.h"
 #include "ui_expensesoverviewwidget.h"
 
 namespace LambdaSnail::Juno::expenses
 {
-    void LSExpensesOverviewWidget::setUpToolbar()
+    void LSExpensesOverviewWidget::setUpToolbar(fa::QtAwesome* qtAwesome)
     {
         searchButton = new QPushButton();
         searchButton->setText("Search");
+        searchButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_magnifying_glass));
 
         ui->toolBar->addWidget(searchButton);
 
@@ -36,14 +38,14 @@ namespace LambdaSnail::Juno::expenses
         connect(fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
     }
 
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel* model) : QWidget(parent), ui(new Ui::ExpensesOverviewWidget), m_model(model)
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel* model, fa::QtAwesome* qtAwesome) : QWidget(parent), ui(new Ui::ExpensesOverviewWidget), m_model(model)
     {
         ui->setupUi(this);
 
         fromDate = new QDateEdit(this);
         toDate = new QDateEdit(this);
 
-        setUpToolbar();
+        setUpToolbar(qtAwesome);
 
         ui->tableView->setModel(model);
     }

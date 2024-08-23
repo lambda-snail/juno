@@ -4,6 +4,11 @@
 #include <qpushbutton.h>
 #include <QWidget>
 
+namespace fa
+{
+    class QtAwesome;
+}
+
 namespace LambdaSnail::Juno::expenses
 {
     QT_BEGIN_NAMESPACE
@@ -20,9 +25,9 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        void setUpToolbar();
+        void setUpToolbar(fa::QtAwesome *qtAwesome);
 
-        explicit LSExpensesOverviewWidget(QWidget* parent, class LSExpenseModel* model);
+        explicit LSExpensesOverviewWidget(QWidget* parent, class LSExpenseModel* model, fa::QtAwesome* qtAwesome);
 
         ~LSExpensesOverviewWidget() override;
 
@@ -36,4 +41,4 @@ namespace LambdaSnail::Juno::expenses
     private slots:
         void onSearchDatesChanged();
     };
-} // LambdaSnail::Juno::expenses
+}
