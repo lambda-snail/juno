@@ -16,6 +16,18 @@ namespace LambdaSnail::Juno::shared {
 
         std::expected<void, LSDatabaseError> setDatabase(QString const& databaseName);
 
+        enum class ExpenseColumns
+        {
+            id,
+            date,
+            recipient,
+            description,
+            category,
+            amount,
+            createdOn,
+            modifiedOn
+        };
+
     private:
         QSqlDatabase m_database;
     };

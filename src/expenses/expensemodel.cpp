@@ -15,7 +15,9 @@ LS::LSExpenseModel::LSExpenseModel() : QSqlTableModel()
 void LS::LSExpenseModel::initialize()
 {
     setTable("expenses");
-    select();
+
+    setHeaderData(1, Qt::Horizontal, QObject::tr("Date"));
+    setHeaderData(2, Qt::Horizontal, QObject::tr("Location"));
 }
 
 void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)

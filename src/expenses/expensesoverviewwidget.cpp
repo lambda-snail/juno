@@ -7,6 +7,7 @@
 
 #include "QtAwesome.h"
 #include "ui_expensesoverviewwidget.h"
+#include "shared/database_manager.h"
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -47,7 +48,15 @@ namespace LambdaSnail::Juno::expenses
 
         setUpToolbar(qtAwesome);
 
+        using ExpenseColumns = shared::LSDatabaseManager::ExpenseColumns;
+
         ui->tableView->setModel(model);
+        ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::id), true);
+        ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::createdOn), true);
+        ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::modifiedOn), true);
+        ui->tableView->setSortingEnabled(true);
+
+        onSearchDatesChanged();
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()
