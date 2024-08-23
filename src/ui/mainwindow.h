@@ -42,11 +42,11 @@ namespace LambdaSnail::Juno
         Ui::LSMainWindow *ui;
         fa::QtAwesome * m_qtAwesome;
 
-        int m_expensesIndex;
+        int m_expensesIndex{};
         expenses::LSExpenseModel *m_expenseModel;
         expenses::LSExpensesOverviewWidget *expensesOverviewWidget;
 
-        int m_chartsIndex;
+        int m_chartsIndex{};
         QWidget * chartsWidget;
 
     private slots:
