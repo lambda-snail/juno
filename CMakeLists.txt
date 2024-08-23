@@ -28,7 +28,7 @@ add_executable(juno main.cpp
         src/expenses/expensemodel.h
         src/expenses/expensesoverviewwidget.cpp
         src/expenses/expensesoverviewwidget.h
-        src/expenses/ExpensesOverviewWidget.ui
+        src/expenses/expensesoverviewwidget.ui
 
 )
 

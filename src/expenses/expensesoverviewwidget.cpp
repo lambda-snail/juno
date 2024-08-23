@@ -9,7 +9,7 @@
 
 #include <QDateEdit>
 
-#include "ui_ExpensesOverviewWidget.h"
+#include "ui_expensesoverviewwidget.h"
 
 namespace LambdaSnail::Juno::expenses
 {
