@@ -3,7 +3,7 @@
 #include <QSystemTrayIcon>
 
 #include "ui_mainwindow.h"
-#include "../../external/QtAwesome/QtAwesome/QtAwesome.h"
+#include "QtAwesome.h"
 
 #include "expenses/expensesoverviewwidget.h"
 
