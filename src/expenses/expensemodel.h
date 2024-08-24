@@ -12,5 +12,19 @@ namespace LambdaSnail::Juno::expenses
 
         void initialize();
         void setDateFilter(QDate from, QDate to);
+
+        [[nodiscard]] static QSqlQuery tableDefinition();
+
+        enum class ExpenseColumns
+        {
+            id,
+            date,
+            recipient,
+            description,
+            category,
+            amount,
+            createdOn,
+            modifiedOn
+        };
     };
 }

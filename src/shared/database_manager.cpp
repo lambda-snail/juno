@@ -4,6 +4,8 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include "expenses/expensemodel.h"
+
 namespace LS = LambdaSnail::Juno::shared;
 
 LS::LSDatabaseManager::LSDatabaseManager() = default;
@@ -29,33 +31,10 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
         return std::unexpected<LSDatabaseError>(db.lastError().text());
     }
 
-    // TODO: Figure out a better way to handle this
     if (isCreate)
     {
-        QSqlQuery query;
-
-        auto result = query.exec(R"(
-            create table expenses (
-                id integer primary key,
-                date varchar(10),
-                recipient text,
-                description text,
-                category text,
-                amount integer,
-
-                createdon integer,
-                modifiedon integer
-            )
-        )");
-
-        result = result && query.exec(
-            R"(insert into expenses (id,date,recipient,description,category,amount)
-            values
-            (1,"2024-08-18","Espresso House","","Dining Out",34),
-            (2,"2024-08-18","Ica","Groceries for dinner","Groceries",150);
-        )");
-
-        if (not result)
+        QSqlQuery query(expenses::LSExpenseModel::tableDefinition());
+        if (not query.exec())
         {
             auto le = db.lastError();
             return std::unexpected<LSDatabaseError>(le.text());

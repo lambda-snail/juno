@@ -11,7 +11,6 @@ namespace LS = LambdaSnail::Juno::expenses;
 
 LS::LSExpenseModel::LSExpenseModel() : QSqlTableModel()
 {
-
 }
 
 void LS::LSExpenseModel::initialize()
@@ -24,7 +23,25 @@ void LS::LSExpenseModel::initialize()
 
 void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)
 {
-    std::string const where = std::format("date >= '{}' and date <= '{}'", from.toString("yyyy-MM-dd").toStdString(), to.toString("yyyy-MM-dd").toStdString());
+    std::string const where = std::format("date >= '{}' and date <= '{}'", from.toString("yyyy-MM-dd").toStdString(),
+                                          to.toString("yyyy-MM-dd").toStdString());
     setFilter(where.data());
     select();
+}
+
+QSqlQuery LambdaSnail::Juno::expenses::LSExpenseModel::tableDefinition()
+{
+    return QSqlQuery(R"(
+            create table expenses (
+                id integer primary key,
+                date varchar(10),
+                recipient text,
+                description text,
+                category text,
+                amount integer,
+
+                createdon integer,
+                modifiedon integer
+            )
+        )");
 }

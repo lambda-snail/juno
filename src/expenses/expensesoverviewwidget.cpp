@@ -3,7 +3,6 @@
 #include "datefromstringdelegate.h"
 
 #include <QDateEdit>
-#include <QItemSelectionModel>
 #include <QPushButton>
 #include <QSqlError>
 
@@ -89,7 +88,7 @@ namespace LambdaSnail::Juno::expenses
 
     void LSExpensesOverviewWidget::setupTableView(LSExpenseModel *model)
     {
-        using ExpenseColumns = shared::LSDatabaseManager::ExpenseColumns;
+        using ExpenseColumns = LSExpenseModel::ExpenseColumns;
 
         // TODO: Listen to column size changes and store somewhere for persistence between sessions
         ui->tableView->setModel(model);
