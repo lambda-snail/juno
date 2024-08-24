@@ -4,6 +4,11 @@
 #include <qpushbutton.h>
 #include <QWidget>
 
+namespace LambdaSnail::Juno::expenses
+{
+    class DateFromStringDelegate;
+}
+
 namespace fa
 {
     class QtAwesome;
@@ -37,6 +42,7 @@ namespace LambdaSnail::Juno::expenses
         QDateEdit* fromDate;
         QDateEdit* toDate;
         QPushButton * searchButton;
+        std::unique_ptr<DateFromStringDelegate> m_dateColumnDelegate;
 
     private slots:
         void onSearchDatesChanged();

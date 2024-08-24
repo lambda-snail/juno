@@ -31,6 +31,8 @@ add_executable(juno main.cpp
         src/expenses/expensesoverviewwidget.cpp
         src/expenses/expensesoverviewwidget.h
         src/expenses/expensesoverviewwidget.ui
+        src/expenses/datefromstringdelegate.cpp
+        src/expenses/datefromstringdelegate.h
 
 )
 

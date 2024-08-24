@@ -11,7 +11,6 @@ namespace LambdaSnail::Juno::expenses
         LSExpenseModel();
 
         void initialize();
-
         void setDateFilter(QDate from, QDate to);
     };
 }
