@@ -55,12 +55,12 @@ namespace LambdaSnail::Juno
         QWidget * chartsWidget;
 
         // System tray icon and menu
-        QSystemTrayIcon *   trayIcon;
-        QAction *           minimizeAction;
-        QAction *           maximizeAction;
-        QAction *           restoreAction;
-        QAction *           quitAction;
-        QMenu*              trayIconMenu;
+        QSystemTrayIcon *   trayIcon{};
+        QAction *           minimizeAction{};
+        QAction *           maximizeAction{};
+        QAction *           restoreAction{};
+        QAction *           quitAction{};
+        QMenu*              trayIconMenu{};
 
 
     private slots:
