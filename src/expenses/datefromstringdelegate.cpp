@@ -1,7 +1,3 @@
-//
-// Created by niclas on 8/24/24.
-//
-
 #include "datefromstringdelegate.h"
 
 #include <QDateEdit>
