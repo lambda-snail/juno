@@ -23,8 +23,8 @@ namespace LambdaSnail::Juno
 
     LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel, fa::QtAwesome* qtAwesome) :
         QMainWindow(nullptr),
-        m_qtAwesome(qtAwesome),
         ui(new Ui::LSMainWindow),
+        m_qtAwesome(qtAwesome),
         m_expenseModel(expenseModel)
     {
         setWindowTitle("Juno Expense Tracker");
