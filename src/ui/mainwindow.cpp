@@ -31,7 +31,7 @@ namespace LambdaSnail::Juno
 
         ui->setupUi(this);
 
-        expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, expenseModel, qtAwesome);
+        expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
         chartsWidget = new QWidget(this);
 
         setupMenu();

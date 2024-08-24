@@ -3,6 +3,7 @@
 #include "datefromstringdelegate.h"
 
 #include <QDateEdit>
+#include <QMainWindow>
 #include <QPushButton>
 #include <QSqlError>
 
@@ -70,12 +71,15 @@ namespace LambdaSnail::Juno::expenses
             }
 
             m_model->submitAll();
+            m_statusBar->showMessage(tr("Expenses deleted!"), 4000);
         });
     }
 
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel *model,
-                                                       fa::QtAwesome *qtAwesome) : QWidget(parent),
-        ui(new Ui::ExpensesOverviewWidget), m_model(model)
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel *model, fa::QtAwesome *qtAwesome) :
+        QWidget(parent),
+        m_statusBar(statusBar),
+        ui(new Ui::ExpensesOverviewWidget),
+        m_model(model)
     {
         ui->setupUi(this);
 

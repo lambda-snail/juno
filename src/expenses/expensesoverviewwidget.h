@@ -2,6 +2,7 @@
 
 #include <qdatetimeedit.h>
 #include <qpushbutton.h>
+#include <qstatusbar.h>
 #include <QWidget>
 
 namespace LambdaSnail::Juno::expenses
@@ -35,7 +36,7 @@ namespace LambdaSnail::Juno::expenses
 
         void setupTableView(LSExpenseModel* model);
 
-        explicit LSExpensesOverviewWidget(QWidget* parent, LSExpenseModel* model, fa::QtAwesome* qtAwesome);
+        explicit LSExpensesOverviewWidget(QWidget* parent, QStatusBar* statusBar, LSExpenseModel* model, fa::QtAwesome* qtAwesome);
 
         ~LSExpensesOverviewWidget() override;
 
@@ -44,12 +45,14 @@ namespace LambdaSnail::Juno::expenses
         LSExpenseModel* m_model;
         std::unique_ptr<DateFromStringDelegate> m_dateColumnDelegate;
 
+        QStatusBar* m_statusBar;
+
         // Command bar
-        QDateEdit* m_fromDate;
-        QDateEdit* m_toDate;
-        QPushButton* m_searchButton;
-        QPushButton* m_deleteExpenseButton;
-        QPushButton* m_newExpenseButton;
+        QDateEdit* m_fromDate{};
+        QDateEdit* m_toDate{};
+        QPushButton* m_searchButton{};
+        QPushButton* m_deleteExpenseButton{};
+        QPushButton* m_newExpenseButton{};
 
     private slots:
         void onSearchDatesChanged();

@@ -12,10 +12,6 @@ int main(int argc, char *argv[]) {
     using namespace LambdaSnail::Juno::expenses;
 
     QApplication a(argc, argv);
-    // QPushButton button("Hello world!", nullptr);
-    // button.resize(200, 100);
-    // button.show();
-    // return QApplication::exec();
 
     fa::QtAwesome* qtAwesome = new fa::QtAwesome();
     qtAwesome->initFontAwesome();
@@ -25,8 +21,6 @@ int main(int argc, char *argv[]) {
 
     LSExpenseModel model;
     model.initialize();
-
-    qInfo() << QSystemTrayIcon::isSystemTrayAvailable();
 
     LambdaSnail::Juno::LSMainWindow mainWindow(&model, qtAwesome);
     mainWindow.show();
