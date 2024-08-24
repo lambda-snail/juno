@@ -3,6 +3,7 @@
 #include "datefromstringdelegate.h"
 
 #include <QDateEdit>
+#include <QItemSelectionModel>
 #include <QPushButton>
 #include <QSqlError>
 
@@ -13,53 +14,81 @@
 
 namespace LambdaSnail::Juno::expenses
 {
-    void LSExpensesOverviewWidget::setUpToolbar(fa::QtAwesome* qtAwesome)
+    void LSExpensesOverviewWidget::setUpToolbar(fa::QtAwesome *qtAwesome)
     {
         // Search button
-        searchButton = new QPushButton(this);
-        searchButton->setText("Search");
-        searchButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_magnifying_glass));
+        m_searchButton = new QPushButton(this);
+        m_searchButton->setText("Search");
+        m_searchButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_magnifying_glass));
 
         // Date selectors
-        fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
-        toDate->setDisplayFormat("yyyy-MM-dd");
+        m_fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
+        m_toDate->setDisplayFormat("yyyy-MM-dd");
 
-        fromDate->setCalendarPopup(true);
-        toDate->setCalendarPopup(true);
+        m_fromDate->setCalendarPopup(true);
+        m_toDate->setCalendarPopup(true);
 
         // Filer dates set to current year for convenience
         int const currentYear = QDate::currentDate().year();
-        fromDate->setDate(QDate(currentYear, 1, 1));
-        toDate->setDate(QDate(currentYear, 12, 31));
+        m_fromDate->setDate(QDate(currentYear, 1, 1));
+        m_toDate->setDate(QDate(currentYear, 12, 31));
 
         // New Expense
-        QPushButton* newExpense = new QPushButton(this);
-        newExpense->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_square_plus));
+        m_newExpenseButton = new QPushButton(this);
+        m_newExpenseButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_square_plus));
+
+        // Delete Expense
+        m_deleteExpenseButton = new QPushButton(this);
+        m_deleteExpenseButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_trash_can));
+        m_deleteExpenseButton->setEnabled(false);
 
         // Build the toolbar
-        ui->toolBar->addWidget(fromDate);
-        ui->toolBar->addWidget(toDate);
-        ui->toolBar->addWidget(searchButton);
+        ui->toolBar->addWidget(m_fromDate);
+        ui->toolBar->addWidget(m_toDate);
+        ui->toolBar->addWidget(m_searchButton);
         ui->toolBar->addSeparator();
-        ui->toolBar->addWidget(newExpense);
+        ui->toolBar->addWidget(m_newExpenseButton);
+        ui->toolBar->addWidget(m_deleteExpenseButton);
 
-        // TODO: Add signals and slots to listen to date change
-        connect(fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
-        connect(newExpense, &QPushButton::pressed, this, [&]()
+        connect(m_fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
+
+        connect(m_newExpenseButton, &QPushButton::pressed, this, [&]()
         {
             m_model->insertRow(0);
         });
+
+        connect(m_deleteExpenseButton, &QPushButton::pressed, this, [&]()
+        {
+            QItemSelection const selection = ui->tableView->selectionModel()->selection();
+            for(auto const& range : selection)
+            //for(auto const& range : selection->mapSelectionToSource(selection)) // When using proxy model
+            {
+                m_model->removeRows(range.top(), range.height());
+                for(auto const& row : range.indexes())
+                {
+                    ui->tableView->hideRow(row.row());
+                }
+            }
+
+            m_model->submitAll();
+        });
     }
 
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel* model, fa::QtAwesome* qtAwesome) : QWidget(parent), ui(new Ui::ExpensesOverviewWidget), m_model(model)
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, LSExpenseModel *model,
+                                                       fa::QtAwesome *qtAwesome) : QWidget(parent),
+        ui(new Ui::ExpensesOverviewWidget), m_model(model)
     {
         ui->setupUi(this);
 
-        fromDate = new QDateEdit(this);
-        toDate = new QDateEdit(this);
+        m_fromDate = new QDateEdit(this);
+        m_toDate = new QDateEdit(this);
 
         setUpToolbar(qtAwesome);
+        setupTableView(model);
+    }
 
+    void LSExpensesOverviewWidget::setupTableView(LSExpenseModel *model)
+    {
         using ExpenseColumns = shared::LSDatabaseManager::ExpenseColumns;
 
         // TODO: Listen to column size changes and store somewhere for persistence between sessions
@@ -72,7 +101,12 @@ namespace LambdaSnail::Juno::expenses
         m_dateColumnDelegate = std::make_unique<DateFromStringDelegate>();
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
+        // Load dates into model and fetch data
         onSearchDatesChanged();
+
+        connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+                &LSExpensesOverviewWidget::onSelectionChanged);
+
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()
@@ -82,6 +116,11 @@ namespace LambdaSnail::Juno::expenses
 
     void LSExpensesOverviewWidget::onSearchDatesChanged()
     {
-        m_model->setDateFilter(fromDate->date(), toDate->date());
+        m_model->setDateFilter(m_fromDate->date(), m_toDate->date());
+    }
+
+    void LSExpensesOverviewWidget::onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/)
+    {
+        m_deleteExpenseButton->setEnabled(ui->tableView->selectionModel()->hasSelection());
     }
 }

@@ -7,6 +7,7 @@
 namespace LambdaSnail::Juno::expenses
 {
     class DateFromStringDelegate;
+    class LSExpenseModel;
 }
 
 namespace fa
@@ -32,19 +33,26 @@ namespace LambdaSnail::Juno::expenses
     public:
         void setUpToolbar(fa::QtAwesome *qtAwesome);
 
-        explicit LSExpensesOverviewWidget(QWidget* parent, class LSExpenseModel* model, fa::QtAwesome* qtAwesome);
+        void setupTableView(LSExpenseModel* model);
+
+        explicit LSExpensesOverviewWidget(QWidget* parent, LSExpenseModel* model, fa::QtAwesome* qtAwesome);
 
         ~LSExpensesOverviewWidget() override;
 
     private:
         Ui::ExpensesOverviewWidget* ui;
         LSExpenseModel* m_model;
-        QDateEdit* fromDate;
-        QDateEdit* toDate;
-        QPushButton * searchButton;
         std::unique_ptr<DateFromStringDelegate> m_dateColumnDelegate;
+
+        // Command bar
+        QDateEdit* m_fromDate;
+        QDateEdit* m_toDate;
+        QPushButton* m_searchButton;
+        QPushButton* m_deleteExpenseButton;
+        QPushButton* m_newExpenseButton;
 
     private slots:
         void onSearchDatesChanged();
+        void onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/);
     };
 }
