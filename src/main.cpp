@@ -2,7 +2,7 @@
 #include <QSystemTrayIcon>
 
 #include "expenses/expensemodel.h"
-#include "external/QtAwesome/QtAwesome/QtAwesome.h"
+#include "../external/QtAwesome/QtAwesome/QtAwesome.h"
 #include "shared/database_manager.h"
 #include "ui/mainwindow.h"
 

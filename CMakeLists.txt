@@ -17,7 +17,7 @@ find_package(Qt6 COMPONENTS
 
 add_subdirectory(external)
 
-add_executable(juno main.cpp
+add_executable(juno src/main.cpp
         src/expenses/expense.h
         src/shared/database_manager.cpp
         src/shared/database_manager.h
