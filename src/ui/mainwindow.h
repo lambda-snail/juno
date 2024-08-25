@@ -66,5 +66,6 @@ namespace LambdaSnail::Juno
     private slots:
             void onExpenseMenuClicked();
             void onChartsMenuClicked();
+            void onRecurringMenuClicked();
     };
 }

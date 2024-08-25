@@ -16,8 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QStackedWidget" name="widgetStack">
-     </widget>
+     <widget class="QStackedWidget" name="widgetStack"/>
     </item>
    </layout>
   </widget>
@@ -62,9 +61,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="chartsButton">
+      <widget class="QPushButton" name="recurringButton">
        <property name="text">
-        <string>Charts</string>
+        <string>Recurring</string>
        </property>
       </widget>
      </item>
@@ -85,9 +84,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="recurringButton">
+      <widget class="QPushButton" name="chartsButton">
        <property name="text">
-        <string>Recurring</string>
+        <string>Charts</string>
        </property>
       </widget>
      </item>
