@@ -7,12 +7,6 @@
 
 namespace LS = LambdaSnail::Juno::expenses;
 
-// setFilter
-
-LS::LSExpenseModel::LSExpenseModel() : QSqlTableModel()
-{
-}
-
 void LS::LSExpenseModel::initialize()
 {
     setTable("expenses");

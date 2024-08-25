@@ -8,7 +8,7 @@ namespace LambdaSnail::Juno::expenses
     class LSExpenseModel : public QSqlTableModel
     {
     public:
-        LSExpenseModel();
+        explicit LSExpenseModel() = default;
 
         void initialize();
         void setDateFilter(QDate from, QDate to);
