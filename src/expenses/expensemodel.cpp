@@ -17,8 +17,11 @@ void LS::LSExpenseModel::initialize()
 {
     setTable("expenses");
 
-    setHeaderData(1, Qt::Horizontal, QObject::tr("Date"));
-    setHeaderData(2, Qt::Horizontal, QObject::tr("Location"));
+    setHeaderData(static_cast<int>(Columns::date), Qt::Horizontal, QObject::tr("Date"));
+    setHeaderData(static_cast<int>(Columns::recipient), Qt::Horizontal, QObject::tr("Recipient"));
+    setHeaderData(static_cast<int>(Columns::category), Qt::Horizontal, QObject::tr("Category"));
+    setHeaderData(static_cast<int>(Columns::description), Qt::Horizontal, QObject::tr("Description"));
+    setHeaderData(static_cast<int>(Columns::amount), Qt::Horizontal, QObject::tr("Amount"));
 }
 
 void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)
@@ -29,7 +32,7 @@ void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)
     select();
 }
 
-QSqlQuery LambdaSnail::Juno::expenses::LSExpenseModel::tableDefinition()
+QSqlQuery LS::LSExpenseModel::tableDefinition()
 {
     return QSqlQuery(R"(
             create table expenses (
@@ -40,8 +43,11 @@ QSqlQuery LambdaSnail::Juno::expenses::LSExpenseModel::tableDefinition()
                 category text,
                 amount integer,
 
+                related_expense integer,
                 createdon integer,
-                modifiedon integer
-            )
+                modifiedon integer,
+
+                foreign key(related_expense) references recurring_expenses(id)
+            );
         )");
 }

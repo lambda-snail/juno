@@ -97,6 +97,7 @@ namespace LambdaSnail::Juno::expenses
         // TODO: Listen to column size changes and store somewhere for persistence between sessions
         ui->tableView->setModel(model);
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::id), true);
+        ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::relatedExpense), true);
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::createdOn), true);
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::modifiedOn), true);
         ui->tableView->setSortingEnabled(true);

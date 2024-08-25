@@ -23,6 +23,7 @@ namespace LambdaSnail::Juno::expenses
             description,
             category,
             amount,
+            relatedExpense,
             createdOn,
             modifiedOn
         };

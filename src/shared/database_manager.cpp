@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 
 #include "expenses/expensemodel.h"
+#include "recurring_expenses/recurringexpensemodel.h"
 
 namespace LS = LambdaSnail::Juno::shared;
 
@@ -33,11 +34,18 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
 
     if (isCreate)
     {
-        QSqlQuery query(expenses::LSExpenseModel::tableDefinition());
-        if (not query.exec())
+        // Note that QSqlQuery executes the query on construction
+
+        QSqlQuery recurringExpensesTableDefinition(expenses::LSRecurringExpenseModel::tableDefinition());
+        if (recurringExpensesTableDefinition.lastError().isValid())
         {
-            auto le = db.lastError();
-            return std::unexpected<LSDatabaseError>(le.text());
+            return std::unexpected<LSDatabaseError>(recurringExpensesTableDefinition.lastError().text());
+        }
+
+        QSqlQuery expensesTableDefinition(expenses::LSExpenseModel::tableDefinition());
+        if (expensesTableDefinition.lastError().isValid())
+        {
+            return std::unexpected<LSDatabaseError>(recurringExpensesTableDefinition.lastError().text());
         }
     }
 
