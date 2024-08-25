@@ -1,30 +1,33 @@
 #pragma once
-
 #include <QSqlTableModel>
 
 namespace LambdaSnail::Juno::expenses
 {
-    // TODO: Take date as params in ctor so that we don't query everything at once
-    class LSExpenseModel : public QSqlTableModel
+    class RecurringExpenseModel : public QSqlTableModel
     {
+        Q_OBJECT
+
     public:
-        LSExpenseModel();
+        explicit RecurringExpenseModel() = default;
 
         void initialize();
-        void setDateFilter(QDate from, QDate to);
-
         [[nodiscard]] static QSqlQuery tableDefinition();
 
         enum class Columns
         {
             id,
-            date,
+            activeFrom,
+            activeTo,
+            billingDay,
+            billingMonth,
             recipient,
             description,
             category,
             amount,
+
             createdOn,
             modifiedOn
         };
     };
 }
+

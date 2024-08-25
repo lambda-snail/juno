@@ -92,7 +92,7 @@ namespace LambdaSnail::Juno::expenses
 
     void LSExpensesOverviewWidget::setupTableView(LSExpenseModel *model)
     {
-        using ExpenseColumns = LSExpenseModel::ExpenseColumns;
+        using ExpenseColumns = LSExpenseModel::Columns;
 
         // TODO: Listen to column size changes and store somewhere for persistence between sessions
         ui->tableView->setModel(model);
