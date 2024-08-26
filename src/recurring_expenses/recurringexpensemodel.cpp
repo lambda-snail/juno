@@ -4,14 +4,14 @@
 
 namespace LS = LambdaSnail::Juno::expenses;
 
-void LS::RecurringExpenseModel::initialize()
+void LS::LSRecurringExpenseModel::initialize()
 {
 }
 
-QSqlQuery LambdaSnail::Juno::expenses::RecurringExpenseModel::tableDefinition()
+QSqlQuery LS::LSRecurringExpenseModel::tableDefinition()
 {
     return QSqlQuery(R"(
-            create table expenses (
+            create table recurring_expenses (
                 id integer primary key,
                 activeFrom varchar(10),
                 activeTo varchar(10),
@@ -24,6 +24,6 @@ QSqlQuery LambdaSnail::Juno::expenses::RecurringExpenseModel::tableDefinition()
 
                 createdon integer,
                 modifiedon integer
-            )
+            );
         )");
 }

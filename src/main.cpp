@@ -19,6 +19,12 @@ int main(int argc, char *argv[]) {
     LambdaSnail::Juno::shared::LSDatabaseManager db;
     auto result = db.setDatabase("test.db");
 
+    if(not result.has_value())
+    {
+        qInfo() << result.error().Message;
+        return 1;
+    }
+
     LSExpenseModel model;
     model.initialize();
 

@@ -33,9 +33,14 @@ add_executable(juno src/main.cpp
         src/expenses/expensesoverviewwidget.ui
         src/expenses/datefromstringdelegate.cpp
         src/expenses/datefromstringdelegate.h
+
         src/recurring_expenses/recurringexpensemodel.cpp
         src/recurring_expenses/recurringexpensemodel.h
-
+        src/recurring_expenses/recurringexpensesoverview.cpp
+        src/recurring_expenses/recurringexpensesoverview.h
+        src/recurring_expenses/recurringexpensesoverview.ui
+        src/recurring_expenses/relatedexpenseproxymodel.cpp
+        src/recurring_expenses/relatedexpenseproxymodel.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR

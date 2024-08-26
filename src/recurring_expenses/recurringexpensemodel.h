@@ -3,12 +3,12 @@
 
 namespace LambdaSnail::Juno::expenses
 {
-    class RecurringExpenseModel : public QSqlTableModel
+    class LSRecurringExpenseModel : public QSqlTableModel
     {
         Q_OBJECT
 
     public:
-        explicit RecurringExpenseModel() = default;
+        explicit LSRecurringExpenseModel() = default;
 
         void initialize();
         [[nodiscard]] static QSqlQuery tableDefinition();
