@@ -48,14 +48,14 @@ namespace LambdaSnail::Juno::expenses
         QStatusBar* m_statusBar;
 
         // Command bar
-        QDateEdit* m_fromDate{};
-        QDateEdit* m_toDate{};
+        // QDateEdit* m_fromDate{};
+        // QDateEdit* m_toDate{};
         QPushButton* m_searchButton{};
         QPushButton* m_deleteExpenseButton{};
         QPushButton* m_newExpenseButton{};
 
     private slots:
-        void onSearchDatesChanged();
+        // void onSearchDatesChanged();
         void onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/);
     };
 }

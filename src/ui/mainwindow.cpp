@@ -6,6 +6,7 @@
 #include "QtAwesome.h"
 
 #include "expenses/expensesoverviewwidget.h"
+#include "shared/datecontroller.h"
 
 namespace LambdaSnail::Juno
 {
@@ -19,24 +20,26 @@ namespace LambdaSnail::Juno
         connect(ui->chartsButton, &QPushButton::pressed, this, &LSMainWindow::onChartsMenuClicked);
         connect(ui->recurringButton, &QPushButton::pressed, this, &LSMainWindow::onRecurringMenuClicked);
 
-        m_expensesIndex = ui->widgetStack->addWidget(expensesOverviewWidget);
-        m_chartsIndex = ui->widgetStack->addWidget(chartsWidget);
+        m_expensesIndex = ui->widgetStack->addWidget(m_expensesOverviewWidget);
+        m_chartsIndex = ui->widgetStack->addWidget(m_chartsWidget);
     }
 
-    LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel, fa::QtAwesome* qtAwesome) :
+    LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel, shared::LSDateController* dateController, fa::QtAwesome* qtAwesome) :
         QMainWindow(nullptr),
         ui(new Ui::LSMainWindow),
         m_qtAwesome(qtAwesome),
-        m_expenseModel(expenseModel)
+        m_expenseModel(expenseModel),
+        m_dateController(dateController)
     {
         setWindowTitle("Juno Expense Tracker");
 
         ui->setupUi(this);
 
-        expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
-        chartsWidget = new QWidget(this);
+        m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
+        m_chartsWidget = new QWidget(this);
 
         setupMenu();
+        setupToolbox();
 
         createActions(); // TODO: Reuse for menu bar
         createTrayIcon();
@@ -83,6 +86,35 @@ namespace LambdaSnail::Juno
     LSMainWindow::~LSMainWindow()
     {
         delete ui;
+    }
+
+    void LSMainWindow::setupToolbox()
+    {
+        ui->fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
+        ui->toDate->setDisplayFormat("yyyy-MM-dd");
+
+        ui->fromDate->setCalendarPopup(true);
+        ui->toDate->setCalendarPopup(true);
+
+        connect(ui->fromDate, &QDateEdit::dateChanged, [&]()
+        {
+            m_dateController->setFromDate(ui->fromDate->date());
+        });
+        connect(ui->toDate, &QDateEdit::dateChanged, this, [&]()
+        {
+            m_dateController->setToDate(ui->toDate->date());
+        });
+        connect(ui->searchButton, &QPushButton::clicked, this, [&]()
+        {
+            m_dateController->updateDateLimits();
+        });
+
+        // Filer dates set to current year for convenience
+        int const currentYear = QDate::currentDate().year();
+        ui->fromDate->setDate(QDate(currentYear, 1, 1));
+        ui->toDate->setDate(QDate(currentYear, 12, 31));
+
+        m_dateController->updateDateLimits();
     }
 
     void LSMainWindow::onExpenseMenuClicked()

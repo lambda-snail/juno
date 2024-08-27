@@ -20,10 +20,17 @@ void LS::LSExpenseModel::initialize()
 
 void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)
 {
+    beginResetModel();
+
     std::string const where = std::format("date >= '{}' and date <= '{}'", from.toString("yyyy-MM-dd").toStdString(),
                                           to.toString("yyyy-MM-dd").toStdString());
+
+    qDebug() << where;
+
     setFilter(where.data());
     select();
+
+    endResetModel();
 }
 
 QSqlQuery LS::LSExpenseModel::tableDefinition()

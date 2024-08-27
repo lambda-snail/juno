@@ -14,24 +14,24 @@
 
 namespace LambdaSnail::Juno::expenses
 {
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel* model, fa::QtAwesome *qtAwesome) :
+        QWidget(parent),
+        m_statusBar(statusBar),
+        ui(new Ui::ExpensesOverviewWidget),
+        m_model(model)
+    {
+        ui->setupUi(this);
+
+        setUpToolbar(qtAwesome);
+        setupTableView(model);
+    }
+
     void LSExpensesOverviewWidget::setUpToolbar(fa::QtAwesome *qtAwesome)
     {
         // Search button
-        m_searchButton = new QPushButton(this);
-        m_searchButton->setText("Search");
-        m_searchButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_magnifying_glass));
-
-        // Date selectors
-        m_fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
-        m_toDate->setDisplayFormat("yyyy-MM-dd");
-
-        m_fromDate->setCalendarPopup(true);
-        m_toDate->setCalendarPopup(true);
-
-        // Filer dates set to current year for convenience
-        int const currentYear = QDate::currentDate().year();
-        m_fromDate->setDate(QDate(currentYear, 1, 1));
-        m_toDate->setDate(QDate(currentYear, 12, 31));
+        // m_searchButton = new QPushButton(this);
+        // m_searchButton->setText("Search");
+        // m_searchButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_magnifying_glass));
 
         // New Expense
         m_newExpenseButton = new QPushButton(this);
@@ -43,14 +43,12 @@ namespace LambdaSnail::Juno::expenses
         m_deleteExpenseButton->setEnabled(false);
 
         // Build the toolbar
-        ui->toolBar->addWidget(m_fromDate);
-        ui->toolBar->addWidget(m_toDate);
-        ui->toolBar->addWidget(m_searchButton);
-        ui->toolBar->addSeparator();
+        //ui->toolBar->addWidget(m_searchButton);
+        //ui->toolBar->addSeparator();
         ui->toolBar->addWidget(m_newExpenseButton);
         ui->toolBar->addWidget(m_deleteExpenseButton);
 
-        connect(m_fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
+        //connect(m_fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
 
         connect(m_newExpenseButton, &QPushButton::pressed, this, [&]()
         {
@@ -75,22 +73,8 @@ namespace LambdaSnail::Juno::expenses
         });
     }
 
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel *model, fa::QtAwesome *qtAwesome) :
-        QWidget(parent),
-        m_statusBar(statusBar),
-        ui(new Ui::ExpensesOverviewWidget),
-        m_model(model)
-    {
-        ui->setupUi(this);
 
-        m_fromDate = new QDateEdit(this);
-        m_toDate = new QDateEdit(this);
-
-        setUpToolbar(qtAwesome);
-        setupTableView(model);
-    }
-
-    void LSExpensesOverviewWidget::setupTableView(LSExpenseModel *model)
+    void LSExpensesOverviewWidget::setupTableView(LSExpenseModel* model)
     {
         using ExpenseColumns = LSExpenseModel::Columns;
 
@@ -105,8 +89,7 @@ namespace LambdaSnail::Juno::expenses
         m_dateColumnDelegate = std::make_unique<DateFromStringDelegate>();
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
-        // Load dates into model and fetch data
-        onSearchDatesChanged();
+        m_model->select();
 
         connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
                 &LSExpensesOverviewWidget::onSelectionChanged);
@@ -116,11 +99,6 @@ namespace LambdaSnail::Juno::expenses
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()
     {
         delete ui;
-    }
-
-    void LSExpensesOverviewWidget::onSearchDatesChanged()
-    {
-        m_model->setDateFilter(m_fromDate->date(), m_toDate->date());
     }
 
     void LSExpensesOverviewWidget::onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/)

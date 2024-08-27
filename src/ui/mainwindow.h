@@ -14,6 +14,11 @@ namespace fa
 
 namespace LambdaSnail::Juno
 {
+    namespace shared
+    {
+        class LSDateController;
+    }
+
     namespace expenses
     {
         class LSExpensesOverviewWidget;
@@ -35,7 +40,8 @@ namespace LambdaSnail::Juno
     public:
         void setupMenu();
 
-        explicit LSMainWindow(expenses::LSExpenseModel *expenseModel, fa::QtAwesome* qtAwesome);
+
+        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, shared::LSDateController* dateController, fa::QtAwesome* qtAwesome);
 
         void createActions();
 
@@ -49,10 +55,12 @@ namespace LambdaSnail::Juno
 
         int m_expensesIndex{};
         expenses::LSExpenseModel *m_expenseModel;
-        expenses::LSExpensesOverviewWidget *expensesOverviewWidget;
+        expenses::LSExpensesOverviewWidget *m_expensesOverviewWidget;
+
+        shared::LSDateController * m_dateController;
 
         int m_chartsIndex{};
-        QWidget * chartsWidget;
+        QWidget * m_chartsWidget;
 
         // System tray icon and menu
         QSystemTrayIcon *   trayIcon{};
@@ -62,6 +70,7 @@ namespace LambdaSnail::Juno
         QAction *           quitAction{};
         QMenu*              trayIconMenu{};
 
+        void setupToolbox();
 
     private slots:
             void onExpenseMenuClicked();
