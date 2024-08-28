@@ -6,7 +6,7 @@
 #include <qsystemtrayicon.h>
 
 #include "expenses/expensemodel.h"
-#include "recurring_expenses/LSRecurringExpensesOverview.h"
+#include "recurring_expenses/recurringexpensesoverview.h"
 
 namespace fa
 {
@@ -23,6 +23,7 @@ namespace LambdaSnail::Juno
     namespace expenses
     {
         class LSExpensesOverviewWidget;
+        class LSRecurringExpenseModel;
     }
 
     QT_BEGIN_NAMESPACE
@@ -42,7 +43,7 @@ namespace LambdaSnail::Juno
         void setupMenu();
 
 
-        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, shared::LSDateController* dateController, fa::QtAwesome* qtAwesome);
+        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, expenses::LSRecurringExpenseModel* recurringModel, shared::LSDateController* dateController, fa::QtAwesome* qtAwesome);
 
         void createActions();
 
@@ -59,6 +60,7 @@ namespace LambdaSnail::Juno
         expenses::LSExpensesOverviewWidget* m_expensesOverviewWidget;
 
         int m_recurringExpensesWidgetIndex{};
+        expenses::LSRecurringExpenseModel* m_recurringModel;
         expenses::LSRecurringExpensesOverview* m_recurringExpensesWidget;
 
         int m_chartsIndex{};

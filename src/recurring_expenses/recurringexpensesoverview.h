@@ -4,6 +4,11 @@
 
 namespace LambdaSnail::Juno::expenses
 {
+    class LSRecurringExpenseModel;
+}
+
+namespace LambdaSnail::Juno::expenses
+{
     QT_BEGIN_NAMESPACE
 
     namespace Ui
@@ -18,11 +23,13 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        explicit LSRecurringExpensesOverview(QWidget *parent = nullptr);
+        explicit LSRecurringExpensesOverview(QWidget *parent, LSRecurringExpenseModel* recurringModel);
 
         ~LSRecurringExpensesOverview() override;
 
     private:
-        Ui::RecurringExpensesOverview *ui;
+        Ui::RecurringExpensesOverview* ui;
+
+        LSRecurringExpenseModel* m_recurringModel;
     };
 }

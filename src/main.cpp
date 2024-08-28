@@ -3,6 +3,7 @@
 
 #include "expenses/expensemodel.h"
 #include "../external/QtAwesome/QtAwesome/QtAwesome.h"
+#include "recurring_expenses/recurringexpensemodel.h"
 #include "shared/database_manager.h"
 #include "shared/datecontroller.h"
 #include "ui/mainwindow.h"
@@ -29,9 +30,14 @@ int main(int argc, char *argv[]) {
     LSExpenseModel model;
     model.initialize();
 
+    LSRecurringExpenseModel recurringModel;
+    recurringModel.initialize();
+
     LambdaSnail::Juno::shared::LSDateController dateController(model);
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &dateController, qtAwesome);
+    // Construct different pages here instead?
+
+    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringModel, &dateController, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

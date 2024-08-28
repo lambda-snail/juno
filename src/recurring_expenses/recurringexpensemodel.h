@@ -19,7 +19,6 @@ namespace LambdaSnail::Juno::expenses
             activeFrom,
             activeTo,
             billingDay,
-            billingMonth,
             recipient,
             description,
             category,
