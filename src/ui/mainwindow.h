@@ -6,6 +6,7 @@
 #include <qsystemtrayicon.h>
 
 #include "expenses/expensemodel.h"
+#include "recurring_expenses/LSRecurringExpensesOverview.h"
 
 namespace fa
 {
@@ -54,13 +55,16 @@ namespace LambdaSnail::Juno
         fa::QtAwesome * m_qtAwesome;
 
         int m_expensesIndex{};
-        expenses::LSExpenseModel *m_expenseModel;
-        expenses::LSExpensesOverviewWidget *m_expensesOverviewWidget;
+        expenses::LSExpenseModel* m_expenseModel;
+        expenses::LSExpensesOverviewWidget* m_expensesOverviewWidget;
 
-        shared::LSDateController * m_dateController;
+        int m_recurringExpensesWidgetIndex{};
+        expenses::LSRecurringExpensesOverview* m_recurringExpensesWidget;
 
         int m_chartsIndex{};
         QWidget * m_chartsWidget;
+
+        shared::LSDateController * m_dateController;
 
         // System tray icon and menu
         QSystemTrayIcon *   trayIcon{};

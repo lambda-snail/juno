@@ -13,14 +13,14 @@ namespace LambdaSnail::Juno::expenses
 
     QT_END_NAMESPACE
 
-    class RecurringExpensesOverview : public QWidget
+    class LSRecurringExpensesOverview : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit RecurringExpensesOverview(QWidget *parent = nullptr);
+        explicit LSRecurringExpensesOverview(QWidget *parent = nullptr);
 
-        ~RecurringExpensesOverview() override;
+        ~LSRecurringExpensesOverview() override;
 
     private:
         Ui::RecurringExpensesOverview *ui;

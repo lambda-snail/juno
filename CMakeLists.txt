@@ -36,8 +36,8 @@ add_executable(juno src/main.cpp
 
         src/recurring_expenses/recurringexpensemodel.cpp
         src/recurring_expenses/recurringexpensemodel.h
-        src/recurring_expenses/recurringexpensesoverview.cpp
-        src/recurring_expenses/recurringexpensesoverview.h
+        src/recurring_expenses/LSRecurringExpensesOverview.cpp
+        src/recurring_expenses/LSRecurringExpensesOverview.h
         src/recurring_expenses/recurringexpensesoverview.ui
         src/recurring_expenses/relatedexpenseproxymodel.cpp
         src/recurring_expenses/relatedexpenseproxymodel.h
