@@ -24,7 +24,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QTableView" name="recurringExpensesView"/>
+      <widget class="QListView" name="recurringExpensesView">
+       <property name="resizeMode">
+        <enum>QListView::ResizeMode::Adjust</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -48,7 +52,11 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="amountDoubleSpinBox"/>
+      <widget class="QDoubleSpinBox" name="amountDoubleSpinBox">
+       <property name="maximum">
+        <double>99999999999999999209038626283633850822756121694230455365568299008.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="activeFromLabel">
@@ -71,30 +79,13 @@
       <widget class="QDateEdit" name="activeToDateEdit"/>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="billingMonthLabel">
-       <property name="text">
-        <string>Billing Month</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QSpinBox" name="billingMonthSpinBox">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>12</number>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
       <widget class="QLabel" name="billingDayLabel">
        <property name="text">
         <string>Billing Day</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="4" column="1">
       <widget class="QSpinBox" name="billingDaySpinBox">
        <property name="suffix">
         <string/>
@@ -107,46 +98,46 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="5" column="0">
       <widget class="QLabel" name="descriptionLabel">
        <property name="text">
         <string>Description</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="5" column="1">
       <widget class="QLineEdit" name="descriptionLineEdit">
        <property name="text">
         <string notr="true"/>
        </property>
       </widget>
      </item>
-     <item row="7" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="categoryLabel">
        <property name="text">
         <string>Category</string>
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
+     <item row="6" column="1">
       <widget class="QLineEdit" name="categoryLineEdit"/>
      </item>
-     <item row="10" column="0" colspan="2">
-      <widget class="QTableView" name="relatedExpensesView"/>
-     </item>
-     <item row="8" column="0" colspan="2">
+     <item row="7" column="0" colspan="2">
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Orientation::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
+     <item row="8" column="0">
       <widget class="QLabel" name="expensesLabel">
        <property name="text">
         <string>Payment History</string>
        </property>
       </widget>
+     </item>
+     <item row="9" column="0" colspan="2">
+      <widget class="QTableView" name="relatedExpensesView"/>
      </item>
     </layout>
    </item>

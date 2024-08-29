@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+class QDataWidgetMapper;
+
 namespace LambdaSnail::Juno::expenses
 {
     class LSRecurringExpenseModel;
@@ -23,6 +25,8 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
+        void setUpMapper();
+
         explicit LSRecurringExpensesOverview(QWidget *parent, LSRecurringExpenseModel* recurringModel);
 
         ~LSRecurringExpensesOverview() override;
@@ -31,5 +35,6 @@ namespace LambdaSnail::Juno::expenses
         Ui::RecurringExpensesOverview* ui;
 
         LSRecurringExpenseModel* m_recurringModel;
+        QDataWidgetMapper* m_mapper;
     };
 }
