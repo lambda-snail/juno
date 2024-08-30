@@ -1,16 +1,16 @@
 #pragma once
 
+#include <qabstractproxymodel.h>
 #include <QWidget>
 
+class QAbstractProxyModel;
 class QDataWidgetMapper;
 
 namespace LambdaSnail::Juno::expenses
 {
+    class LSRelatedExpenseProxyModel;
     class LSRecurringExpenseModel;
-}
 
-namespace LambdaSnail::Juno::expenses
-{
     QT_BEGIN_NAMESPACE
 
     namespace Ui
@@ -27,7 +27,11 @@ namespace LambdaSnail::Juno::expenses
     public:
         void setUpMapper();
 
-        explicit LSRecurringExpensesOverview(QWidget *parent, LSRecurringExpenseModel* recurringModel);
+        void setUpRecurringExpensesView();
+
+        void setUpRelatedExpensesView();
+
+        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expenseModel, LSRecurringExpenseModel* recurringModel);
 
         ~LSRecurringExpensesOverview() override;
 
@@ -35,6 +39,7 @@ namespace LambdaSnail::Juno::expenses
         Ui::RecurringExpensesOverview* ui;
 
         LSRecurringExpenseModel* m_recurringModel;
-        QDataWidgetMapper* m_mapper;
+        LSRelatedExpenseProxyModel* m_expenseModel;
+        QDataWidgetMapper* m_mapper{};
     };
 }

@@ -1,6 +1,7 @@
 #include "recurringexpensemodel.h"
 
 #include <QSqlQuery>
+#include <QSqlRecord>
 
 namespace LS = LambdaSnail::Juno::expenses;
 
@@ -39,4 +40,15 @@ QSqlQuery LS::LSRecurringExpenseModel::tableDefinition()
                 modifiedon integer
             );
         )");
+}
+
+
+QVariant LambdaSnail::Juno::expenses::LSRecurringExpenseModel::data(const QModelIndex &index, int role) const
+{
+    if(role == static_cast<int>(Roles::IdRole))
+    {
+        return record(index.row()).value(static_cast<int>(Columns::id));
+    }
+
+    return QSqlTableModel::data(index, role);
 }

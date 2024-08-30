@@ -26,7 +26,7 @@ namespace LambdaSnail::Juno
         m_recurringExpensesWidgetIndex = ui->widgetStack->addWidget(m_recurringExpensesWidget);
     }
 
-    LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel, expenses::LSRecurringExpenseModel* recurringModel, shared::LSDateController* dateController, fa::QtAwesome* qtAwesome) :
+    LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel, expenses::LSRecurringExpenseModel* recurringModel, shared::LSDateController* dateController, expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, fa::QtAwesome* qtAwesome) :
         QMainWindow(nullptr),
         ui(new Ui::LSMainWindow),
         m_qtAwesome(qtAwesome),
@@ -40,7 +40,7 @@ namespace LambdaSnail::Juno
 
         m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
         m_chartsWidget = new QWidget(this);
-        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(this, m_recurringModel);
+        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(this, relatedExpenseProxyModel, m_recurringModel);
 
         setupMenu();
         setupToolbox();

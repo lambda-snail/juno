@@ -3,8 +3,6 @@
 #include <QDate>
 #include <QSqlQuery>
 
-#include "shared/database_manager.h"
-
 namespace LS = LambdaSnail::Juno::expenses;
 
 void LS::LSExpenseModel::initialize()

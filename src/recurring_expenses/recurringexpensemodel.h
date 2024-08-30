@@ -13,6 +13,8 @@ namespace LambdaSnail::Juno::expenses
         void initialize();
         [[nodiscard]] static QSqlQuery tableDefinition();
 
+        [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+
         enum class Columns
         {
             id,
@@ -26,6 +28,11 @@ namespace LambdaSnail::Juno::expenses
 
             createdOn,
             modifiedOn
+        };
+
+        enum class Roles
+        {
+            IdRole = 0x0101
         };
     };
 }

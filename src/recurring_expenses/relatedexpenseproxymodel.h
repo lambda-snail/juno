@@ -7,7 +7,7 @@ namespace LambdaSnail::Juno::expenses
     /**
      * Filer to display expenses related to a recurring expense.
      */
-    class RelatedExpenseProxyModel : public QSortFilterProxyModel
+    class LSRelatedExpenseProxyModel : public QSortFilterProxyModel
     {
         Q_OBJECT
 
@@ -15,7 +15,7 @@ namespace LambdaSnail::Juno::expenses
         Q_PROPERTY(bool m_isActive READ isActive WRITE setIsActive)
 
     public:
-        explicit RelatedExpenseProxyModel(QObject* parent = nullptr);
+        explicit LSRelatedExpenseProxyModel(QObject* parent = nullptr);
 
         [[nodiscard]] bool filterAcceptsRow(int sourceRow, QModelIndex const& sourceParent) const override;
 

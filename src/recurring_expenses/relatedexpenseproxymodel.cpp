@@ -4,9 +4,9 @@
 
 namespace LS = LambdaSnail::Juno::expenses;
 
-LS::RelatedExpenseProxyModel::RelatedExpenseProxyModel(QObject *parent) : QSortFilterProxyModel(parent) {}
+LS::LSRelatedExpenseProxyModel::LSRelatedExpenseProxyModel(QObject *parent) : QSortFilterProxyModel(parent), m_isActive(false) {}
 
-bool LambdaSnail::Juno::expenses::RelatedExpenseProxyModel::filterAcceptsRow(int sourceRow, QModelIndex const& sourceParent) const
+bool LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::filterAcceptsRow(int sourceRow, QModelIndex const& sourceParent) const
 {
     if(not m_isActive)
     {
@@ -18,26 +18,32 @@ bool LambdaSnail::Juno::expenses::RelatedExpenseProxyModel::filterAcceptsRow(int
     return relatedExpense.isValid() and relatedExpense.value<int32_t>() == m_relatedExpense;
 }
 
-int32_t LambdaSnail::Juno::expenses::RelatedExpenseProxyModel::relatedExpense() const
+int32_t LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::relatedExpense() const
 {
     return m_relatedExpense;
 }
 
-void LambdaSnail::Juno::expenses::RelatedExpenseProxyModel::setRelatedExpense(int32_t relatedExpense)
+void LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::setRelatedExpense(int32_t relatedExpense)
 {
+    beginResetModel();
+
+    m_isActive = true;
+
     if(m_relatedExpense != relatedExpense)
     {
         m_relatedExpense = relatedExpense;
         invalidateFilter();
     }
+
+    endResetModel();
 }
 
-bool LambdaSnail::Juno::expenses::RelatedExpenseProxyModel::isActive() const
+bool LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::isActive() const
 {
     return m_isActive;
 }
 
-void LambdaSnail::Juno::expenses::RelatedExpenseProxyModel::setIsActive(bool isActive)
+void LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::setIsActive(bool isActive)
 {
     if(m_isActive != isActive)
     {
