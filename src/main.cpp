@@ -33,7 +33,10 @@ int main(int argc, char *argv[]) {
 
     LSRelatedExpenseProxyModel relatedExpenseProyModel(&a);
     relatedExpenseProyModel.setSourceModel(&model);
-    relatedExpenseProyModel.setDynamicSortFilter(true);
+
+    // This may need to be disabled and reenabled when adding rows
+    // https://doc.qt.io/qt-6/qsortfilterproxymodel.html#dynamicSortFilter-prop
+    //relatedExpenseProyModel.setDynamicSortFilter(true);
 
     LSRecurringExpenseModel recurringExpensesModel;
     recurringExpensesModel.initialize();
