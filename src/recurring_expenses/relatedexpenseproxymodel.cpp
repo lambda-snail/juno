@@ -25,17 +25,13 @@ int32_t LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::relatedExpense(
 
 void LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::setRelatedExpense(int32_t relatedExpense)
 {
-    beginResetModel();
-
-    m_isActive = true;
-
     if(m_relatedExpense != relatedExpense)
     {
+        beginResetModel();
+        m_isActive = true;
         m_relatedExpense = relatedExpense;
-        invalidateFilter();
+        endResetModel();
     }
-
-    endResetModel();
 }
 
 bool LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::isActive() const
@@ -47,7 +43,8 @@ void LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::setIsActive(bool i
 {
     if(m_isActive != isActive)
     {
+        beginResetModel();
         m_isActive = isActive;
-        invalidateFilter();
+        endResetModel();
     }
 }

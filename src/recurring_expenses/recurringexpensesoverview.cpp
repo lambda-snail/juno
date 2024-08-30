@@ -54,8 +54,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
         // TODO: Use proxy model and ->mapToSource(index); ?
         int32_t rowId = m_recurringModel->data(index, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
         m_expenseModel->setRelatedExpense(rowId);
-        m_expenseModel->invalidate();
-        m_expenseModel->setIsActive(true);
     });
 }
 
