@@ -1,8 +1,8 @@
 #include <QApplication>
-#include <QSystemTrayIcon>
+#include <QIdentityProxyModel>
 
 #include "expenses/expensemodel.h"
-#include "../external/QtAwesome/QtAwesome/QtAwesome.h"
+#include "QtAwesome.h"
 #include "recurring_expenses/recurringexpensemodel.h"
 #include "recurring_expenses/relatedexpenseproxymodel.h"
 #include "shared/database_manager.h"
@@ -35,14 +35,17 @@ int main(int argc, char *argv[]) {
     relatedExpenseProyModel.setSourceModel(&model);
     relatedExpenseProyModel.setDynamicSortFilter(true);
 
-    LSRecurringExpenseModel recurringModel;
-    recurringModel.initialize();
+    LSRecurringExpenseModel recurringExpensesModel;
+    recurringExpensesModel.initialize();
+
+    QIdentityProxyModel recurringExpensesAsProxyModel(&a);
+    recurringExpensesAsProxyModel.setSourceModel(&recurringExpensesModel);
 
     LambdaSnail::Juno::shared::LSDateController dateController(model);
 
     // Construct different pages here instead?
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringModel, &dateController, &relatedExpenseProyModel, qtAwesome);
+    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringExpensesAsProxyModel, &dateController, &relatedExpenseProyModel, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

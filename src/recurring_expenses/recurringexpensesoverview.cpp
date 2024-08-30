@@ -42,7 +42,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpensesView()
 {
-    ui->relatedExpensesView->setModel(m_expenseModel);
+    ui->relatedExpensesView->setModel(m_expensesProxyModel);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::id), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::relatedExpense), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::createdOn), true);
@@ -52,16 +52,17 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     connect(ui->recurringExpensesView, &QListView::clicked, [&](QModelIndex const& index)
     {
         // TODO: Use proxy model and ->mapToSource(index); ?
-        int32_t rowId = m_recurringModel->data(index, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
-        m_expenseModel->setRelatedExpense(rowId);
+        QModelIndex sourceIndex = m_recurringModel->mapToSource(index);
+        int32_t rowId = m_recurringModel->data(sourceIndex, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
+        m_expensesProxyModel->setRelatedExpense(rowId);
     });
 }
 
-LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expenseModel, LSRecurringExpenseModel* recurringModel) :
+LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel) :
     QWidget(parent),
     ui(new Ui::RecurringExpensesOverview),
     m_recurringModel(recurringModel),
-    m_expenseModel(expenseModel)
+    m_expensesProxyModel(expensesProxyModel)
 {
     ui->setupUi(this);
 

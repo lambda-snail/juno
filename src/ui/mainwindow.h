@@ -43,7 +43,7 @@ namespace LambdaSnail::Juno
         void setupMenu();
 
 
-        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, expenses::LSRecurringExpenseModel* recurringModel, shared::LSDateController* dateController, expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, fa::QtAwesome* qtAwesome);
+        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, fa::QtAwesome* qtAwesome);
 
         void createActions();
 
@@ -60,7 +60,7 @@ namespace LambdaSnail::Juno
         expenses::LSExpensesOverviewWidget* m_expensesOverviewWidget;
 
         int m_recurringExpensesWidgetIndex{};
-        expenses::LSRecurringExpenseModel* m_recurringModel;
+        QAbstractProxyModel* m_recurringExpensesProxyModel;
         expenses::LSRecurringExpensesOverview* m_recurringExpensesWidget;
 
         int m_chartsIndex{};

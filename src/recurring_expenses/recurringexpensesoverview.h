@@ -31,15 +31,15 @@ namespace LambdaSnail::Juno::expenses
 
         void setUpRelatedExpensesView();
 
-        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expenseModel, LSRecurringExpenseModel* recurringModel);
+        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel);
 
         ~LSRecurringExpensesOverview() override;
 
     private:
         Ui::RecurringExpensesOverview* ui;
 
-        LSRecurringExpenseModel* m_recurringModel;
-        LSRelatedExpenseProxyModel* m_expenseModel;
+        QAbstractProxyModel* m_recurringModel;
+        LSRelatedExpenseProxyModel* m_expensesProxyModel;
         QDataWidgetMapper* m_mapper{};
     };
 }
