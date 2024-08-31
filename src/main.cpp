@@ -14,12 +14,6 @@
 int main(int argc, char *argv[]) {
     using namespace LambdaSnail::Juno::expenses;
 
-
-
-    QDate date(2020, 2, 28);
-    qInfo() << date.toString();
-    return 0;
-
     QApplication a(argc, argv);
 
     fa::QtAwesome* qtAwesome = new fa::QtAwesome();

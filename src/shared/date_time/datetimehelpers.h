@@ -14,8 +14,8 @@ namespace LambdaSnail::Juno::dateTime
      */
     inline QDate constructValidDate(int32_t y, int32_t m, int32_t d)
     {
-        assert(m > 0, m <= 12);
-        assert(d > 0, d <= 31);
+        assert(m > 0 and m <= 12);
+        assert(d > 0 and d <= 31);
         assert(y > 0);
 
         QDate const date(y, m, d);
