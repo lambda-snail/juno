@@ -18,7 +18,6 @@ namespace LambdaSnail::Juno::expenses
         explicit LSRelatedExpenseProxyModel(QObject* parent = nullptr);
 
         [[nodiscard]] bool filterAcceptsRow(int sourceRow, QModelIndex const& sourceParent) const override;
-        //bool insertRows(int row, int count, const QModelIndex &parent) override;
 
         [[nodiscard]] int32_t relatedExpense() const;
         void setRelatedExpense(int32_t relatedExpense);
