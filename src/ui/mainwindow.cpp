@@ -6,6 +6,8 @@
 #include "QtAwesome.h"
 
 #include "expenses/expensesoverviewwidget.h"
+#include "expense_charts/aggregateexpensemodel.h"
+#include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
 #include "shared/datecontroller.h"
 
@@ -39,8 +41,13 @@ namespace LambdaSnail::Juno
         ui->setupUi(this);
 
         m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
-        m_chartsWidget = new QWidget(this);
-        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(this, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
+        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
+
+
+        auto aggregateExpenseModel = new expenses::LSAggregateExpenseModel();
+        aggregateExpenseModel->setSourceModel(m_expenseModel);
+
+        m_chartsWidget = new charts::LSExpenseChartsWidget(aggregateExpenseModel, ui->widgetStack);
 
         setupMenu();
         setupToolbox();
