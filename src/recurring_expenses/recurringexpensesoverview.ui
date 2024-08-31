@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>787</width>
-    <height>515</height>
+    <width>935</width>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -138,6 +138,39 @@
      </item>
      <item row="9" column="0" colspan="2">
       <widget class="QTableView" name="relatedExpensesView"/>
+     </item>
+     <item row="8" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="newExpenseButton">
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

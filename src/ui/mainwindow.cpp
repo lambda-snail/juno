@@ -40,7 +40,7 @@ namespace LambdaSnail::Juno
 
         m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
         m_chartsWidget = new QWidget(this);
-        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(this, relatedExpenseProxyModel, m_recurringExpensesProxyModel);
+        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(this, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
 
         setupMenu();
         setupToolbox();
