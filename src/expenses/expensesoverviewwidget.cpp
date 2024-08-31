@@ -86,7 +86,7 @@ namespace LambdaSnail::Juno::expenses
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::modifiedOn), true);
         ui->tableView->setSortingEnabled(true);
 
-        m_dateColumnDelegate = std::make_unique<DateFromStringDelegate>();
+        m_dateColumnDelegate = std::make_unique<LSDateFromStringDelegate>();
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
         m_model->select();

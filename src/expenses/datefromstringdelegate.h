@@ -8,7 +8,7 @@ namespace LambdaSnail::Juno::expenses
      * Adds a date edit widget to columns that store dates as strings. This ensures that there will always be a valid date
      * in the column. Useful for sql models hat don't work with a model class.
      */
-    class DateFromStringDelegate : public QStyledItemDelegate
+    class LSDateFromStringDelegate : public QStyledItemDelegate
     {
         Q_OBJECT
 

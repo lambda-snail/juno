@@ -7,7 +7,7 @@
 
 namespace LambdaSnail::Juno::expenses
 {
-    class DateFromStringDelegate;
+    class LSDateFromStringDelegate;
     class LSExpenseModel;
 }
 
@@ -43,7 +43,7 @@ namespace LambdaSnail::Juno::expenses
     private:
         Ui::ExpensesOverviewWidget* ui;
         LSExpenseModel* m_model;
-        std::unique_ptr<DateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<LSDateFromStringDelegate> m_dateColumnDelegate;
 
         QStatusBar* m_statusBar;
 

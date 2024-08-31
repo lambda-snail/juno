@@ -9,6 +9,7 @@
 
 #include "QtAwesome.h"
 #include "relatedexpenseproxymodel.h"
+#include "expenses/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
 #include "shared/datecontroller.h"
 
@@ -46,14 +47,16 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
 {
     ui->relatedExpensesView->setModel(m_expensesProxyModel);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::id), true);
-    //ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::relatedExpense), true);
+    ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::relatedExpense), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::createdOn), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::modifiedOn), true);
     ui->relatedExpensesView->setSortingEnabled(true);
 
+    m_dateColumnDelegate = std::make_unique<LSDateFromStringDelegate>();
+    ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
+
     connect(ui->recurringExpensesView, &QListView::clicked, [&](QModelIndex const& index)
     {
-        // TODO: Use proxy model and ->mapToSource(index); ?
         QModelIndex sourceIndex = m_recurringModel->mapToSource(index);
         int32_t rowId = m_recurringModel->data(sourceIndex, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
         m_expensesProxyModel->setRelatedExpense(rowId);
