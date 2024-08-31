@@ -12,6 +12,7 @@
 #include "expenses/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
 #include "shared/datecontroller.h"
+#include "shared/date_time/datetimehelpers.h"
 
 namespace LS = LambdaSnail::Juno::expenses;
 
@@ -89,8 +90,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
         setValue(newModelIndex, LSExpenseModel::Columns::relatedExpense, recurringExpenseId);
 
         // Suggest a date based on the global from date, the current month and the given billing day
-        QDate now = QDate::currentDate();
-        QDate suggestedDate(m_dateController->getFromDate().year(), now.month(), ui->billingDaySpinBox->value());
+        QDate suggestedDate = dateTime::constructValidDate(m_dateController->getFromDate().year(), QDate::currentDate().month(), ui->billingDaySpinBox->value());
         setValue(newModelIndex, LSExpenseModel::Columns::date, suggestedDate);
 
         m_expensesProxyModel->submit();

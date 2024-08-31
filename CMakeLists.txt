@@ -43,6 +43,7 @@ add_executable(juno src/main.cpp
         src/recurring_expenses/relatedexpenseproxymodel.h
         src/shared/datecontroller.cpp
         src/shared/datecontroller.h
+        src/shared/date_time/datetimehelpers.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
