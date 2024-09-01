@@ -13,7 +13,6 @@ namespace LambdaSnail::Juno::expenses
 
 namespace LambdaSnail::Juno::shared
 {
-    class LSCategoryPickerDelegate;
     class LSDateFromStringDelegate;
 }
 
@@ -51,7 +50,6 @@ namespace LambdaSnail::Juno::expenses
         QAbstractProxyModel * m_categoryModel;
 
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
-        std::unique_ptr<shared::LSCategoryPickerDelegate> m_categoryDelegate;
 
         QStatusBar* m_statusBar;
 

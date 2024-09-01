@@ -52,8 +52,6 @@ add_executable(juno src/main.cpp
         src/expense_charts/aggregateexpensemodel.h
         src/categories/categorymodel.cpp
         src/categories/categorymodel.h
-        src/shared/categories/categorypickerdelegate.cpp
-        src/shared/categories/categorypickerdelegate.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
