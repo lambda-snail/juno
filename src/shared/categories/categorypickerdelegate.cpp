@@ -1,4 +1,4 @@
-#include "LSCategoryPickerDelegate.h"
+#include "categorypickerdelegate.h"
 
 #include <qabstractproxymodel.h>
 #include <QComboBox>

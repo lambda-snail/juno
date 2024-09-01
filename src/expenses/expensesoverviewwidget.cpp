@@ -4,12 +4,11 @@
 
 #include <QDateEdit>
 #include <QPushButton>
+#include <QSqlRelationalDelegate>
 
 #include "QtAwesome.h"
 #include "ui_expensesoverviewwidget.h"
 #include "categories/categorymodel.h"
-#include "shared/categories/LSCategoryPickerDelegate.h"
-
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -89,8 +88,7 @@ namespace LambdaSnail::Juno::expenses
         m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>();
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
-        m_categoryDelegate = std::make_unique<shared::LSCategoryPickerDelegate>(m_categoryModel);
-        ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::category), m_categoryDelegate.get());
+        ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
 
         m_expenseModel->select();
 

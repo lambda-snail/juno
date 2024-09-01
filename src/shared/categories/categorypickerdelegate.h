@@ -15,6 +15,7 @@ namespace LambdaSnail::Juno::shared
         void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     };
 
+    [[deprecated("LSCategoryPickerDelegate is deprecated - use QSqlRelationalDelegate instead")]]
     class LSCategoryPickerDelegate : public LSDelegateBase
     {
         Q_OBJECT

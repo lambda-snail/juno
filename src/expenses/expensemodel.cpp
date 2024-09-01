@@ -9,6 +9,8 @@ void LS::LSExpenseModel::initialize()
 {
     setTable("expenses");
 
+    setRelation(static_cast<int>(Columns::category), QSqlRelation("categories", "id", "category"));
+
     setHeaderData(static_cast<int>(Columns::date), Qt::Horizontal, QObject::tr("Date"));
     setHeaderData(static_cast<int>(Columns::recipient), Qt::Horizontal, QObject::tr("Recipient"));
     setHeaderData(static_cast<int>(Columns::category), Qt::Horizontal, QObject::tr("Category"));
