@@ -2,7 +2,7 @@
 
 #include <QStyledItemDelegate>
 
-namespace LambdaSnail::Juno::expenses
+namespace LambdaSnail::Juno::shared
 {
     /**
      * Adds a date edit widget to columns that store dates as strings. This ensures that there will always be a valid date

@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include "categories/categorymodel.h"
 #include "expenses/expensemodel.h"
 #include "recurring_expenses/recurringexpensemodel.h"
 
@@ -42,10 +43,16 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
             return std::unexpected<LSDatabaseError>(recurringExpensesTableDefinition.lastError().text());
         }
 
+        QSqlQuery categoryTableDefinition(categories::LSCategoryModel::tableDefinition());
+        if (categoryTableDefinition.lastError().isValid())
+        {
+            return std::unexpected<LSDatabaseError>(categoryTableDefinition.lastError().text());
+        }
+
         QSqlQuery expensesTableDefinition(expenses::LSExpenseModel::tableDefinition());
         if (expensesTableDefinition.lastError().isValid())
         {
-            return std::unexpected<LSDatabaseError>(recurringExpensesTableDefinition.lastError().text());
+            return std::unexpected<LSDatabaseError>(expensesTableDefinition.lastError().text());
         }
     }
 

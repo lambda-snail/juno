@@ -9,6 +9,8 @@ void LS::LSExpenseModel::initialize()
 {
     setTable("expenses");
 
+    setRelation(static_cast<int>(Columns::category), QSqlRelation("categories", "id", "category"));
+
     setHeaderData(static_cast<int>(Columns::date), Qt::Horizontal, QObject::tr("Date"));
     setHeaderData(static_cast<int>(Columns::recipient), Qt::Horizontal, QObject::tr("Recipient"));
     setHeaderData(static_cast<int>(Columns::category), Qt::Horizontal, QObject::tr("Category"));
@@ -39,7 +41,7 @@ QSqlQuery LS::LSExpenseModel::tableDefinition()
                 date varchar(10),
                 recipient text,
                 description text,
-                category text,
+                category integer,
                 amount integer,
 
                 related_expense integer,
@@ -47,6 +49,7 @@ QSqlQuery LS::LSExpenseModel::tableDefinition()
                 modifiedon integer,
 
                 foreign key(related_expense) references recurring_expenses(id)
+                foreign key(category) references categories(id)
             );
         )");
 }

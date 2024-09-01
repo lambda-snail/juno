@@ -10,6 +10,7 @@ set(CMAKE_PREFIX_PATH "/opt/Qt/6.7.2/gcc_64")
 
 find_package(Qt6 COMPONENTS
         Core
+        Charts
         Gui
         Widgets
         Sql
@@ -31,8 +32,8 @@ add_executable(juno src/main.cpp
         src/expenses/expensesoverviewwidget.cpp
         src/expenses/expensesoverviewwidget.h
         src/expenses/expensesoverviewwidget.ui
-        src/expenses/datefromstringdelegate.cpp
-        src/expenses/datefromstringdelegate.h
+        src/shared/date_time/datefromstringdelegate.cpp
+        src/shared/date_time/datefromstringdelegate.h
 
         src/recurring_expenses/recurringexpensemodel.cpp
         src/recurring_expenses/recurringexpensemodel.h
@@ -44,6 +45,13 @@ add_executable(juno src/main.cpp
         src/shared/datecontroller.cpp
         src/shared/datecontroller.h
         src/shared/date_time/datetimehelpers.h
+        src/expense_charts/expensechartswidget.cpp
+        src/expense_charts/expensechartswidget.h
+        src/expense_charts/expensechartswidget.ui
+        src/expense_charts/aggregateexpensemodel.cpp
+        src/expense_charts/aggregateexpensemodel.h
+        src/categories/categorymodel.cpp
+        src/categories/categorymodel.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
@@ -55,6 +63,7 @@ target_include_directories(juno PRIVATE src LS_AUTOGEN_DIR/include)
 target_link_libraries(juno
         PRIVATE
         Qt::Core
+        Qt::Charts
         Qt::Gui
         Qt::Widgets
         Qt::Sql

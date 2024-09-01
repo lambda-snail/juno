@@ -4,8 +4,11 @@
 
 #include "ui_mainwindow.h"
 #include "QtAwesome.h"
+#include "categories/categorymodel.h"
 
 #include "expenses/expensesoverviewwidget.h"
+#include "expense_charts/aggregateexpensemodel.h"
+#include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
 #include "shared/datecontroller.h"
 
@@ -26,24 +29,32 @@ namespace LambdaSnail::Juno
         m_recurringExpensesWidgetIndex = ui->widgetStack->addWidget(m_recurringExpensesWidget);
     }
 
-    LSMainWindow::LSMainWindow(expenses::LSExpenseModel* expenseModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, fa::QtAwesome* qtAwesome) :
-        QMainWindow(nullptr),
-        ui(new Ui::LSMainWindow),
-        m_qtAwesome(qtAwesome),
-        m_expenseModel(expenseModel),
-        m_recurringExpensesProxyModel(recurringModel),
-        m_dateController(dateController)
+    LSMainWindow::LSMainWindow(expenses::LSExpenseModel *expenseModel, QAbstractProxyModel *recurringModel,
+                               QAbstractProxyModel *categoryModel, shared::LSDateController *dateController,
+                               expenses::LSRelatedExpenseProxyModel *relatedExpenseProxyModel,
+                               fa::QtAwesome *qtAwesome) : QMainWindow(nullptr),
+                                                           ui(new Ui::LSMainWindow),
+                                                           m_qtAwesome(qtAwesome),
+                                                           m_expenseModel(expenseModel),
+                                                           m_recurringExpensesProxyModel(recurringModel),
+                                                           m_categoryModel(categoryModel),
+                                                           m_dateController(dateController)
     {
         setWindowTitle("Juno Expense Tracker");
 
         ui->setupUi(this);
 
-        m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, qtAwesome);
-        m_chartsWidget = new QWidget(this);
-        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(this, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
+        m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, m_categoryModel, qtAwesome);
+        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
+
+        auto aggregateExpenseModel = new expenses::LSAggregateExpenseModel(m_categoryModel);
+        aggregateExpenseModel->setSourceModel(m_expenseModel);
+
+        m_chartsWidget = new charts::LSExpenseChartsWidget(aggregateExpenseModel, ui->widgetStack);
 
         setupMenu();
-        setupToolbox();
+        setupDateTool();
+        setupCategoryTool();
 
         createActions(); // TODO: Reuse for menu bar
         createTrayIcon();
@@ -92,7 +103,7 @@ namespace LambdaSnail::Juno
         delete ui;
     }
 
-    void LSMainWindow::setupToolbox()
+    void LSMainWindow::setupDateTool()
     {
         ui->fromDate->setDisplayFormat("yyyy-MM-dd"); // TODO: Store date format in settings
         ui->toDate->setDisplayFormat("yyyy-MM-dd");
@@ -121,17 +132,58 @@ namespace LambdaSnail::Juno
         m_dateController->updateDateLimits();
     }
 
-    void LSMainWindow::onExpenseMenuClicked()
+    void LSMainWindow::setupCategoryTool()
+    {
+        ui->categoryView->setModel(m_categoryModel);
+        ui->categoryView->setModelColumn(static_cast<int32_t>(categories::LSCategoryModel::Columns::category));
+
+        ui->newCategoryButton->setText(tr(""));
+        ui->deleteCategoryButton->setText(tr(""));
+
+        ui->newCategoryButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_square_plus));
+        ui->deleteCategoryButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_trash_can));
+
+        ui->deleteCategoryButton->setDisabled(true);
+
+        connect(ui->newCategoryButton, &QPushButton::clicked, this, [model = m_categoryModel]()
+        {
+            model->insertRow(0);
+        });
+
+        connect(ui->deleteCategoryButton, &QPushButton::clicked, this, [model = m_categoryModel, view = ui->categoryView, button = ui->deleteCategoryButton]()
+        {
+            QModelIndex const viewIndex = view->currentIndex();
+            QModelIndex const index = model->mapToSource(viewIndex);
+            model->removeRow(index.row());
+            model->submit();
+            model->revert();
+            //model->sort()
+
+            view->clearSelection();
+            button->setEnabled(false);
+        });
+
+        connect(ui->categoryView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+            [view = ui->categoryView, button = ui->deleteCategoryButton](const QItemSelection &selected, const QItemSelection &deselected)
+        {
+                if(selected.size() > 0)
+                {
+                    button->setEnabled(true);
+                }
+        });
+    }
+
+    void LSMainWindow::onExpenseMenuClicked() const
     {
         ui->widgetStack->setCurrentIndex(m_expensesIndex);
     }
 
-    void LSMainWindow::onChartsMenuClicked()
+    void LSMainWindow::onChartsMenuClicked() const
     {
         ui->widgetStack->setCurrentIndex(m_chartsIndex);
     }
 
-    void LSMainWindow::onRecurringMenuClicked()
+    void LSMainWindow::onRecurringMenuClicked() const
     {
         ui->widgetStack->setCurrentIndex(m_recurringExpensesWidgetIndex);
     }

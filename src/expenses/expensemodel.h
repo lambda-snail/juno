@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
 
 namespace LambdaSnail::Juno::expenses
 {
     // TODO: Take date as params in ctor so that we don't query everything at once
-    class LSExpenseModel : public QSqlTableModel
+    class LSExpenseModel : public QSqlRelationalTableModel
     {
     public:
         explicit LSExpenseModel() = default;

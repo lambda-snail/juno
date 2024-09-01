@@ -5,6 +5,7 @@
 
 namespace LambdaSnail::Juno::shared
 {
+    class LSDateFromStringDelegate;
     class LSDateController;
 }
 
@@ -18,7 +19,6 @@ class QDataWidgetMapper;
 
 namespace LambdaSnail::Juno::expenses
 {
-    class LSDateFromStringDelegate;
     class LSRelatedExpenseProxyModel;
     class LSRecurringExpenseModel;
 
@@ -50,7 +50,7 @@ namespace LambdaSnail::Juno::expenses
         Ui::RecurringExpensesOverview* ui;
 
         shared::LSDateController* m_dateController;
-        std::unique_ptr<LSDateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
 
         QAbstractProxyModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;

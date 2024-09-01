@@ -9,7 +9,7 @@
 
 #include "QtAwesome.h"
 #include "relatedexpenseproxymodel.h"
-#include "expenses/datefromstringdelegate.h"
+#include "../shared/date_time/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
 #include "shared/datecontroller.h"
 #include "shared/date_time/datetimehelpers.h"
@@ -53,7 +53,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::modifiedOn), true);
     ui->relatedExpensesView->setSortingEnabled(true);
 
-    m_dateColumnDelegate = std::make_unique<LSDateFromStringDelegate>();
+    m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>();
     ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
 
     connect(ui->recurringExpensesView, &QListView::clicked, [&](QModelIndex const& index)
@@ -71,6 +71,8 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     {
         int32_t newModelIndex = 0;
 
+        // This may need to be disabled and reenabled when adding rows
+        // https://doc.qt.io/qt-6/qsortfilterproxymodel.html#dynamicSortFilter-prop
         m_expensesProxyModel->setDynamicSortFilter(false);
 
         m_expensesProxyModel->insertRow(newModelIndex);

@@ -1,24 +1,23 @@
 #include "expensemodel.h"
 #include "expensesoverviewwidget.h"
-#include "datefromstringdelegate.h"
+#include "shared/date_time/datefromstringdelegate.h"
 
 #include <QDateEdit>
-#include <QMainWindow>
 #include <QPushButton>
-#include <QSqlError>
+#include <QSqlRelationalDelegate>
 
 #include "QtAwesome.h"
 #include "ui_expensesoverviewwidget.h"
-#include "shared/database_manager.h"
-
+#include "categories/categorymodel.h"
 
 namespace LambdaSnail::Juno::expenses
 {
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel* model, fa::QtAwesome *qtAwesome) :
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel* model, QAbstractProxyModel* categoryModel, fa::QtAwesome *qtAwesome) :
         QWidget(parent),
         m_statusBar(statusBar),
         ui(new Ui::ExpensesOverviewWidget),
-        m_model(model)
+        m_expenseModel(model),
+        m_categoryModel(categoryModel)
     {
         ui->setupUi(this);
 
@@ -52,7 +51,7 @@ namespace LambdaSnail::Juno::expenses
 
         connect(m_newExpenseButton, &QPushButton::pressed, this, [&]()
         {
-            m_model->insertRow(0);
+            m_expenseModel->insertRow(0);
         });
 
         connect(m_deleteExpenseButton, &QPushButton::pressed, this, [&]()
@@ -61,14 +60,14 @@ namespace LambdaSnail::Juno::expenses
             for(auto const& range : selection)
             //for(auto const& range : selection->mapSelectionToSource(selection)) // When using proxy model
             {
-                m_model->removeRows(range.top(), range.height());
+                m_expenseModel->removeRows(range.top(), range.height());
                 for(auto const& row : range.indexes())
                 {
                     ui->tableView->hideRow(row.row());
                 }
             }
 
-            m_model->submitAll();
+            m_expenseModel->submitAll();
             m_statusBar->showMessage(tr("Expenses deleted!"), 4000);
         });
     }
@@ -86,10 +85,12 @@ namespace LambdaSnail::Juno::expenses
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::modifiedOn), true);
         ui->tableView->setSortingEnabled(true);
 
-        m_dateColumnDelegate = std::make_unique<LSDateFromStringDelegate>();
+        m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>();
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
-        m_model->select();
+        ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
+
+        m_expenseModel->select();
 
         connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
                 &LSExpensesOverviewWidget::onSelectionChanged);
