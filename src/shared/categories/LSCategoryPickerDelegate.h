@@ -3,7 +3,6 @@
 #include <QStyledItemDelegate>
 
 class QAbstractProxyModel;
-class QComboBox;
 
 namespace LambdaSnail::Juno::shared
 {
@@ -29,6 +28,5 @@ namespace LambdaSnail::Juno::shared
 
     private:
         QAbstractProxyModel* m_categoryModel;
-        QComboBox* m_comboBox;
     };
 }

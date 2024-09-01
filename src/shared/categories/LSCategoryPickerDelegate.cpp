@@ -26,18 +26,17 @@ namespace LambdaSnail::Juno::shared {
 
     LSCategoryPickerDelegate::LSCategoryPickerDelegate(QAbstractProxyModel* categoryModel, QObject *parent) :
         LSDelegateBase(parent),
-        m_categoryModel(categoryModel)
-    {
-        m_comboBox = new QComboBox();
-        m_comboBox->setModel(m_categoryModel);
-        m_comboBox->setModelColumn(static_cast<int>(categories::LSCategoryModel::Columns::category));
-        m_comboBox->setEditable(false);
-    }
+        m_categoryModel(categoryModel) { }
 
     QWidget * LSCategoryPickerDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                                                      const QModelIndex &index) const
     {
-        return m_comboBox;
+        QComboBox* comboBox = new QComboBox();
+        comboBox->setModel(m_categoryModel);
+        comboBox->setModelColumn(static_cast<int>(categories::LSCategoryModel::Columns::category));
+        comboBox->setEditable(false);
+
+        return comboBox;
     }
 
     void LSCategoryPickerDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
