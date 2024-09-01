@@ -44,11 +44,8 @@ namespace LambdaSnail::Juno
 
         ui->setupUi(this);
 
-        m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(
-            ui->widgetStack, statusBar(), expenseModel, qtAwesome);
-        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(
-            ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
-
+        m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, m_categoryModel, qtAwesome);
+        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
 
         auto aggregateExpenseModel = new expenses::LSAggregateExpenseModel(m_categoryModel);
         aggregateExpenseModel->setSourceModel(m_expenseModel);

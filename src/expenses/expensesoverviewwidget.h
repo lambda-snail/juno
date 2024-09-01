@@ -4,6 +4,8 @@
 #include <qpushbutton.h>
 #include <qstatusbar.h>
 
+#include <QAbstractProxyModel>
+
 namespace LambdaSnail::Juno::expenses
 {
     class LSExpenseModel;
@@ -11,6 +13,7 @@ namespace LambdaSnail::Juno::expenses
 
 namespace LambdaSnail::Juno::shared
 {
+    class LSCategoryPickerDelegate;
     class LSDateFromStringDelegate;
 }
 
@@ -35,18 +38,20 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
+        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, LSExpenseModel *model, QAbstractProxyModel *categoryModel, fa::QtAwesome *qtAwesome);
+
         void setUpToolbar(fa::QtAwesome *qtAwesome);
-
         void setupTableView(LSExpenseModel* model);
-
-        explicit LSExpensesOverviewWidget(QWidget* parent, QStatusBar* statusBar, LSExpenseModel* model, fa::QtAwesome* qtAwesome);
 
         ~LSExpensesOverviewWidget() override;
 
     private:
         Ui::ExpensesOverviewWidget* ui;
-        LSExpenseModel* m_model;
+        LSExpenseModel* m_expenseModel;
+        QAbstractProxyModel * m_categoryModel;
+
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<shared::LSCategoryPickerDelegate> m_categoryDelegate;
 
         QStatusBar* m_statusBar;
 
