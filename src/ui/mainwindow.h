@@ -68,7 +68,10 @@ namespace LambdaSnail::Juno
         QAction *           maximizeAction{};
         QAction *           restoreAction{};
         QAction *           quitAction{};
+
         QMenu*              trayIconMenu{};
+        QMenu *             m_helpMenu{};
+        QMenu *             m_fileMenu{};
 
         void setupDateTool();
 
@@ -80,6 +83,7 @@ namespace LambdaSnail::Juno
     private:
         void setupMenu();
         void createActions();
+        void createMenuBar();
         void setupCategoryTool();
         void createTrayIcon();
     };

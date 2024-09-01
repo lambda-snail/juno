@@ -56,7 +56,8 @@ namespace LambdaSnail::Juno
         setupDateTool();
         setupCategoryTool();
 
-        createActions(); // TODO: Reuse for menu bar
+        createActions();
+        createMenuBar();
         createTrayIcon();
 
         //ui->mdiArea->addSubWindow(expensesOverviewWidget);
@@ -75,6 +76,14 @@ namespace LambdaSnail::Juno
 
         quitAction = new QAction(tr("&Quit"), this);
         connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+    }
+
+    void LSMainWindow::createMenuBar()
+    {
+        m_fileMenu = menuBar()->addMenu(tr("&File"));
+        m_fileMenu->addAction(quitAction);
+
+        m_helpMenu = menuBar()->addMenu(tr("&Help"));
     }
 
     void LSMainWindow::createTrayIcon()
