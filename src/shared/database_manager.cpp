@@ -43,16 +43,16 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
             return std::unexpected<LSDatabaseError>(recurringExpensesTableDefinition.lastError().text());
         }
 
-        QSqlQuery expensesTableDefinition(expenses::LSExpenseModel::tableDefinition());
-        if (expensesTableDefinition.lastError().isValid())
-        {
-            return std::unexpected<LSDatabaseError>(expensesTableDefinition.lastError().text());
-        }
-
         QSqlQuery categoryTableDefinition(categories::LSCategoryModel::tableDefinition());
         if (categoryTableDefinition.lastError().isValid())
         {
             return std::unexpected<LSDatabaseError>(categoryTableDefinition.lastError().text());
+        }
+
+        QSqlQuery expensesTableDefinition(expenses::LSExpenseModel::tableDefinition());
+        if (expensesTableDefinition.lastError().isValid())
+        {
+            return std::unexpected<LSDatabaseError>(expensesTableDefinition.lastError().text());
         }
     }
 

@@ -39,7 +39,7 @@ QSqlQuery LS::LSExpenseModel::tableDefinition()
                 date varchar(10),
                 recipient text,
                 description text,
-                category text,
+                category integer,
                 amount integer,
 
                 related_expense integer,
@@ -47,6 +47,7 @@ QSqlQuery LS::LSExpenseModel::tableDefinition()
                 modifiedon integer,
 
                 foreign key(related_expense) references recurring_expenses(id)
+                foreign key(category) references categories(id)
             );
         )");
 }

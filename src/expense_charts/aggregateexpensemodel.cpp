@@ -26,20 +26,12 @@ namespace LambdaSnail::Juno::expenses
             return {};
         }
 
-        // int32_t category = index.row();
-        // QString categoryString{};
-
-        QModelIndex categoryIndex = m_categories->index(index.row(), static_cast<int>(categories::LSCategoryModel::Columns::category));
-        QString category = m_categories->data(categoryIndex, role).toString();
-
-        qDebug() << category;
+        int32_t const category = getCategoryKey(index, role);
 
         double sum = 0;
         for(int row = 0; row < sourceModel()->rowCount(); ++row)
         {
-            QModelIndex categoryIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::category));
-            QString const rowCategory = sourceModel()->data(categoryIndex, role).toString();
-            if(rowCategory == category)
+            if(getRowCategory(role, row) == category)
             {
                 QModelIndex amountIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::amount));
                 sum += sourceModel()->data(amountIndex, role).toInt();
@@ -47,6 +39,18 @@ namespace LambdaSnail::Juno::expenses
         }
 
         return sum;
+    }
+
+    int32_t LSAggregateExpenseModel::getCategoryKey(const QModelIndex &index, int role) const
+    {
+        QModelIndex categoryIndex = m_categories->index(index.row(), static_cast<int>(categories::LSCategoryModel::Columns::id));
+        return m_categories->data(categoryIndex, role).toInt();
+    }
+
+    int32_t LSAggregateExpenseModel::getRowCategory(int role, int row) const
+    {
+        QModelIndex categoryIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::category));
+        return sourceModel()->data(categoryIndex, role).toInt();
     }
 
     int LSAggregateExpenseModel::rowCount(const QModelIndex &parent) const
