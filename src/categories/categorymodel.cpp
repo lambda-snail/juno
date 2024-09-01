@@ -19,7 +19,9 @@ namespace LambdaSnail::Juno::categories
         return QSqlQuery(R"(
             create table categories (
                 id integer primary key,
-                category varchar(256)
+                category varchar(256),
+
+                unique(category)
             );
         )");
     }
