@@ -1,9 +1,6 @@
-//
-// Created by niclas on 8/31/24.
-//
-
 #include "aggregateexpensemodel.h"
 
+#include "categories/categorymodel.h"
 #include "expenses/expensemodel.h"
 
 namespace LambdaSnail::Juno::expenses
@@ -15,6 +12,13 @@ namespace LambdaSnail::Juno::expenses
         Groceries
     };
 
+    LSAggregateExpenseModel::LSAggregateExpenseModel(QAbstractProxyModel* categories, QObject *parent) :
+        QIdentityProxyModel(parent),
+        m_categories(categories)
+    {
+        connect(m_categories, &QAbstractItemModel::dataChanged, this, &LSAggregateExpenseModel::dataChanged);
+    }
+
     QVariant LSAggregateExpenseModel::data(const QModelIndex &index, int role) const
     {
         if(role != Qt::DisplayRole)
@@ -22,27 +26,20 @@ namespace LambdaSnail::Juno::expenses
             return {};
         }
 
-        int32_t category = index.row();
-        QString categoryString{};
-        if(category == static_cast<int32_t>(Category::Groceries))
-        {
-            categoryString = "Groceries";
-        }
-        else if(category == static_cast<int32_t>(Category::Subscription))
-        {
-            categoryString = "Subscription";
-        }
-        else
-        {
-            categoryString = "Dining Out";
-        }
+        // int32_t category = index.row();
+        // QString categoryString{};
+
+        QModelIndex categoryIndex = m_categories->index(index.row(), static_cast<int>(categories::LSCategoryModel::Columns::category));
+        QString category = m_categories->data(categoryIndex, role).toString();
+
+        qDebug() << category;
 
         double sum = 0;
         for(int row = 0; row < sourceModel()->rowCount(); ++row)
         {
             QModelIndex categoryIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::category));
             QString const rowCategory = sourceModel()->data(categoryIndex, role).toString();
-            if(rowCategory == categoryString)
+            if(rowCategory == category)
             {
                 QModelIndex amountIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::amount));
                 sum += sourceModel()->data(amountIndex, role).toInt();
@@ -54,7 +51,7 @@ namespace LambdaSnail::Juno::expenses
 
     int LSAggregateExpenseModel::rowCount(const QModelIndex &parent) const
     {
-        return 3; // num categories
+        return m_categories->rowCount();
     }
 
     int LSAggregateExpenseModel::columnCount(const QModelIndex &parent) const

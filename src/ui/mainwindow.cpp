@@ -50,7 +50,7 @@ namespace LambdaSnail::Juno
             ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
 
 
-        auto aggregateExpenseModel = new expenses::LSAggregateExpenseModel();
+        auto aggregateExpenseModel = new expenses::LSAggregateExpenseModel(m_categoryModel);
         aggregateExpenseModel->setSourceModel(m_expenseModel);
 
         m_chartsWidget = new charts::LSExpenseChartsWidget(aggregateExpenseModel, ui->widgetStack);

@@ -1,5 +1,11 @@
 #pragma once
+
 #include <QIdentityProxyModel>
+
+namespace LambdaSnail::Juno::categories
+{
+    class LSCategoryModel;
+}
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -8,8 +14,13 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
+        explicit LSAggregateExpenseModel(QAbstractProxyModel* categories, QObject *parent = nullptr);
+
         [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
         [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
         [[nodiscard]] int columnCount(const QModelIndex &parent) const override;
+
+    private:
+        QAbstractProxyModel* m_categories;
     };
 }
