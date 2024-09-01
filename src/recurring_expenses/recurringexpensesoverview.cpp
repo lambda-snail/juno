@@ -71,6 +71,8 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     {
         int32_t newModelIndex = 0;
 
+        // This may need to be disabled and reenabled when adding rows
+        // https://doc.qt.io/qt-6/qsortfilterproxymodel.html#dynamicSortFilter-prop
         m_expensesProxyModel->setDynamicSortFilter(false);
 
         m_expensesProxyModel->insertRow(newModelIndex);

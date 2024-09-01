@@ -40,14 +40,7 @@ namespace LambdaSnail::Juno
         Q_OBJECT
 
     public:
-        void setupMenu();
-
-
-        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, fa::QtAwesome* qtAwesome);
-
-        void createActions();
-
-        void createTrayIcon();
+        explicit LSMainWindow(expenses::LSExpenseModel* expenseModel, QAbstractProxyModel* recurringModel, QAbstractProxyModel* categoryModel, shared::LSDateController* dateController, expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, fa::QtAwesome* qtAwesome);
 
         ~LSMainWindow() override;
 
@@ -67,6 +60,7 @@ namespace LambdaSnail::Juno
         QWidget * m_chartsWidget;
 
         shared::LSDateController * m_dateController;
+        QAbstractProxyModel * m_categoryModel;
 
         // System tray icon and menu
         QSystemTrayIcon *   trayIcon{};
@@ -76,11 +70,17 @@ namespace LambdaSnail::Juno
         QAction *           quitAction{};
         QMenu*              trayIconMenu{};
 
-        void setupToolbox();
+        void setupDateTool();
 
     private slots:
-            void onExpenseMenuClicked();
-            void onChartsMenuClicked();
-            void onRecurringMenuClicked();
+            void onExpenseMenuClicked() const;
+            void onChartsMenuClicked() const;
+            void onRecurringMenuClicked() const;
+
+    private:
+        void setupMenu();
+        void createActions();
+        void setupCategoryTool();
+        void createTrayIcon();
     };
 }

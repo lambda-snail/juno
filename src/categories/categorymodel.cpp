@@ -10,6 +10,8 @@ namespace LambdaSnail::Juno::categories
 
         setHeaderData(static_cast<int>(Columns::id), Qt::Horizontal, QObject::tr("Id"));
         setHeaderData(static_cast<int>(Columns::category), Qt::Horizontal, QObject::tr("Category"));
+
+        select();
     }
 
     QSqlQuery LSCategoryModel::tableDefinition()
