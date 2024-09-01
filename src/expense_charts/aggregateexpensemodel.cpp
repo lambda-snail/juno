@@ -19,12 +19,17 @@ namespace LambdaSnail::Juno::expenses
             return {};
         }
 
-        int32_t const category = getCategoryKey(index, role);
+        QVariant const category = getCategoryKey(index, role);
+        QString categoryAsString = category.toString();
 
         double sum = 0;
         for(int row = 0; row < sourceModel()->rowCount(); ++row)
         {
-            if(getRowCategory(role, row) == category)
+            QVariant const rowCategory = getRowCategory(role, row);
+
+            // We compare the strings of the category name as a workaround for now,
+            // as the relational table model hides the underlying key
+            if(rowCategory.toString() == categoryAsString)
             {
                 QModelIndex amountIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::amount));
                 sum += sourceModel()->data(amountIndex, role).toInt();
@@ -34,16 +39,16 @@ namespace LambdaSnail::Juno::expenses
         return sum;
     }
 
-    int32_t LSAggregateExpenseModel::getCategoryKey(const QModelIndex &index, int role) const
+    QVariant LSAggregateExpenseModel::getCategoryKey(const QModelIndex &index, int role) const
     {
-        QModelIndex categoryIndex = m_categories->index(index.row(), static_cast<int>(categories::LSCategoryModel::Columns::id));
-        return m_categories->data(categoryIndex, role).toInt();
+        QModelIndex categoryIndex = m_categories->index(index.row(), static_cast<int>(categories::LSCategoryModel::Columns::category));
+        return m_categories->data(categoryIndex, role);
     }
 
-    int32_t LSAggregateExpenseModel::getRowCategory(int role, int row) const
+    QVariant LSAggregateExpenseModel::getRowCategory(int role, int row) const
     {
         QModelIndex categoryIndex = sourceModel()->index(row, static_cast<int>(LSExpenseModel::Columns::category));
-        return sourceModel()->data(categoryIndex, role).toInt();
+        return sourceModel()->data(categoryIndex, role);
     }
 
     int LSAggregateExpenseModel::rowCount(const QModelIndex &parent) const
