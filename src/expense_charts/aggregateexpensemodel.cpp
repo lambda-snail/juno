@@ -5,13 +5,6 @@
 
 namespace LambdaSnail::Juno::expenses
 {
-    enum class Category
-    {
-        Subscription,
-        DiningOut,
-        Groceries
-    };
-
     LSAggregateExpenseModel::LSAggregateExpenseModel(QAbstractProxyModel* categories, QObject *parent) :
         QIdentityProxyModel(parent),
         m_categories(categories)
