@@ -3,12 +3,15 @@
 #include <qdatetimeedit.h>
 #include <qpushbutton.h>
 #include <qstatusbar.h>
-#include <QWidget>
 
 namespace LambdaSnail::Juno::expenses
 {
-    class LSDateFromStringDelegate;
     class LSExpenseModel;
+}
+
+namespace LambdaSnail::Juno::shared
+{
+    class LSDateFromStringDelegate;
 }
 
 namespace fa
@@ -43,7 +46,7 @@ namespace LambdaSnail::Juno::expenses
     private:
         Ui::ExpensesOverviewWidget* ui;
         LSExpenseModel* m_model;
-        std::unique_ptr<LSDateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
 
         QStatusBar* m_statusBar;
 

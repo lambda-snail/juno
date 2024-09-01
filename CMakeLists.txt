@@ -32,8 +32,8 @@ add_executable(juno src/main.cpp
         src/expenses/expensesoverviewwidget.cpp
         src/expenses/expensesoverviewwidget.h
         src/expenses/expensesoverviewwidget.ui
-        src/expenses/datefromstringdelegate.cpp
-        src/expenses/datefromstringdelegate.h
+        src/shared/date_time/datefromstringdelegate.cpp
+        src/shared/date_time/datefromstringdelegate.h
 
         src/recurring_expenses/recurringexpensemodel.cpp
         src/recurring_expenses/recurringexpensemodel.h

@@ -1,15 +1,12 @@
 #include "expensemodel.h"
 #include "expensesoverviewwidget.h"
-#include "datefromstringdelegate.h"
+#include "shared/date_time/datefromstringdelegate.h"
 
 #include <QDateEdit>
-#include <QMainWindow>
 #include <QPushButton>
-#include <QSqlError>
 
 #include "QtAwesome.h"
 #include "ui_expensesoverviewwidget.h"
-#include "shared/database_manager.h"
 
 
 namespace LambdaSnail::Juno::expenses
@@ -86,7 +83,7 @@ namespace LambdaSnail::Juno::expenses
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::modifiedOn), true);
         ui->tableView->setSortingEnabled(true);
 
-        m_dateColumnDelegate = std::make_unique<LSDateFromStringDelegate>();
+        m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>();
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
         m_model->select();

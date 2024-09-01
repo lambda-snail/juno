@@ -2,7 +2,7 @@
 
 #include <QDateEdit>
 
-namespace LS = LambdaSnail::Juno::expenses;
+namespace LS = LambdaSnail::Juno::shared;
 
 static constexpr auto const* format = "yyyy-MM-dd"; // TODO: Store format in settings
 
