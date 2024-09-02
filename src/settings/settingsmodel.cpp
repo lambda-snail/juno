@@ -33,7 +33,7 @@ namespace LambdaSnail::Juno::settings {
 
         switch(index.column())
         {
-            case Settings::DatabaseFolder:
+            case static_cast<int32_t>(Settings::DatabaseFolder):
                 // TODO: create and return a file object here?
                 return m_settings->value(application::ApplicationContext::DbLocationSettingsKey, QtExtensions::LSDir::joinPath(
                                       QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0),
@@ -52,7 +52,7 @@ namespace LambdaSnail::Juno::settings {
 
         switch(index.column())
         {
-            case Settings::DatabaseFolder:
+            case static_cast<int32_t>(Settings::DatabaseFolder):
                 m_settings->setValue(application::ApplicationContext::DbLocationSettingsKey, value);
             default:
                 std::unreachable();
