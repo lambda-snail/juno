@@ -40,9 +40,9 @@ namespace LambdaSnail::Juno
                                                            m_categoryModel(categoryModel),
                                                            m_dateController(dateController)
     {
-        setWindowTitle("Juno Expense Tracker");
-
         ui->setupUi(this);
+
+        setWindowTitle("Juno");
 
         m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, m_categoryModel, qtAwesome);
         m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, qtAwesome);
