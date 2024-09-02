@@ -14,13 +14,18 @@ namespace LambdaSnail::Juno::expenses
 
     QVariant LSAggregateExpenseModel::data(const QModelIndex &index, int role) const
     {
-        if(role != Qt::DisplayRole)
+        if(role != Qt::DisplayRole and role != Roles::CategoryRole)
         {
             return {};
         }
 
-        QVariant const category = getCategoryKey(index, role);
+        QVariant const category = getCategoryKey(index, Qt::DisplayRole);
         QString categoryAsString = category.toString();
+
+        if(role == Roles::CategoryRole)
+        {
+            return categoryAsString;
+        }
 
         double sum = 0;
         for(int row = 0; row < sourceModel()->rowCount(); ++row)
@@ -59,5 +64,10 @@ namespace LambdaSnail::Juno::expenses
     int LSAggregateExpenseModel::columnCount(const QModelIndex &parent) const
     {
         return 1;
+    }
+
+    bool operator==(int lhs, LSAggregateExpenseModel::Roles rhs)
+    {
+        return lhs == static_cast<int32_t>(rhs);
     }
 }

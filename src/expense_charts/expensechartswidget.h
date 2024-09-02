@@ -23,6 +23,8 @@ namespace LambdaSnail::Juno::charts
         Q_OBJECT
 
     public:
+        void createChart();
+
         explicit LSExpenseChartsWidget(QAbstractItemModel* expensesProxyModel, QWidget *parent = nullptr);
 
         ~LSExpenseChartsWidget() override;
