@@ -1,11 +1,15 @@
 #include "database_manager.h"
 
 #include <QFile>
+#include <QSettings>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QStandardPaths>
 
+#include "applicationcontext.h"
 #include "categories/categorymodel.h"
 #include "expenses/expensemodel.h"
+#include "file_system/dir.h"
 #include "recurring_expenses/recurringexpensemodel.h"
 
 namespace LS = LambdaSnail::Juno::shared;
@@ -13,7 +17,7 @@ namespace LS = LambdaSnail::Juno::shared;
 LS::LSDatabaseManager::LSDatabaseManager() = default;
 
 std::expected<void, LS::LSDatabaseManager::LSDatabaseError>
-LS::LSDatabaseManager::setDatabase(QString const &databaseName)
+LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseName)
 {
     assert(not databaseName.isEmpty());
 
@@ -22,11 +26,20 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
         m_database.close();
     }
 
-    bool isCreate = not QFile::exists(databaseName);
+    QDir directory(path);
+    bool isCreate = not QFileInfo::exists(directory.filePath(databaseName));
+    if(not directory.exists())
+    {
+        bool pathCreated = directory.mkpath(path);
+        if(not pathCreated)
+        {
+            return std::unexpected<LSDatabaseError>("Unable to create directory: " + path);
+        }
+    }
 
     // TODO: Support other vendors and user-provided database?
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(databaseName);
+    db.setDatabaseName(directory.filePath(databaseName));
 
     if (not db.open())
     {
@@ -55,6 +68,8 @@ LS::LSDatabaseManager::setDatabase(QString const &databaseName)
             return std::unexpected<LSDatabaseError>(expensesTableDefinition.lastError().text());
         }
     }
+
+    m_database = db;
 
     return {};
 }

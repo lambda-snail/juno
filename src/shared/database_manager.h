@@ -1,6 +1,7 @@
 #pragma once
 
 #include <expected>
+#include <qsettings.h>
 #include <QSqlDatabase>
 
 namespace LambdaSnail::Juno::shared {
@@ -13,8 +14,7 @@ namespace LambdaSnail::Juno::shared {
         };
 
         explicit LSDatabaseManager();
-        std::expected<void, LSDatabaseError> setDatabase(QString const& databaseName);
-
+        std::expected<void, LSDatabaseError> setDatabase(QString const &path, QString const &databaseName);
     private:
         QSqlDatabase m_database;
     };
