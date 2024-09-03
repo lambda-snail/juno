@@ -20,7 +20,7 @@ namespace LambdaSnail::Juno
         ui->expensesButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_balance_scale));
         ui->chartsButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_area_chart));
         ui->recurringButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_calendar_days));
-        ui->settingsButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_toolbox));
+        ui->settingsButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_gear));
 
         connect(ui->expensesButton, &QPushButton::pressed, this, &LSMainWindow::onExpenseMenuClicked);
         connect(ui->chartsButton, &QPushButton::pressed, this, &LSMainWindow::onChartsMenuClicked);
@@ -66,8 +66,6 @@ namespace LambdaSnail::Juno
         createActions();
         createMenuBar();
         createTrayIcon();
-
-        //ui->mdiArea->addSubWindow(expensesOverviewWidget);
     }
 
     void LSMainWindow::createActions()
