@@ -1,25 +1,14 @@
 #pragma once
 
-#include <qdatetimeedit.h>
-#include <qpushbutton.h>
-#include <qstatusbar.h>
+#include "expenses/expensemodel.h"
+#include "shared/date_time/datefromstringdelegate.h"
+
+#include "QtAwesome.h"
 
 #include <QAbstractProxyModel>
-
-namespace LambdaSnail::Juno::expenses
-{
-    class LSExpenseModel;
-}
-
-namespace LambdaSnail::Juno::shared
-{
-    class LSDateFromStringDelegate;
-}
-
-namespace fa
-{
-    class QtAwesome;
-}
+#include <QDateTimeEdit>
+#include <QPushButton>
+#include <QStatusBar>
 
 namespace LambdaSnail::Juno::expenses
 {
