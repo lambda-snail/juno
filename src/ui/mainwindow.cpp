@@ -42,8 +42,8 @@ namespace LambdaSnail::Juno
                                                            m_qtAwesome(qtAwesome),
                                                            m_expenseModel(expenseModel),
                                                            m_recurringExpensesProxyModel(recurringModel),
-                                                           m_categoryModel(categoryModel),
-                                                           m_dateController(dateController)
+                                                           m_dateController(dateController),
+                                                           m_categoryModel(categoryModel)
     {
         ui->setupUi(this);
 
