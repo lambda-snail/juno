@@ -37,6 +37,8 @@ namespace LambdaSnail::Juno::settings {
                 return m_settings->value(application::ApplicationContext::DbLocationSettingsKey, QtExtensions::LSDir::joinPath(
                                       QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0),
                                       application::ApplicationContext::ApplicationName_LowerCase));
+            case static_cast<int32_t>(Columns::DateFormat):
+                return m_settings->value(application::ApplicationContext::LocaleDateFormatKey, "yyyy-MM-dd");
             default:
                 return {};
         }
@@ -55,6 +57,12 @@ namespace LambdaSnail::Juno::settings {
         {
             case static_cast<int32_t>(Columns::DatabaseFolder):
                 m_settings->setValue(application::ApplicationContext::DbLocationSettingsKey, value);
+                break;
+            case static_cast<int32_t>(Columns::DateFormat):
+                if(value.isValid() && not value.toString().isEmpty())
+                {
+                    m_settings->setValue(application::ApplicationContext::LocaleDateFormatKey, value);
+                }
                 break;
             default:
                 std::unreachable();

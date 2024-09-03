@@ -1,10 +1,10 @@
-#include "settingswidget.h"
-
-#include "settingsmodel.h"
-#include "ui_settingswidget.h"
-
 #include <QDataWidgetMapper>
 #include <QFileDialog>
+
+#include "settingswidget.h"
+#include "ui_settingswidget.h"
+
+#include "settingsmodel.h"
 
 namespace LambdaSnail::Juno::settings
 {
@@ -29,6 +29,7 @@ namespace LambdaSnail::Juno::settings
         m_mapper->setSubmitPolicy(QDataWidgetMapper::SubmitPolicy::ManualSubmit);
 
         m_mapper->addMapping(ui->dbFileInput, static_cast<int>(LSSettingsModel::Columns::DatabaseFolder));
+        m_mapper->addMapping(ui->dateFormatInput, static_cast<int>(LSSettingsModel::Columns::DateFormat));
 
         m_mapper->setCurrentIndex(LSSettingsModel::SettingsRow);
 

@@ -28,6 +28,7 @@ namespace LambdaSnail::Juno::settings
         enum class Columns
         {
             DatabaseFolder,
+            DateFormat,
             NumSettings_
         };
 

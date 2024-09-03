@@ -22,6 +22,7 @@ void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)
 {
     beginResetModel();
 
+    // Dates in the DB are not affected by format from settings
     std::string const where = std::format("date >= '{}' and date <= '{}'", from.toString("yyyy-MM-dd").toStdString(),
                                           to.toString("yyyy-MM-dd").toStdString());
 
