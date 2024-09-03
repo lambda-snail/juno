@@ -16,12 +16,12 @@ namespace LambdaSnail::Juno::settings {
 
     int LSSettingsModel::rowCount(const QModelIndex &parent) const
     {
-        return 1;
+        return parent.isValid() ? 0 : 1 ;
     }
 
     int LSSettingsModel::columnCount(const QModelIndex &parent) const
     {
-        return 1; // One per setting
+        return static_cast<int>(Columns::NumSettings_); // One per setting
     }
 
     QVariant LSSettingsModel::data(const QModelIndex &index, int role) const

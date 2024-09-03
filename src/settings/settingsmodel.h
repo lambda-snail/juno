@@ -21,9 +21,14 @@ namespace LambdaSnail::Juno::settings
         [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent) const override;
         [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
 
+        /**
+         * The index of the single row in the settings model.
+         */
+        static int constexpr SettingsRow = 0;
         enum class Columns
         {
-            DatabaseFolder
+            DatabaseFolder,
+            NumSettings_
         };
 
     private:

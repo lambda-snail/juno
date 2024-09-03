@@ -30,7 +30,7 @@ namespace LambdaSnail::Juno::settings
 
         m_mapper->addMapping(ui->dbFileInput, static_cast<int>(LSSettingsModel::Columns::DatabaseFolder));
 
-        m_mapper->setCurrentIndex(0);
+        m_mapper->setCurrentIndex(LSSettingsModel::SettingsRow);
 
         connect(ui->saveSettingsButton, &QPushButton::clicked, [this]()
         {
@@ -40,9 +40,6 @@ namespace LambdaSnail::Juno::settings
         connect(ui->dbFileButton, &QPushButton::clicked, [this]()
         {
             QString newDir = QFileDialog::getExistingDirectory(this, tr("Select Directory"), ui->dbFileInput->text());
-
-            qInfo() << newDir;
-
             if(not newDir.isEmpty())
             {
                 ui->dbFileInput->setText(newDir);
