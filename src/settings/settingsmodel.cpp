@@ -33,8 +33,7 @@ namespace LambdaSnail::Juno::settings {
 
         switch(index.column())
         {
-            case static_cast<int32_t>(Settings::DatabaseFolder):
-                // TODO: create and return a file object here?
+            case static_cast<int32_t>(Columns::DatabaseFolder):
                 return m_settings->value(application::ApplicationContext::DbLocationSettingsKey, QtExtensions::LSDir::joinPath(
                                       QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0),
                                       application::ApplicationContext::ApplicationName_LowerCase));
@@ -50,15 +49,28 @@ namespace LambdaSnail::Juno::settings {
             return false;
         }
 
+        beginInsertRows(QModelIndex(), index.row(), index.column());
+
         switch(index.column())
         {
-            case static_cast<int32_t>(Settings::DatabaseFolder):
+            case static_cast<int32_t>(Columns::DatabaseFolder):
                 m_settings->setValue(application::ApplicationContext::DbLocationSettingsKey, value);
             default:
                 std::unreachable();
         }
 
+        endInsertRows();
 
         return true;
+    }
+
+    QModelIndex LSSettingsModel::index(int row, int column, const QModelIndex &parent) const
+    {
+        return createIndex(row, column);
+    }
+
+    QModelIndex LSSettingsModel::parent(const QModelIndex &child) const
+    {
+        return {};
     }
 }

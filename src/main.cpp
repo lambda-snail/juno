@@ -33,7 +33,6 @@ int main(int argc, char *argv[]) {
     qtAwesome->initFontAwesome();
 
 
-
     QString const dbPath = settings.value(ApplicationContext::DbLocationSettingsKey, LSDir::joinPath(
                                     QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0),
                                     ApplicationContext::ApplicationName_LowerCase))
@@ -72,11 +71,13 @@ int main(int argc, char *argv[]) {
     categoryProxyModel.setSourceModel(&categoryModel);
 
 
-    LambdaSnail::Juno::shared::LSDateController dateController(model);
+    LambdaSnail::Juno::settings::LSSettingsModel settingsModel(&settings, &a);
+
+    LSDateController dateController(model);
 
     // Construct different pages here instead?
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, qtAwesome);
+    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, &settingsModel, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

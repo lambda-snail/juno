@@ -10,6 +10,7 @@
 #include "expense_charts/aggregateexpensemodel.h"
 #include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
+#include "settings/settingswidget.h"
 #include "shared/datecontroller.h"
 
 namespace LambdaSnail::Juno
@@ -19,19 +20,23 @@ namespace LambdaSnail::Juno
         ui->expensesButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_balance_scale));
         ui->chartsButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_area_chart));
         ui->recurringButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_calendar_days));
+        ui->settingsButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_toolbox));
 
         connect(ui->expensesButton, &QPushButton::pressed, this, &LSMainWindow::onExpenseMenuClicked);
         connect(ui->chartsButton, &QPushButton::pressed, this, &LSMainWindow::onChartsMenuClicked);
         connect(ui->recurringButton, &QPushButton::pressed, this, &LSMainWindow::onRecurringMenuClicked);
+        connect(ui->settingsButton, &QPushButton::pressed, this, &LSMainWindow::onSettingsMenuClicked);
 
         m_expensesIndex = ui->widgetStack->addWidget(m_expensesOverviewWidget);
         m_chartsIndex = ui->widgetStack->addWidget(m_chartsWidget);
         m_recurringExpensesWidgetIndex = ui->widgetStack->addWidget(m_recurringExpensesWidget);
+        m_settingsWidgetIndex = ui->widgetStack->addWidget(m_settingsWidget);
     }
 
     LSMainWindow::LSMainWindow(expenses::LSExpenseModel *expenseModel, QAbstractProxyModel *recurringModel,
                                QAbstractProxyModel *categoryModel, shared::LSDateController *dateController,
                                expenses::LSRelatedExpenseProxyModel *relatedExpenseProxyModel,
+                               settings::LSSettingsModel* settingsModel,
                                fa::QtAwesome *qtAwesome) : QMainWindow(nullptr),
                                                            ui(new Ui::LSMainWindow),
                                                            m_qtAwesome(qtAwesome),
@@ -51,6 +56,8 @@ namespace LambdaSnail::Juno
         aggregateExpenseModel->setSourceModel(m_expenseModel);
 
         m_chartsWidget = new charts::LSExpenseChartsWidget(aggregateExpenseModel, ui->widgetStack);
+
+        m_settingsWidget = new settings::LSSettingsWidget(settingsModel, ui->widgetStack);
 
         setupMenu();
         setupDateTool();
@@ -195,5 +202,10 @@ namespace LambdaSnail::Juno
     void LSMainWindow::onRecurringMenuClicked() const
     {
         ui->widgetStack->setCurrentIndex(m_recurringExpensesWidgetIndex);
+    }
+
+    void LSMainWindow::onSettingsMenuClicked() const
+    {
+        ui->widgetStack->setCurrentIndex(m_settingsWidgetIndex);
     }
 }

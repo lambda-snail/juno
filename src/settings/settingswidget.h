@@ -4,7 +4,10 @@
 
 #pragma once
 
+#include <qdatawidgetmapper.h>
 #include <QWidget>
+
+#include "settingsmodel.h"
 
 namespace LambdaSnail::Juno::settings
 {
@@ -22,11 +25,15 @@ namespace LambdaSnail::Juno::settings
         Q_OBJECT
 
     public:
-        explicit LSSettingsWidget(QWidget *parent = nullptr);
+        explicit LSSettingsWidget(LSSettingsModel* settingsModel, QWidget *parent = nullptr);
 
         ~LSSettingsWidget() override;
 
     private:
         Ui::LSSettingsWidget *ui;
+        LSSettingsModel* m_settingsModel;
+        QDataWidgetMapper* m_mapper;
+
+        void setupMapper();
     };
 }

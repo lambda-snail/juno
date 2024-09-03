@@ -18,7 +18,10 @@ namespace LambdaSnail::Juno::settings
         [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
         bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
-        enum class Settings
+        [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+        [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
+
+        enum class Columns
         {
             DatabaseFolder
         };
