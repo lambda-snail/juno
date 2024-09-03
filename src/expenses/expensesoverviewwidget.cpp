@@ -1,23 +1,21 @@
-#include "expensemodel.h"
 #include "expensesoverviewwidget.h"
-#include "shared/date_time/datefromstringdelegate.h"
-
-#include <QDateEdit>
-#include <QPushButton>
-#include <QSqlRelationalDelegate>
 
 #include "QtAwesome.h"
+
+#include "expensemodel.h"
 #include "ui_expensesoverviewwidget.h"
 #include "categories/categorymodel.h"
+#include "shared/date_time/datefromstringdelegate.h"
 
 namespace LambdaSnail::Juno::expenses
 {
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel* model, QAbstractProxyModel* categoryModel, fa::QtAwesome *qtAwesome) :
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel* model, QAbstractProxyModel* categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome) :
         QWidget(parent),
-        m_statusBar(statusBar),
         ui(new Ui::ExpensesOverviewWidget),
         m_expenseModel(model),
-        m_categoryModel(categoryModel)
+        m_categoryModel(categoryModel),
+        m_statusBar(statusBar),
+        m_settings(settings)
     {
         ui->setupUi(this);
 
@@ -85,7 +83,7 @@ namespace LambdaSnail::Juno::expenses
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::modifiedOn), true);
         ui->tableView->setSortingEnabled(true);
 
-        m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>();
+        m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
         ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));

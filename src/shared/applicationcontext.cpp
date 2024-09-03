@@ -8,4 +8,6 @@ namespace LambdaSnail::Juno::application
 
     QString const ApplicationContext::DbLocationSettingsKey = "/data/folder";
     QString const ApplicationContext::DbFileName = "juno.db";
+
+    QString const ApplicationContext::LocaleDateFormatKey = "/locale/dateformat";
 }

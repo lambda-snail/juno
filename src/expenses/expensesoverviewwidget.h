@@ -1,25 +1,15 @@
 #pragma once
 
-#include <qdatetimeedit.h>
-#include <qpushbutton.h>
-#include <qstatusbar.h>
+#include "expenses/expensemodel.h"
+#include "shared/date_time/datefromstringdelegate.h"
+
+#include "QtAwesome.h"
 
 #include <QAbstractProxyModel>
-
-namespace LambdaSnail::Juno::expenses
-{
-    class LSExpenseModel;
-}
-
-namespace LambdaSnail::Juno::shared
-{
-    class LSDateFromStringDelegate;
-}
-
-namespace fa
-{
-    class QtAwesome;
-}
+#include <QDateTimeEdit>
+#include <QPushButton>
+#include <QSqlRelationalDelegate>
+#include <QStatusBar>
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -37,7 +27,7 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, LSExpenseModel *model, QAbstractProxyModel *categoryModel, fa::QtAwesome *qtAwesome);
+        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, LSExpenseModel *model, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
 
         void setUpToolbar(fa::QtAwesome *qtAwesome);
         void setupTableView(LSExpenseModel* model);
@@ -52,6 +42,7 @@ namespace LambdaSnail::Juno::expenses
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
 
         QStatusBar* m_statusBar;
+        QSettings * m_settings;
 
         // Command bar
         // QDateEdit* m_fromDate{};

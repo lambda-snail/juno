@@ -16,5 +16,7 @@ namespace LambdaSnail::Juno::application
 
         static QString const DbLocationSettingsKey;
         static QString const DbFileName;
+
+        static QString const LocaleDateFormatKey;
     };
 }

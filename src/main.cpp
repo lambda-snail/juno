@@ -5,15 +5,20 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-#include "expenses/expensemodel.h"
 #include "QtAwesome.h"
+
 #include "categories/categorymodel.h"
+#include "expenses/expensemodel.h"
 #include "recurring_expenses/recurringexpensemodel.h"
 #include "recurring_expenses/relatedexpenseproxymodel.h"
+
+#include "settings/settingswidget.h"
+
 #include "shared/applicationcontext.h"
 #include "shared/database_manager.h"
 #include "shared/datecontroller.h"
 #include "shared/file_system/dir.h"
+
 #include "ui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
@@ -22,6 +27,7 @@ int main(int argc, char *argv[]) {
     using namespace LambdaSnail::Juno::categories;
     using namespace LambdaSnail::QtExtensions;
     using namespace LambdaSnail::Juno::application;
+    using namespace LambdaSnail::Juno::settings;
 
     QApplication a(argc, argv);
     a.setApplicationName(ApplicationContext::ApplicationName);
@@ -31,7 +37,6 @@ int main(int argc, char *argv[]) {
 
     fa::QtAwesome* qtAwesome = new fa::QtAwesome();
     qtAwesome->initFontAwesome();
-
 
 
     QString const dbPath = settings.value(ApplicationContext::DbLocationSettingsKey, LSDir::joinPath(
@@ -71,12 +76,15 @@ int main(int argc, char *argv[]) {
     QIdentityProxyModel categoryProxyModel;
     categoryProxyModel.setSourceModel(&categoryModel);
 
+    LSSettingsModel settingsModel(&settings, &a);
+    LSSettingsWidget* settingsWidget = new LSSettingsWidget(&settingsModel);
 
-    LambdaSnail::Juno::shared::LSDateController dateController(model);
+
+    LSDateController dateController(model);
 
     // Construct different pages here instead?
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, qtAwesome);
+    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, &settings, settingsWidget, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

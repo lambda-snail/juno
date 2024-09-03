@@ -53,7 +53,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::modifiedOn), true);
     ui->relatedExpensesView->setSortingEnabled(true);
 
-    m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>();
+    m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
     ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
 
     connect(ui->recurringExpensesView, &QListView::clicked, [&](QModelIndex const& index)
@@ -101,12 +101,13 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     });
 }
 
-LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, fa::QtAwesome* qtAwesome) :
+LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome* qtAwesome) :
     QWidget(parent),
     ui(new Ui::RecurringExpensesOverview),
     m_dateController(dateController),
     m_recurringModel(recurringModel),
     m_expensesProxyModel(expensesProxyModel),
+    m_settings(settings),
     m_qtAwesome(qtAwesome)
 {
     ui->setupUi(this);

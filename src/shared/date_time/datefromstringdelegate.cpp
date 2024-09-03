@@ -2,28 +2,33 @@
 
 #include <QDateEdit>
 
+#include "shared/applicationcontext.h"
+
 namespace LS = LambdaSnail::Juno::shared;
 
-static constexpr auto const* format = "yyyy-MM-dd"; // TODO: Store format in settings
+LambdaSnail::Juno::shared::LSDateFromStringDelegate::LSDateFromStringDelegate(QSettings *settings, QObject *parent) : QStyledItemDelegate(parent), m_settings(settings) {}
 
 QWidget *LS::LSDateFromStringDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                                                  const QModelIndex &index) const
+                                                    const QModelIndex &index) const
 {
     QDateEdit* editor = new QDateEdit(parent);
     editor->setCalendarPopup(true);
+
+    QString format = m_settings->value(application::ApplicationContext::LocaleDateFormatKey).toString();
     editor->setDisplayFormat(format);
     return editor;
 }
 
 void LS::LSDateFromStringDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    static_cast<QDateEdit*>(editor)->setDate(index.data().value<QDate>());
+    qobject_cast<QDateEdit*>(editor)->setDate(index.data().value<QDate>());
 }
 
 void LS::LSDateFromStringDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                               const QModelIndex &index) const
 {
-    model->setData(index, QVariant::fromValue(static_cast<QDateEdit*>(editor)->date().toString(format)));
+    QString format = m_settings->value(application::ApplicationContext::LocaleDateFormatKey).toString();
+    model->setData(index, QVariant::fromValue(qobject_cast<QDateEdit*>(editor)->date().toString(format)));
 }
 
 void LS::LSDateFromStringDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
