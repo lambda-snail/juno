@@ -56,6 +56,11 @@ add_executable(juno src/main.cpp
         src/shared/file_system/dir.h
         src/shared/applicationcontext.h
         src/shared/applicationcontext.cpp
+        src/settings/settingswidget.cpp
+        src/settings/settingswidget.h
+        src/settings/settingswidget.ui
+        src/settings/settingsmodel.cpp
+        src/settings/settingsmodel.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR

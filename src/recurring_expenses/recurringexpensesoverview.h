@@ -1,27 +1,18 @@
 #pragma once
 
-#include <qabstractproxymodel.h>
+#include "recurring_expenses/recurringexpensemodel.h"
+#include "recurring_expenses/relatedexpenseproxymodel.h"
+#include "shared/datecontroller.h"
+#include "shared/date_time/datefromstringdelegate.h"
+
+#include "QtAwesome.h"
+
+#include <QAbstractProxyModel>
+#include <QDataWidgetMapper>
 #include <QWidget>
-
-namespace LambdaSnail::Juno::shared
-{
-    class LSDateFromStringDelegate;
-    class LSDateController;
-}
-
-namespace fa
-{
-    class QtAwesome;
-}
-
-class QAbstractProxyModel;
-class QDataWidgetMapper;
 
 namespace LambdaSnail::Juno::expenses
 {
-    class LSRelatedExpenseProxyModel;
-    class LSRecurringExpenseModel;
-
     QT_BEGIN_NAMESPACE
 
     namespace Ui
@@ -42,7 +33,7 @@ namespace LambdaSnail::Juno::expenses
 
         void setUpRelatedExpensesView();
 
-        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, fa::QtAwesome *qtAwesome);
+        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome *qtAwesome);
 
         ~LSRecurringExpensesOverview() override;
 
@@ -55,6 +46,8 @@ namespace LambdaSnail::Juno::expenses
         QAbstractProxyModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;
         QDataWidgetMapper* m_mapper{};
+
+        QSettings* m_settings;
         fa::QtAwesome* m_qtAwesome;
     };
 }

@@ -1,11 +1,10 @@
 #pragma once
 
-#include <qchart.h>
-#include <qchartview.h>
-#include <qvbarmodelmapper.h>
+#include <QAbstractItemModel>
+#include <QChart>
+#include <QChartView>
+#include <QVBarModelMapper>
 #include <QWidget>
-
-class QAbstractItemModel;
 
 namespace LambdaSnail::Juno::charts
 {
