@@ -4,6 +4,7 @@
 #include "ui_settingswidget.h"
 
 #include <QDataWidgetMapper>
+#include <QFileDialog>
 
 namespace LambdaSnail::Juno::settings
 {
@@ -11,6 +12,7 @@ namespace LambdaSnail::Juno::settings
         ui(new Ui::LSSettingsWidget), m_settingsModel(settingsModel), m_mapper(nullptr)
     {
         ui->setupUi(this);
+        ui->dbFileInput->setReadOnly(true);
 
         setupMapper();
     }
@@ -33,6 +35,18 @@ namespace LambdaSnail::Juno::settings
         connect(ui->saveSettingsButton, &QPushButton::clicked, [this]()
         {
             m_mapper->submit();
+        });
+
+        connect(ui->dbFileButton, &QPushButton::clicked, [this]()
+        {
+            QString newDir = QFileDialog::getExistingDirectory(this, tr("Select Directory"), ui->dbFileInput->text());
+
+            qInfo() << newDir;
+
+            if(not newDir.isEmpty())
+            {
+                ui->dbFileInput->setText(newDir);
+            }
         });
     }
 }

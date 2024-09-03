@@ -49,18 +49,18 @@ namespace LambdaSnail::Juno::settings {
             return false;
         }
 
-        beginInsertRows(QModelIndex(), index.row(), index.column());
+        beginInsertColumns(QModelIndex(), index.row(), index.column());
 
         switch(index.column())
         {
             case static_cast<int32_t>(Columns::DatabaseFolder):
                 m_settings->setValue(application::ApplicationContext::DbLocationSettingsKey, value);
+                break;
             default:
                 std::unreachable();
         }
 
-        endInsertRows();
-
+        endInsertColumns();
         return true;
     }
 
