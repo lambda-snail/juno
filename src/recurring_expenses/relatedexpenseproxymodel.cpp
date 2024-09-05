@@ -19,7 +19,7 @@ bool LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::filterAcceptsRow(i
     // If this is removed, new rows will not be added to the model
     QVariant const amount = sourceModel()->index(sourceRow, static_cast<int>(LSExpenseModel::Columns::amount), sourceParent).data();
 
-    return relatedExpense.isValid() and relatedExpense.value<int32_t>() == m_relatedExpense or (amount.isValid() and amount.toInt() == 0);
+    return (relatedExpense.isValid() and relatedExpense.value<int32_t>() == m_relatedExpense) or (amount.isValid() and amount.toInt() == 0);
 }
 
 int32_t LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::relatedExpense() const
