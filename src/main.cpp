@@ -2,12 +2,13 @@
 #include <QDir>
 #include <QFile>
 #include <QIdentityProxyModel>
-#include <QSettings>
+#include <QStringView>
 #include <QStandardPaths>
 
 #include "QtAwesome.h"
 
 #include "categories/categorymodel.h"
+#include "expenses/categoryfiltermodel.h"
 #include "expenses/expensemodel.h"
 #include "recurring_expenses/recurringexpensemodel.h"
 #include "recurring_expenses/relatedexpenseproxymodel.h"
@@ -58,6 +59,14 @@ int main(int argc, char *argv[]) {
 
     LSExpenseModel model;
     model.initialize();
+    model.select();
+
+    LSCategoryFilterModel categoryFilterModel(&a, static_cast<int>(LSExpenseModel::Columns::category));
+    categoryFilterModel.setSourceModel(&model);
+
+    // TODO: Remove this
+    //QString x("Fika");
+    //categoryFilterModel.setFilterCategory(x);
 
     LSRelatedExpenseProxyModel relatedExpenseProyModel(&a);
     relatedExpenseProyModel.setSourceModel(&model);
@@ -84,7 +93,7 @@ int main(int argc, char *argv[]) {
 
     // Construct different pages here instead?
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&model, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, &settings, settingsWidget, qtAwesome);
+    LambdaSnail::Juno::LSMainWindow mainWindow(&categoryFilterModel, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, &settings, settingsWidget, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

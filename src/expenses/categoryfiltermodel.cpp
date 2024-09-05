@@ -1,11 +1,10 @@
 #include "categoryfiltermodel.h"
 
-namespace LambdaSnai::Juno::expenses
+namespace LambdaSnail::Juno::expenses
 {
     LSCategoryFilterModel::LSCategoryFilterModel(QObject* parent, int categoryColumn) :
         QSortFilterProxyModel(parent),
-        m_categoryColumn(categoryColumn),
-        m_filterCategory(0) { }
+        m_categoryColumn(categoryColumn) { }
 
     bool LSCategoryFilterModel::filterAcceptsRow(int sourceRow, QModelIndex const &sourceParent) const
     {
@@ -15,7 +14,7 @@ namespace LambdaSnai::Juno::expenses
         }
 
         QVariant const category = sourceModel()->index(sourceRow, m_categoryColumn, sourceParent).data();
-        return category.toInt() == m_filterCategory;
+        return category.toString() == m_filterCategory;
     }
 
     bool LSCategoryFilterModel::isActive() const
@@ -23,22 +22,22 @@ namespace LambdaSnai::Juno::expenses
         return m_isActive;
     }
 
-    void LSCategoryFilterModel::setIsActive(bool isActive)
+    void LSCategoryFilterModel::setInactive()
     {
-        m_isActive = isActive;
+        setFilterCategory({});
     }
 
-    bool LSCategoryFilterModel::filterCategory() const
+    QStringView LSCategoryFilterModel::filterCategory() const
     {
         return m_filterCategory;
     }
 
-    void LSCategoryFilterModel::setFilterCategory(int32_t category)
+    void LSCategoryFilterModel::setFilterCategory(QStringView const category)
     {
         if(category != m_filterCategory)
         {
             beginResetModel();
-            m_isActive = true;
+            m_isActive = not category.isEmpty();
             m_filterCategory = category;
             endResetModel();
         }

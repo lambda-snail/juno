@@ -2,14 +2,14 @@
 
 #include <QSortFilterProxyModel>
 
-namespace LambdaSnai::Juno::expenses
+namespace LambdaSnail::Juno::expenses
 {
     class LSCategoryFilterModel : public QSortFilterProxyModel
     {
         Q_OBJECT
 
-        Q_PROPERTY(int32_t m_filterCategory READ filterCategory WRITE setFilterCategory)
-        Q_PROPERTY(bool m_isActive READ isActive WRITE setIsActive)
+        Q_PROPERTY(QStringView m_filterCategory READ filterCategory WRITE setFilterCategory)
+        Q_PROPERTY(bool m_isActive READ isActive)
 
     public:
         explicit LSCategoryFilterModel(QObject* parent, int categoryColumn);
@@ -17,15 +17,15 @@ namespace LambdaSnai::Juno::expenses
         [[nodiscard]] bool filterAcceptsRow(int sourceRow, QModelIndex const& sourceParent) const override;
 
         [[nodiscard]] bool isActive() const;
-        void setIsActive(bool isActive);
+        void setInactive();
 
-        [[nodiscard]] bool filterCategory() const;
-        void setFilterCategory(int32_t category);
+        [[nodiscard]] QStringView filterCategory() const;
+        void setFilterCategory(QStringView const category);
 
     private:
         int32_t m_categoryColumn;
 
-        int32_t m_filterCategory;
+        QStringView m_filterCategory;
         bool m_isActive = false;
     };
 }

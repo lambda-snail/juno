@@ -27,16 +27,16 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, LSExpenseModel *model, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
+        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, QAbstractProxyModel *model, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
 
         void setUpToolbar(fa::QtAwesome *qtAwesome);
-        void setupTableView(LSExpenseModel* model);
+        void setupTableView(QAbstractProxyModel* model);
 
         ~LSExpensesOverviewWidget() override;
 
     private:
         Ui::ExpensesOverviewWidget* ui;
-        LSExpenseModel* m_expenseModel;
+        QAbstractProxyModel* m_expenseModel;
         QAbstractProxyModel * m_categoryModel;
 
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;

@@ -1,16 +1,20 @@
 #include "expensesoverviewwidget.h"
+#include "ui_expensesoverviewwidget.h"
 
 #include "QtAwesome.h"
 
+#include <QListView>
+
+#include "categoryfiltermodel.h"
 #include "expensemodel.h"
-#include "ui_expensesoverviewwidget.h"
 #include "categories/categorymodel.h"
 #include "shared/date_time/datefromstringdelegate.h"
 
 namespace LambdaSnail::Juno::expenses
 {
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar* statusBar, LSExpenseModel* model, QAbstractProxyModel* categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome) :
-        QWidget(parent),
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar,
+                                                       QAbstractProxyModel *model, QAbstractProxyModel *categoryModel,
+                                                       QSettings *settings, fa::QtAwesome *qtAwesome) : QWidget(parent),
         ui(new Ui::ExpensesOverviewWidget),
         m_expenseModel(model),
         m_categoryModel(categoryModel),
@@ -39,11 +43,24 @@ namespace LambdaSnail::Juno::expenses
         m_deleteExpenseButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_trash_can));
         m_deleteExpenseButton->setEnabled(false);
 
+        // Category Filter
+
+        QComboBox *categoryList = new QComboBox(this);
+        categoryList->setModel(m_categoryModel);
+        categoryList->setModelColumn(static_cast<int>(categories::LSCategoryModel::Columns::category));
+        categoryList->setEditable(false);
+
+        QPushButton *clearFilterButton = new QPushButton(this);
+        clearFilterButton->setIcon(qtAwesome->icon(fa::fa_solid, fa::fa_filter_circle_xmark));
+
         // Build the toolbar
         //ui->toolBar->addWidget(m_searchButton);
         //ui->toolBar->addSeparator();
         ui->toolBar->addWidget(m_newExpenseButton);
         ui->toolBar->addWidget(m_deleteExpenseButton);
+        ui->toolBar->addSeparator();
+        ui->toolBar->addWidget(categoryList);
+        ui->toolBar->addWidget(clearFilterButton);
 
         //connect(m_fromDate, &QDateEdit::dateChanged, this, &LSExpensesOverviewWidget::onSearchDatesChanged);
 
@@ -55,23 +72,35 @@ namespace LambdaSnail::Juno::expenses
         connect(m_deleteExpenseButton, &QPushButton::pressed, this, [&]()
         {
             QItemSelection const selection = ui->tableView->selectionModel()->selection();
-            for(auto const& range : selection)
-            //for(auto const& range : selection->mapSelectionToSource(selection)) // When using proxy model
+            for (auto const &range: selection)
             {
                 m_expenseModel->removeRows(range.top(), range.height());
-                for(auto const& row : range.indexes())
+                for (auto const &row: range.indexes())
                 {
                     ui->tableView->hideRow(row.row());
                 }
             }
 
-            m_expenseModel->submitAll();
+            m_expenseModel->sourceModel()->submit();
             m_statusBar->showMessage(tr("Expenses deleted!"), 4000);
+        });
+
+        connect(categoryList, &QComboBox::currentTextChanged, this, [&](QString const &text)
+        {
+            // Ugly but works for now
+            auto *filter = qobject_cast<LSCategoryFilterModel*>(m_expenseModel);
+            filter->setFilterCategory(text);
+        });
+
+        connect(clearFilterButton, &QPushButton::pressed, this, [&]()
+        {
+            // TODO: Find a neat way to avoid these casts
+            auto *filter = qobject_cast<LSCategoryFilterModel*>(m_expenseModel);
+            filter->setInactive();
         });
     }
 
-
-    void LSExpensesOverviewWidget::setupTableView(LSExpenseModel* model)
+    void LSExpensesOverviewWidget::setupTableView(QAbstractProxyModel *model)
     {
         using ExpenseColumns = LSExpenseModel::Columns;
 
@@ -88,11 +117,8 @@ namespace LambdaSnail::Juno::expenses
 
         ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
 
-        m_expenseModel->select();
-
         connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
                 &LSExpensesOverviewWidget::onSelectionChanged);
-
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()
@@ -100,7 +126,8 @@ namespace LambdaSnail::Juno::expenses
         delete ui;
     }
 
-    void LSExpensesOverviewWidget::onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/)
+    void LSExpensesOverviewWidget::onSelectionChanged(
+        /*QItemSelection const &selected, QItemSelection const &deselected*/)
     {
         m_deleteExpenseButton->setEnabled(ui->tableView->selectionModel()->hasSelection());
     }

@@ -34,9 +34,9 @@ namespace LambdaSnail::Juno
         m_settingsWidgetIndex = ui->widgetStack->addWidget(m_settingsWidget);
     }
 
-    LSMainWindow::LSMainWindow(expenses::LSExpenseModel *expenseModel,
-                                QAbstractProxyModel *recurringModel,
-                               QAbstractProxyModel *categoryModel,
+    LSMainWindow::LSMainWindow(QAbstractProxyModel* expenseModel,
+                               QAbstractProxyModel* recurringModel,
+                               QAbstractProxyModel* categoryModel,
                                shared::LSDateController *dateController,
                                expenses::LSRelatedExpenseProxyModel *relatedExpenseProxyModel,
                                QSettings* settings,

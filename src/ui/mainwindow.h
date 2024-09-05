@@ -42,10 +42,10 @@ namespace LambdaSnail::Juno
         Q_OBJECT
 
     public:
-        explicit LSMainWindow(expenses::LSExpenseModel *expenseModel, QAbstractProxyModel *recurringModel,
-                     QAbstractProxyModel *categoryModel, shared::LSDateController *dateController,
-                     expenses::LSRelatedExpenseProxyModel *relatedExpenseProxyModel, QSettings *settings,
-                     settings::LSSettingsWidget *settingsWidget, fa::QtAwesome *qtAwesome);
+        explicit LSMainWindow(QAbstractProxyModel* expenseModel, QAbstractProxyModel* recurringModel,
+                     QAbstractProxyModel* categoryModel, shared::LSDateController* dateController,
+                     expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, QSettings* settings,
+                     settings::LSSettingsWidget* settingsWidget, fa::QtAwesome *qtAwesome);
 
         ~LSMainWindow() override;
 
@@ -54,7 +54,7 @@ namespace LambdaSnail::Juno
         fa::QtAwesome * m_qtAwesome;
 
         int m_expensesIndex{};
-        expenses::LSExpenseModel* m_expenseModel;
+        QAbstractProxyModel* m_expenseModel;
         expenses::LSExpensesOverviewWidget* m_expensesOverviewWidget;
 
         int m_recurringExpensesWidgetIndex{};
