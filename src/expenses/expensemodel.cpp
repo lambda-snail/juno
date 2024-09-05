@@ -34,6 +34,11 @@ void LS::LSExpenseModel::setDateFilter(QDate const from, QDate const to)
     endResetModel();
 }
 
+bool LambdaSnail::Juno::expenses::LSExpenseModel::isCurrencyColumn(QModelIndex const& index) const
+{
+    return index.column() == static_cast<int32_t>(Columns::amount);
+}
+
 QSqlQuery LS::LSExpenseModel::tableDefinition()
 {
     return QSqlQuery(R"(

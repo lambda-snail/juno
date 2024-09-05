@@ -42,6 +42,11 @@ QSqlQuery LS::LSRecurringExpenseModel::tableDefinition()
         )");
 }
 
+bool LambdaSnail::Juno::expenses::LSRecurringExpenseModel::isCurrencyColumn(QModelIndex const &index) const
+{
+    return index.column() == static_cast<int32_t>(Columns::amount);
+}
+
 
 QVariant LambdaSnail::Juno::expenses::LSRecurringExpenseModel::data(const QModelIndex &index, int role) const
 {

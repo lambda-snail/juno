@@ -67,6 +67,8 @@ add_executable(juno src/main.cpp
         src/settings/settingswidget.ui
         src/settings/settingsmodel.cpp
         src/settings/settingsmodel.h
+        src/shared/currency/expensemodelbase.cpp
+        src/shared/currency/expensemodelbase.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR

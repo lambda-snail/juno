@@ -1,9 +1,10 @@
 #pragma once
-#include <QSqlTableModel>
+
+#include "shared/currency/expensemodelbase.h"
 
 namespace LambdaSnail::Juno::expenses
 {
-    class LSRecurringExpenseModel : public QSqlTableModel
+    class LSRecurringExpenseModel : public LSExpenseModelBase
     {
         Q_OBJECT
 
@@ -12,6 +13,7 @@ namespace LambdaSnail::Juno::expenses
 
         void initialize();
         [[nodiscard]] static QSqlQuery tableDefinition();
+        [[nodiscard]] bool isCurrencyColumn(QModelIndex const &index) const override;
 
         [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
 
