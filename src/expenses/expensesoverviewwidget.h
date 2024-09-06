@@ -29,9 +29,6 @@ namespace LambdaSnail::Juno::expenses
     public:
         LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, QAbstractProxyModel *model, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
 
-        void setUpToolbar(fa::QtAwesome *qtAwesome);
-        void setupTableView(QAbstractProxyModel* model);
-
         ~LSExpensesOverviewWidget() override;
 
     private:
@@ -50,6 +47,9 @@ namespace LambdaSnail::Juno::expenses
         QPushButton* m_searchButton{};
         QPushButton* m_deleteExpenseButton{};
         QPushButton* m_newExpenseButton{};
+
+        void setUpToolbar(fa::QtAwesome *qtAwesome);
+        void setupTableView(QAbstractProxyModel* model);
 
     private slots:
         // void onSearchDatesChanged();

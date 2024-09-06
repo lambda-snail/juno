@@ -10,6 +10,9 @@
 #include "categories/categorymodel.h"
 #include "expenses/categoryfiltermodel.h"
 #include "expenses/expensemodel.h"
+#include "expenses/expensesoverviewwidget.h"
+#include "expense_charts/aggregateexpensemodel.h"
+#include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensemodel.h"
 #include "recurring_expenses/relatedexpenseproxymodel.h"
 
@@ -45,7 +48,7 @@ int main(int argc, char *argv[]) {
                                     ApplicationContext::ApplicationName_LowerCase))
                                  .toString();
 
-    QString const dbFile = ApplicationContext::DbFileName;// LSDir::joinPath( dbPath, ApplicationContext::DbFileName);
+    QString const dbFile = ApplicationContext::DbFileName;
 
     LSDatabaseManager db;
     qInfo() << "Using database at: " << LSDir::joinPath( dbPath, ApplicationContext::DbFileName);
@@ -64,12 +67,8 @@ int main(int argc, char *argv[]) {
     LSCategoryFilterModel categoryFilterModel(&a, static_cast<int>(LSExpenseModel::Columns::category));
     categoryFilterModel.setSourceModel(&model);
 
-    // TODO: Remove this
-    //QString x("Fika");
-    //categoryFilterModel.setFilterCategory(x);
-
-    LSRelatedExpenseProxyModel relatedExpenseProyModel(&a);
-    relatedExpenseProyModel.setSourceModel(&model);
+    LSRelatedExpenseProxyModel relatedExpenseProxyModel(&a);
+    relatedExpenseProxyModel.setSourceModel(&model);
 
 
     LSRecurringExpenseModel recurringExpensesModel;
@@ -91,9 +90,15 @@ int main(int argc, char *argv[]) {
 
     LSDateController dateController(model);
 
-    // Construct different pages here instead?
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&categoryFilterModel, &recurringExpensesAsProxyModel, &categoryProxyModel, &dateController, &relatedExpenseProyModel, &settings, settingsWidget, qtAwesome);
+    auto* expensesOverviewWidget = new LSExpensesOverviewWidget(nullptr, nullptr/*statusBar()*/, &categoryFilterModel, &categoryProxyModel, &settings, qtAwesome);
+    auto* recurringExpensesWidget = new LSRecurringExpensesOverview(nullptr, &relatedExpenseProxyModel, &recurringExpensesAsProxyModel, &dateController, &settings, qtAwesome);
+
+    auto aggregateExpenseModel = new LSAggregateExpenseModel(&categoryProxyModel);
+    aggregateExpenseModel->setSourceModel(&model);
+    auto* chartsWidget = new LambdaSnail::Juno::charts::LSExpenseChartsWidget(aggregateExpenseModel);
+
+    LambdaSnail::Juno::LSMainWindow mainWindow(&categoryProxyModel, &dateController, &settings, expensesOverviewWidget, recurringExpensesWidget, chartsWidget, settingsWidget, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

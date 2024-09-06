@@ -34,19 +34,21 @@ namespace LambdaSnail::Juno
         m_settingsWidgetIndex = ui->widgetStack->addWidget(m_settingsWidget);
     }
 
-    LSMainWindow::LSMainWindow(QAbstractProxyModel* expenseModel,
-                               QAbstractProxyModel* recurringModel,
+    LSMainWindow::LSMainWindow(
                                QAbstractProxyModel* categoryModel,
                                shared::LSDateController *dateController,
-                               expenses::LSRelatedExpenseProxyModel *relatedExpenseProxyModel,
                                QSettings* settings,
+                               expenses::LSExpensesOverviewWidget* expensesOverviewWidget,
+                               expenses::LSRecurringExpensesOverview* recurringExpensesOverviewWidget,
+                               charts::LSExpenseChartsWidget* expenseChartWidget,
                                settings::LSSettingsWidget *settingsWidget,
                                fa::QtAwesome *qtAwesome) : QMainWindow(nullptr),
                                                            ui(new Ui::LSMainWindow),
                                                            m_qtAwesome(qtAwesome),
-                                                           m_expenseModel(expenseModel),
-                                                           m_recurringExpensesProxyModel(recurringModel),
+                                                           m_expensesOverviewWidget(expensesOverviewWidget),
+                                                           m_recurringExpensesWidget(recurringExpensesOverviewWidget),
                                                            m_settingsWidget(settingsWidget),
+                                                           m_chartsWidget(expenseChartWidget),
                                                            m_dateController(dateController),
                                                            m_categoryModel(categoryModel),
                                                            m_settings(settings)
@@ -54,14 +56,10 @@ namespace LambdaSnail::Juno
         ui->setupUi(this);
 
         setWindowTitle("Juno");
-
-        m_expensesOverviewWidget = new expenses::LSExpensesOverviewWidget(ui->widgetStack, statusBar(), expenseModel, m_categoryModel, m_settings, qtAwesome);
-        m_recurringExpensesWidget = new expenses::LSRecurringExpensesOverview(ui->widgetStack, relatedExpenseProxyModel, m_recurringExpensesProxyModel, m_dateController, m_settings, qtAwesome);
-
-        auto aggregateExpenseModel = new expenses::LSAggregateExpenseModel(m_categoryModel);
-        aggregateExpenseModel->setSourceModel(m_expenseModel);
-
-        m_chartsWidget = new charts::LSExpenseChartsWidget(aggregateExpenseModel, ui->widgetStack);
+        
+        m_expensesOverviewWidget->setParent(ui->widgetStack);
+        m_recurringExpensesWidget->setParent(ui->widgetStack);
+        m_chartsWidget->setParent(ui->widgetStack);
 
         setupMenu();
         setupDateTool();

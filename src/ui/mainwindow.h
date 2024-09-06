@@ -6,6 +6,7 @@
 #include <qsystemtrayicon.h>
 
 #include "expenses/expensemodel.h"
+#include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
 #include "settings/settingsmodel.h"
 #include "settings/settingswidget.h"
@@ -42,10 +43,15 @@ namespace LambdaSnail::Juno
         Q_OBJECT
 
     public:
-        explicit LSMainWindow(QAbstractProxyModel* expenseModel, QAbstractProxyModel* recurringModel,
-                     QAbstractProxyModel* categoryModel, shared::LSDateController* dateController,
-                     expenses::LSRelatedExpenseProxyModel* relatedExpenseProxyModel, QSettings* settings,
-                     settings::LSSettingsWidget* settingsWidget, fa::QtAwesome *qtAwesome);
+        explicit LSMainWindow(
+                     QAbstractProxyModel* categoryModel,
+                     shared::LSDateController* dateController,
+                     QSettings* settings,
+                     expenses::LSExpensesOverviewWidget* expensesOverviewWidget,
+                     expenses::LSRecurringExpensesOverview* recurringExpensesOverviewWidget,
+                     charts::LSExpenseChartsWidget* expenseChartWidget,
+                     settings::LSSettingsWidget* settingsWidget,
+                     fa::QtAwesome *qtAwesome);
 
         ~LSMainWindow() override;
 
@@ -54,11 +60,9 @@ namespace LambdaSnail::Juno
         fa::QtAwesome * m_qtAwesome;
 
         int m_expensesIndex{};
-        QAbstractProxyModel* m_expenseModel;
         expenses::LSExpensesOverviewWidget* m_expensesOverviewWidget;
 
         int m_recurringExpensesWidgetIndex{};
-        QAbstractProxyModel* m_recurringExpensesProxyModel;
         expenses::LSRecurringExpensesOverview* m_recurringExpensesWidget;
 
         int m_settingsWidgetIndex{};
