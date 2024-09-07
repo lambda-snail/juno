@@ -11,6 +11,7 @@
 #include "relatedexpenseproxymodel.h"
 #include "../shared/date_time/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
+#include "shared/applicationcontext.h"
 #include "shared/datecontroller.h"
 #include "shared/date_time/datetimehelpers.h"
 
@@ -51,7 +52,9 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::relatedExpense), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::createdOn), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::modifiedOn), true);
+
     ui->relatedExpensesView->setSortingEnabled(true);
+    ui->relatedExpensesView->sortByColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient), Qt::SortOrder::AscendingOrder);
 
     m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
     ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
@@ -111,6 +114,11 @@ LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LS
     m_qtAwesome(qtAwesome)
 {
     ui->setupUi(this);
+
+    QVariant const format = settings->value(application::ApplicationContext::LocaleDateFormatKey);
+
+    ui->activeFromDateEdit->setDisplayFormat(format.toString());
+    ui->activeToDateEdit->setDisplayFormat(format.toString());
 
     setUpMapper();
     setUpRecurringExpensesView();
