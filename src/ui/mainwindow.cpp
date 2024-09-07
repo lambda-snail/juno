@@ -63,6 +63,8 @@ namespace LambdaSnail::Juno
         m_recurringExpensesWidget->setParent(ui->widgetStack);
         m_chartsWidget->setParent(ui->widgetStack);
 
+        m_aboutDialog = new LSAboutWidget(this);
+
         setupMenu();
         setupDateTool();
         setupCategoryTool();
@@ -88,8 +90,6 @@ namespace LambdaSnail::Juno
 
         // Help
         aboutAction = new QAction("&Help", this);
-
-        m_aboutDialog = new LSAboutWidget(this);
         connect(aboutAction, &QAction::triggered, m_aboutDialog, &QDialog::exec);
     }
 
