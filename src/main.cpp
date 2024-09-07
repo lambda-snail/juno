@@ -34,8 +34,8 @@ int main(int argc, char *argv[]) {
     using namespace LambdaSnail::Juno::settings;
 
     QApplication a(argc, argv);
-    a.setApplicationName(ApplicationContext::ApplicationName);
-    a.setOrganizationName(ApplicationContext::OrganizationName);
+    QApplication::setApplicationName(ApplicationContext::ApplicationName);
+    QApplication::setOrganizationName(ApplicationContext::OrganizationName);
 
     QSettings settings(ApplicationContext::OrganizationName, ApplicationContext::ApplicationName, &a);
 
