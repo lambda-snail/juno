@@ -52,7 +52,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::relatedExpense), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::createdOn), true);
     ui->relatedExpensesView->setColumnHidden(static_cast<int>(LSExpenseModel::Columns::modifiedOn), true);
-
+    
     ui->relatedExpensesView->setSortingEnabled(true);
     ui->relatedExpensesView->sortByColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient), Qt::SortOrder::AscendingOrder);
 

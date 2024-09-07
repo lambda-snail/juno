@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
     LSExpenseModel expenseModel;
     expenseModel.initialize();
     expenseModel.select();
+    expenseModel.setEditStrategy(QSqlTableModel::EditStrategy::OnFieldChange);
 
     LSRelatedExpenseProxyModel relatedExpenseProxyModel(&a);
     relatedExpenseProxyModel.setSourceModel(&expenseModel);

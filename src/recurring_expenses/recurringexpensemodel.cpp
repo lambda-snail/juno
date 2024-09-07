@@ -55,5 +55,5 @@ QVariant LambdaSnail::Juno::expenses::LSRecurringExpenseModel::data(const QModel
         return record(index.row()).value(static_cast<int>(Columns::id));
     }
 
-    return QSqlTableModel::data(index, role);
+    return LSExpenseModelBase::data(index, role);
 }
