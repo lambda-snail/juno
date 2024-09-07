@@ -1,14 +1,16 @@
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 
+#include <qdialog.h>
 #include <QSystemTrayIcon>
 
-#include "ui_mainwindow.h"
 #include "QtAwesome.h"
 #include "categories/categorymodel.h"
 
 #include "expenses/expensesoverviewwidget.h"
 #include "expense_charts/aggregateexpensemodel.h"
 #include "expense_charts/expensechartswidget.h"
+#include "help/aboutwidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
 #include "settings/settingswidget.h"
 #include "shared/applicationcontext.h"
@@ -82,7 +84,13 @@ namespace LambdaSnail::Juno
         connect(restoreAction, &QAction::triggered, this, &QWidget::showNormal);
 
         quitAction = new QAction(tr("&Quit"), this);
-        connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+        connect(quitAction, &QAction::triggered, this, &QCoreApplication::quit);
+
+        // Help
+        aboutAction = new QAction("&Help", this);
+
+        m_aboutDialog = new LSAboutWidget(this);
+        connect(aboutAction, &QAction::triggered, m_aboutDialog, &QDialog::exec);
     }
 
     void LSMainWindow::createMenuBar()
@@ -91,6 +99,7 @@ namespace LambdaSnail::Juno
         m_fileMenu->addAction(quitAction);
 
         m_helpMenu = menuBar()->addMenu(tr("&Help"));
+        m_helpMenu->addAction(aboutAction);
     }
 
     void LSMainWindow::createTrayIcon()

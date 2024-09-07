@@ -76,15 +76,18 @@ namespace LambdaSnail::Juno
         QSettings* m_settings;
 
         // System tray icon and menu
-        QSystemTrayIcon *   trayIcon{};
-        QAction *           minimizeAction{};
-        QAction *           maximizeAction{};
-        QAction *           restoreAction{};
-        QAction *           quitAction{};
+        QSystemTrayIcon*    trayIcon{};
+        QAction*            minimizeAction{};
+        QAction*            maximizeAction{};
+        QAction*            restoreAction{};
+        QAction*            quitAction{};
+        QAction*            aboutAction;
 
         QMenu*              trayIconMenu{};
-        QMenu *             m_helpMenu{};
-        QMenu *             m_fileMenu{};
+        QMenu*              m_helpMenu{};
+        QMenu*              m_fileMenu{};
+
+        QDialog*            m_aboutDialog;
 
         void setupDateTool();
 
