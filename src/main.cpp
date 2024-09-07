@@ -60,15 +60,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    LSExpenseModel model;
-    model.initialize();
-    model.select();
-
-    LSCategoryFilterModel categoryFilterModel(&a, static_cast<int>(LSExpenseModel::Columns::category));
-    categoryFilterModel.setSourceModel(&model);
+    LSExpenseModel expenseModel;
+    expenseModel.initialize();
+    expenseModel.select();
 
     LSRelatedExpenseProxyModel relatedExpenseProxyModel(&a);
-    relatedExpenseProxyModel.setSourceModel(&model);
+    relatedExpenseProxyModel.setSourceModel(&expenseModel);
 
 
     LSRecurringExpenseModel recurringExpensesModel;
@@ -88,14 +85,14 @@ int main(int argc, char *argv[]) {
     LSSettingsWidget* settingsWidget = new LSSettingsWidget(&settingsModel);
 
 
-    LSDateController dateController(model);
+    LSDateController dateController(expenseModel);
 
 
-    auto* expensesOverviewWidget = new LSExpensesOverviewWidget(nullptr, nullptr/*statusBar()*/, &categoryFilterModel, &categoryProxyModel, &settings, qtAwesome);
+    auto* expensesOverviewWidget = new LSExpensesOverviewWidget(nullptr, nullptr/*statusBar()*/, &expenseModel, &categoryProxyModel, &settings, qtAwesome);
     auto* recurringExpensesWidget = new LSRecurringExpensesOverview(nullptr, &relatedExpenseProxyModel, &recurringExpensesAsProxyModel, &dateController, &settings, qtAwesome);
 
     auto aggregateExpenseModel = new LSAggregateExpenseModel(&categoryProxyModel);
-    aggregateExpenseModel->setSourceModel(&model);
+    aggregateExpenseModel->setSourceModel(&expenseModel);
     auto* chartsWidget = new LambdaSnail::Juno::charts::LSExpenseChartsWidget(aggregateExpenseModel);
 
     LambdaSnail::Juno::LSMainWindow mainWindow(&categoryProxyModel, &dateController, &settings, expensesOverviewWidget, recurringExpensesWidget, chartsWidget, settingsWidget, qtAwesome);

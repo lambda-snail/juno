@@ -5,11 +5,12 @@
 
 #include "QtAwesome.h"
 
-#include <QAbstractProxyModel>
 #include <QDateTimeEdit>
 #include <QPushButton>
 #include <QSqlRelationalDelegate>
 #include <QStatusBar>
+
+#include "categoryfiltermodel.h"
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -27,13 +28,14 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, QAbstractProxyModel *expenseModel, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
+        LSExpensesOverviewWidget(QWidget* parent, QStatusBar* statusBar, LSExpenseModel* expenseModel, QAbstractProxyModel* categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
 
         ~LSExpensesOverviewWidget() override;
 
     private:
         Ui::ExpensesOverviewWidget* ui;
-        QAbstractProxyModel* m_expenseModel;
+        LSExpenseModel* m_expenseModel;
+        LSCategoryFilterModel * m_categoryFilterModel;
         QAbstractProxyModel * m_categoryModel;
 
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
@@ -49,10 +51,10 @@ namespace LambdaSnail::Juno::expenses
         QPushButton* m_newExpenseButton{};
 
         void setUpToolbar(fa::QtAwesome *qtAwesome);
-        void setupTableView(QAbstractProxyModel* model);
+        void setupTableView();
 
     private slots:
         // void onSearchDatesChanged();
-        void onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/);
+        void onSelectionChanged(/*QItemSelection const &selected, QItemSelection const &deselected*/) const;
     };
 }

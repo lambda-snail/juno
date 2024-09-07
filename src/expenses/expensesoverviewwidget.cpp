@@ -13,7 +13,7 @@ namespace LambdaSnail::Juno::expenses
     LSExpensesOverviewWidget::LSExpensesOverviewWidget(
         QWidget *parent,
         QStatusBar *statusBar,
-        QAbstractProxyModel *expenseModel,
+        LSExpenseModel *expenseModel,
         QAbstractProxyModel *categoryModel,
         QSettings *settings,
         fa::QtAwesome *qtAwesome) :
@@ -27,7 +27,7 @@ namespace LambdaSnail::Juno::expenses
         ui->setupUi(this);
 
         setUpToolbar(qtAwesome);
-        setupTableView(expenseModel);
+        setupTableView();
     }
 
     void LSExpensesOverviewWidget::setUpToolbar(fa::QtAwesome *qtAwesome)
@@ -69,7 +69,7 @@ namespace LambdaSnail::Juno::expenses
 
         connect(m_newExpenseButton, &QPushButton::pressed, this, [&]()
         {
-            m_expenseModel->insertRow(0);
+            m_categoryFilterModel->insertRow(0);
         });
 
         connect(m_deleteExpenseButton, &QPushButton::pressed, this, [&]()
@@ -77,38 +77,37 @@ namespace LambdaSnail::Juno::expenses
             QItemSelection const selection = ui->tableView->selectionModel()->selection();
             for (auto const &range: selection)
             {
-                m_expenseModel->removeRows(range.top(), range.height());
+                m_categoryFilterModel->removeRows(range.top(), range.height());
                 for (auto const &row: range.indexes())
                 {
                     ui->tableView->hideRow(row.row());
                 }
             }
 
-            m_expenseModel->sourceModel()->submit();
+            m_categoryFilterModel->sourceModel()->submit();
             m_statusBar->showMessage(tr("Expenses deleted!"), 4000);
         });
 
         connect(categoryList, &QComboBox::currentTextChanged, this, [&](QString const &text)
         {
-            // Ugly but works for now
-            auto *filter = qobject_cast<LSCategoryFilterModel*>(m_expenseModel);
-            filter->setFilterCategory(text);
+            m_categoryFilterModel->setFilterCategory(text);
         });
 
         connect(clearFilterButton, &QPushButton::pressed, this, [&]()
         {
-            // TODO: Find a neat way to avoid these casts
-            auto *filter = qobject_cast<LSCategoryFilterModel*>(m_expenseModel);
-            filter->setInactive();
+            m_categoryFilterModel->setInactive();
         });
     }
 
-    void LSExpensesOverviewWidget::setupTableView(QAbstractProxyModel *model)
+    void LSExpensesOverviewWidget::setupTableView()
     {
         using ExpenseColumns = LSExpenseModel::Columns;
 
+        m_categoryFilterModel = new LSCategoryFilterModel(this, static_cast<int>(LSExpenseModel::Columns::category));
+        m_categoryFilterModel->setSourceModel(m_expenseModel);
+
         // TODO: Listen to column size changes and store somewhere for persistence between sessions
-        ui->tableView->setModel(model);
+        ui->tableView->setModel(m_categoryFilterModel);
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::id), true);
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::relatedExpense), true);
         ui->tableView->setColumnHidden(static_cast<int>(ExpenseColumns::createdOn), true);
@@ -120,8 +119,7 @@ namespace LambdaSnail::Juno::expenses
 
         ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
 
-        connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
-                &LSExpensesOverviewWidget::onSelectionChanged);
+        connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LSExpensesOverviewWidget::onSelectionChanged);
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()
@@ -129,8 +127,7 @@ namespace LambdaSnail::Juno::expenses
         delete ui;
     }
 
-    void LSExpensesOverviewWidget::onSelectionChanged(
-        /*QItemSelection const &selected, QItemSelection const &deselected*/)
+    void LSExpensesOverviewWidget::onSelectionChanged() const
     {
         m_deleteExpenseButton->setEnabled(ui->tableView->selectionModel()->hasSelection());
     }
