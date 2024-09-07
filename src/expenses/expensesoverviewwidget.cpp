@@ -3,8 +3,6 @@
 
 #include "QtAwesome.h"
 
-#include <QListView>
-
 #include "categoryfiltermodel.h"
 #include "expensemodel.h"
 #include "categories/categorymodel.h"
@@ -12,19 +10,24 @@
 
 namespace LambdaSnail::Juno::expenses
 {
-    LSExpensesOverviewWidget::LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar,
-                                                       QAbstractProxyModel *model, QAbstractProxyModel *categoryModel,
-                                                       QSettings *settings, fa::QtAwesome *qtAwesome) : QWidget(parent),
-        ui(new Ui::ExpensesOverviewWidget),
-        m_expenseModel(model),
-        m_categoryModel(categoryModel),
-        m_statusBar(statusBar),
-        m_settings(settings)
+    LSExpensesOverviewWidget::LSExpensesOverviewWidget(
+        QWidget *parent,
+        QStatusBar *statusBar,
+        QAbstractProxyModel *expenseModel,
+        QAbstractProxyModel *categoryModel,
+        QSettings *settings,
+        fa::QtAwesome *qtAwesome) :
+            QWidget(parent),
+            ui(new Ui::ExpensesOverviewWidget),
+            m_expenseModel(expenseModel),
+            m_categoryModel(categoryModel),
+            m_statusBar(statusBar),
+            m_settings(settings)
     {
         ui->setupUi(this);
 
         setUpToolbar(qtAwesome);
-        setupTableView(model);
+        setupTableView(expenseModel);
     }
 
     void LSExpensesOverviewWidget::setUpToolbar(fa::QtAwesome *qtAwesome)

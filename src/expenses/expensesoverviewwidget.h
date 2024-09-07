@@ -27,7 +27,7 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, QAbstractProxyModel *model, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
+        LSExpensesOverviewWidget(QWidget *parent, QStatusBar *statusBar, QAbstractProxyModel *expenseModel, QAbstractProxyModel *categoryModel, QSettings* settings, fa::QtAwesome *qtAwesome);
 
         ~LSExpensesOverviewWidget() override;
 
