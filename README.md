@@ -16,11 +16,11 @@ If you still want a cloud based application, you can always put the database fil
 
 # Installation
 
-# AppImage
+## AppImage
 
 For Linux user and AppImage image is provided on github.
 
-# Windows
+## Windows
 
 I don't know at the moment how the application will be distributed on Windows. It could either be a "raw" exe file
 or some kind of installer. We'll see!
@@ -30,10 +30,9 @@ or some kind of installer. We'll see!
 To build Juno on Linux, you will need:
 
 - Qt framework (Juno is developed on version 6.7)
-- GCC
+- GCC or clang
 - CMake
 
-Currently, Juno is known to compile on Ubuntu Linux using GCC. Clang has some issues with the code at the moment, whereas 
-MSVC has not been tested.
+Currently, Juno is known to compile on Ubuntu Linux using GCC or Clang. MSVC also works on Windows if `CMAKE_PREFIX_PATH` is set properly. 
 
 The long-term goal is to support all three compilers, however that is not an immediate objective. 
