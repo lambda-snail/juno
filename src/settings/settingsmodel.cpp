@@ -65,7 +65,7 @@ namespace LambdaSnail::Juno::settings {
                 }
                 break;
             default:
-                std::unreachable();
+                throw std::invalid_argument(R"(Unknown setting: )" + index.column());
         }
 
         endInsertColumns();

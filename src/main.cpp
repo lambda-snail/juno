@@ -52,11 +52,11 @@ int main(int argc, char *argv[]) {
 
     LSDatabaseManager db;
     qInfo() << "Using database at: " << LSDir::joinPath( dbPath, ApplicationContext::DbFileName);
-    auto result = db.setDatabase(dbPath, dbFile);
+    auto maybeError = db.setDatabase(dbPath, dbFile);
 
-    if(not result.has_value())
+    if(maybeError)
     {
-        qInfo() << result.error().Message;
+        qInfo() << maybeError.value().Message;
         return 1;
     }
 

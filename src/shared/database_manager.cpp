@@ -16,7 +16,7 @@ namespace LS = LambdaSnail::Juno::shared;
 
 LS::LSDatabaseManager::LSDatabaseManager() = default;
 
-std::expected<void, LS::LSDatabaseManager::LSDatabaseError>
+std::optional<LS::LSDatabaseManager::LSDatabaseError>
 LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseName)
 {
     assert(not databaseName.isEmpty());
@@ -33,7 +33,7 @@ LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseN
         bool pathCreated = directory.mkpath(path);
         if(not pathCreated)
         {
-            return std::unexpected<LSDatabaseError>("Unable to create directory: " + path);
+            return { LSDatabaseError("Unable to create directory: " + path) };
         }
     }
 
@@ -43,7 +43,7 @@ LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseN
 
     if (not db.open())
     {
-        return std::unexpected<LSDatabaseError>(db.lastError().text());
+        return { LSDatabaseError(db.lastError().text()) };
     }
 
     if (isCreate)
@@ -53,23 +53,23 @@ LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseN
         QSqlQuery recurringExpensesTableDefinition(expenses::LSRecurringExpenseModel::tableDefinition());
         if (recurringExpensesTableDefinition.lastError().isValid())
         {
-            return std::unexpected<LSDatabaseError>(recurringExpensesTableDefinition.lastError().text());
+            return { LSDatabaseError(recurringExpensesTableDefinition.lastError().text()) };
         }
 
         QSqlQuery categoryTableDefinition(categories::LSCategoryModel::tableDefinition());
         if (categoryTableDefinition.lastError().isValid())
         {
-            return std::unexpected<LSDatabaseError>(categoryTableDefinition.lastError().text());
+            return { LSDatabaseError(categoryTableDefinition.lastError().text()) };
         }
 
         QSqlQuery expensesTableDefinition(expenses::LSExpenseModel::tableDefinition());
         if (expensesTableDefinition.lastError().isValid())
         {
-            return std::unexpected<LSDatabaseError>(expensesTableDefinition.lastError().text());
+            return { LSDatabaseError(expensesTableDefinition.lastError().text()) };
         }
     }
 
     m_database = db;
 
-    return {};
+    return std::nullopt;
 }

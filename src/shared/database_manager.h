@@ -15,7 +15,7 @@ namespace LambdaSnail::Juno::shared {
         };
 
         explicit LSDatabaseManager();
-        std::expected<void, LSDatabaseError> setDatabase(QString const &path, QString const &databaseName);
+        std::optional<LSDatabaseError> setDatabase(QString const &path, QString const &databaseName);
     private:
         QSqlDatabase m_database;
     };
