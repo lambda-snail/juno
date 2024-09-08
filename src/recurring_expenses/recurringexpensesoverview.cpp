@@ -11,6 +11,7 @@
 #include "relatedexpenseproxymodel.h"
 #include "../shared/date_time/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
+#include "expenses/expensetoolbarfactory.h"
 #include "shared/applicationcontext.h"
 #include "shared/datecontroller.h"
 #include "shared/date_time/datetimehelpers.h"
@@ -39,7 +40,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     ui->recurringExpensesView->setModel(m_recurringModel);
     ui->recurringExpensesView->setModelColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient));
 
-    connect(ui->recurringExpensesView, &QListView::clicked, [&](QModelIndex const& index)
+    connect(ui->recurringExpensesView, &QTableView::clicked, [&](QModelIndex const& index)
     {
         m_mapper->setCurrentIndex(index.row());
     });
@@ -56,13 +57,16 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     ui->relatedExpensesView->setSortingEnabled(true);
     ui->relatedExpensesView->sortByColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient), Qt::SortOrder::AscendingOrder);
 
+    ui->activeFromDateEdit->setCalendarPopup(true);
+    ui->activeToDateEdit->setCalendarPopup(true);
+
     m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
     ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
 
-    connect(ui->recurringExpensesView, &QListView::clicked, [&](QModelIndex const& index)
+    connect(ui->recurringExpensesView, &QTableView::clicked, [&](QModelIndex const& index)
     {
-        QModelIndex sourceIndex = m_recurringModel->mapToSource(index);
-        int32_t rowId = m_recurringModel->data(sourceIndex, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
+        // index is an index into the model, not the view
+        int32_t rowId = m_recurringModel->data(index, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
         m_expensesProxyModel->setRelatedExpense(rowId);
 
         ui->newExpenseButton->setEnabled(true);
@@ -104,7 +108,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     });
 }
 
-LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome* qtAwesome) :
+LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expensesProxyModel, LSCategoryFilterModel* recurringModel, QAbstractProxyModel* categoryModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome* qtAwesome) :
     QWidget(parent),
     ui(new Ui::RecurringExpensesOverview),
     m_dateController(dateController),
@@ -123,6 +127,9 @@ LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LS
     setUpMapper();
     setUpRecurringExpensesView();
     setUpRelatedExpensesView();
+
+    m_toolBarItems = LSExpenseToolBarFactory::setUpToolbar(this, m_recurringModel, categoryModel, static_cast<int>(categories::LSCategoryModel::Columns::category), ui->recurringExpensesView, ui->toolBar, qtAwesome);
+
 }
 
 LS::LSRecurringExpensesOverview::~LSRecurringExpensesOverview() {

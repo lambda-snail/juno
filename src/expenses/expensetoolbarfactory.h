@@ -27,12 +27,12 @@ namespace LambdaSnail::Juno::expenses
     public:
         LSExpenseToolBarFactory() = delete;
 
-        [[nodiscard]]
+        template<typename TView> [[nodiscard]]
         static inline std::unique_ptr<ToolbarItems> setUpToolbar(QWidget* widgetParent,
                                                                  LSCategoryFilterModel* categoryFilterModel,
                                                                  QAbstractProxyModel* categoryModel,
                                                                  int32_t categoryFilterColumn,
-                                                                 QTableView *view,
+                                                                 TView *view,
                                                                  QToolBar *toolBar,
                                                                  fa::QtAwesome *qtAwesome)
         {
@@ -76,7 +76,20 @@ namespace LambdaSnail::Juno::expenses
                     categoryFilterModel->removeRows(range.top(), range.height());
                     for (auto const &row: range.indexes())
                     {
-                        view->hideRow(row.row());
+                        constexpr bool hasHideRow = requires {
+                                view->hideRow(row.row());
+                            };
+
+                        // "temporary" hack to make it work for both QTableView and QListView
+                        //if constexpr ( view->hideRow(); )
+                        if constexpr (hasHideRow)
+                        {
+                            view->hideRow(row.row());
+                        }
+                        else
+                        {
+                            view->setRowHidden(row.row(), true);
+                        }
                     }
                 }
 
@@ -92,6 +105,11 @@ namespace LambdaSnail::Juno::expenses
             QWidget::connect(toolbarItems->ClearFilterButton, &QPushButton::pressed, widgetParent, [categoryFilterModel]()
             {
                 categoryFilterModel->setInactive();
+            });
+
+            QWidget::connect(view->selectionModel(), &QItemSelectionModel::selectionChanged, widgetParent, [deleteExpenses = toolbarItems->DeleteExpenseButton, view]()
+            {
+                deleteExpenses->setEnabled(view->selectionModel()->hasSelection());
             });
 
             return toolbarItems;

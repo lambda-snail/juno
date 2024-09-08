@@ -50,7 +50,7 @@ namespace LambdaSnail::Juno::expenses
 
         ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
 
-        connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LSExpensesOverviewWidget::onSelectionChanged);
+        //connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LSExpensesOverviewWidget::onSelectionChanged);
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()

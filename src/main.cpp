@@ -72,8 +72,11 @@ int main(int argc, char *argv[]) {
     LSRecurringExpenseModel recurringExpensesModel;
     recurringExpensesModel.initialize();
 
-    QIdentityProxyModel recurringExpensesAsProxyModel(&a);
-    recurringExpensesAsProxyModel.setSourceModel(&recurringExpensesModel);
+    LSCategoryFilterModel recurringCategoryFilterModel(&a, static_cast<int>(LSRecurringExpenseModel::Columns::category));
+    recurringCategoryFilterModel.setSourceModel(&recurringExpensesModel);
+
+    // QIdentityProxyModel recurringExpensesAsProxyModel(&a);
+    // recurringExpensesAsProxyModel.setSourceModel(&recurringExpensesModel);
 
 
     LSCategoryModel categoryModel;
@@ -90,7 +93,7 @@ int main(int argc, char *argv[]) {
 
 
     auto* expensesOverviewWidget = new LSExpensesOverviewWidget(nullptr, nullptr/*statusBar()*/, &expenseModel, &categoryProxyModel, &settings, qtAwesome);
-    auto* recurringExpensesWidget = new LSRecurringExpensesOverview(nullptr, &relatedExpenseProxyModel, &recurringExpensesAsProxyModel, &dateController, &settings, qtAwesome);
+    auto* recurringExpensesWidget = new LSRecurringExpensesOverview(nullptr, &relatedExpenseProxyModel, &recurringCategoryFilterModel, &categoryProxyModel, &dateController, &settings, qtAwesome);
 
     auto aggregateExpenseModel = new LSAggregateExpenseModel(&categoryProxyModel);
     aggregateExpenseModel->setSourceModel(&expenseModel);

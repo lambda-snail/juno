@@ -11,6 +11,14 @@
 #include <QDataWidgetMapper>
 #include <QWidget>
 
+#include "categories/categorymodel.h"
+#include "expenses/categoryfiltermodel.h"
+
+namespace LambdaSnail::Juno::expenses
+{
+    struct ToolbarItems;
+}
+
 namespace LambdaSnail::Juno::expenses
 {
     QT_BEGIN_NAMESPACE
@@ -33,7 +41,7 @@ namespace LambdaSnail::Juno::expenses
 
         void setUpRelatedExpensesView();
 
-        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expensesProxyModel, QAbstractProxyModel* recurringModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome *qtAwesome);
+        explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expensesProxyModel, LSCategoryFilterModel* recurringModel, QAbstractProxyModel* categoryModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome *qtAwesome);
 
         ~LSRecurringExpensesOverview() override;
 
@@ -42,8 +50,9 @@ namespace LambdaSnail::Juno::expenses
 
         shared::LSDateController* m_dateController;
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<ToolbarItems> m_toolBarItems;
 
-        QAbstractProxyModel* m_recurringModel;
+        LSCategoryFilterModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;
         QDataWidgetMapper* m_mapper{};
 
