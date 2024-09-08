@@ -74,6 +74,7 @@ add_executable(juno src/main.cpp
         src/ui/help/aboutwidget.cpp
         src/ui/help/aboutwidget.h
         src/ui/help/aboutwidget.ui
+        src/expenses/expensetoolbarfactory.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR

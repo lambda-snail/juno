@@ -14,6 +14,8 @@
 
 namespace LambdaSnail::Juno::expenses
 {
+    struct ToolbarItems;
+
     QT_BEGIN_NAMESPACE
 
     namespace Ui
@@ -42,15 +44,8 @@ namespace LambdaSnail::Juno::expenses
 
         QStatusBar* m_statusBar;
         QSettings * m_settings;
+        std::unique_ptr<ToolbarItems> m_toolBarItems;
 
-        // Command bar
-        // QDateEdit* m_fromDate{};
-        // QDateEdit* m_toDate{};
-        QPushButton* m_searchButton{};
-        QPushButton* m_deleteExpenseButton{};
-        QPushButton* m_newExpenseButton{};
-
-        void setUpToolbar(fa::QtAwesome *qtAwesome);
         void setupTableView();
 
     private slots:
