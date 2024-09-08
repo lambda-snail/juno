@@ -9,6 +9,8 @@ void LS::LSRecurringExpenseModel::initialize()
 {
     setTable("recurring_expenses");
 
+    setRelation(static_cast<int>(Columns::category), QSqlRelation("categories", "id", "category"));
+
     setHeaderData(static_cast<int>(Columns::recipient), Qt::Horizontal, QObject::tr("Recipient"));
     setHeaderData(static_cast<int>(Columns::amount), Qt::Horizontal, QObject::tr("Amount"));
     setHeaderData(static_cast<int>(Columns::category), Qt::Horizontal, QObject::tr("Category"));

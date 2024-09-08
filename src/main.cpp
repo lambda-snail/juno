@@ -75,9 +75,6 @@ int main(int argc, char *argv[]) {
     LSCategoryFilterModel recurringCategoryFilterModel(&a, static_cast<int>(LSRecurringExpenseModel::Columns::category));
     recurringCategoryFilterModel.setSourceModel(&recurringExpensesModel);
 
-    // QIdentityProxyModel recurringExpensesAsProxyModel(&a);
-    // recurringExpensesAsProxyModel.setSourceModel(&recurringExpensesModel);
-
 
     LSCategoryModel categoryModel;
     categoryModel.initialize();

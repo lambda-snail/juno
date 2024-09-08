@@ -23,7 +23,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
     m_mapper = new QDataWidgetMapper(this);
     m_mapper->setModel(m_recurringModel);
 
-    m_mapper->setSubmitPolicy(QDataWidgetMapper::SubmitPolicy::AutoSubmit);
+    m_mapper->setSubmitPolicy(QDataWidgetMapper::SubmitPolicy::ManualSubmit);
 
     m_mapper->addMapping(ui->recipientLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::recipient));
     m_mapper->addMapping(ui->amountDoubleSpinBox, static_cast<int>(LSRecurringExpenseModel::Columns::amount));
@@ -40,10 +40,21 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     ui->recurringExpensesView->setModel(m_recurringModel);
     ui->recurringExpensesView->setModelColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient));
 
+    ui->activeFromDateEdit->setCalendarPopup(true);
+    ui->activeToDateEdit->setCalendarPopup(true);
+
     connect(ui->recurringExpensesView, &QTableView::clicked, [&](QModelIndex const& index)
     {
+        ui->submitChangesButton->setEnabled(true);
         m_mapper->setCurrentIndex(index.row());
     });
+
+    ui->submitChangesButton->setEnabled(false);
+    connect(ui->submitChangesButton, &QPushButton::clicked, this, [&]()
+    {
+        m_mapper->submit();
+    });
+
 }
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpensesView()
@@ -56,9 +67,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
     
     ui->relatedExpensesView->setSortingEnabled(true);
     ui->relatedExpensesView->sortByColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient), Qt::SortOrder::AscendingOrder);
-
-    ui->activeFromDateEdit->setCalendarPopup(true);
-    ui->activeToDateEdit->setCalendarPopup(true);
 
     m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
     ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
