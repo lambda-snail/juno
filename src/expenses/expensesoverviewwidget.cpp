@@ -8,6 +8,7 @@
 #include "expensetoolbarfactory.h"
 #include "categories/categorymodel.h"
 #include "shared/date_time/datefromstringdelegate.h"
+#include "shared/delegates/relationalproxydelegate.h"
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -48,9 +49,8 @@ namespace LambdaSnail::Juno::expenses
         m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
-        ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
-
-        //connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LSExpensesOverviewWidget::onSelectionChanged);
+        ui->tableView->setItemDelegate(new delegates::LSRelationalProxyDelegate(ui->tableView));
+        //ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()
