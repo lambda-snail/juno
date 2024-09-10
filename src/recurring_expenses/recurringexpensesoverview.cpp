@@ -1,8 +1,8 @@
 #include "recurringexpensesoverview.h"
+#include "ui_recurringexpensesoverview.h"
 
 #include <qabstractproxymodel.h>
 
-#include "ui_recurringexpensesoverview.h"
 #include "recurringexpensemodel.h"
 
 #include <QDataWidgetMapper>
