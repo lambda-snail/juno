@@ -27,12 +27,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
 
     m_mapper->setSubmitPolicy(QDataWidgetMapper::SubmitPolicy::ManualSubmit);
 
-    //auto* delegate = new QSqlRelationalDelegate(ui->categoryComboBox);
-    //delegate->setModelData(ui->categoryComboBox, m_recurringModel, m_recurringModel->index(0, static_cast<int>(LSRecurringExpenseModel::Columns::category)));
-    //ui->categoryComboBox->setItemDelegate(delegate);
-
-
-
     m_mapper->addMapping(ui->recipientLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::recipient));
     m_mapper->addMapping(ui->amountDoubleSpinBox, static_cast<int>(LSRecurringExpenseModel::Columns::amount));
     m_mapper->addMapping(ui->activeFromDateEdit, static_cast<int>(LSRecurringExpenseModel::Columns::activeFrom));
