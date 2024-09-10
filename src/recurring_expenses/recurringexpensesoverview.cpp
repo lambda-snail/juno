@@ -6,10 +6,12 @@
 #include "recurringexpensemodel.h"
 
 #include <QDataWidgetMapper>
+#include <QLineEdit>
+#include <QSqlRelationalDelegate>
 
 #include "QtAwesome.h"
 #include "relatedexpenseproxymodel.h"
-#include "../shared/date_time/datefromstringdelegate.h"
+#include "shared/date_time/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
 #include "expenses/expensetoolbarfactory.h"
 #include "shared/applicationcontext.h"
@@ -25,6 +27,12 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
 
     m_mapper->setSubmitPolicy(QDataWidgetMapper::SubmitPolicy::ManualSubmit);
 
+    //auto* delegate = new QSqlRelationalDelegate(ui->categoryComboBox);
+    //delegate->setModelData(ui->categoryComboBox, m_recurringModel, m_recurringModel->index(0, static_cast<int>(LSRecurringExpenseModel::Columns::category)));
+    //ui->categoryComboBox->setItemDelegate(delegate);
+
+
+
     m_mapper->addMapping(ui->recipientLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::recipient));
     m_mapper->addMapping(ui->amountDoubleSpinBox, static_cast<int>(LSRecurringExpenseModel::Columns::amount));
     m_mapper->addMapping(ui->activeFromDateEdit, static_cast<int>(LSRecurringExpenseModel::Columns::activeFrom));
@@ -32,7 +40,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
 
     m_mapper->addMapping(ui->billingDaySpinBox, static_cast<int>(LSRecurringExpenseModel::Columns::billingDay));
     m_mapper->addMapping(ui->descriptionLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::description));
-    m_mapper->addMapping(ui->categoryLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::category));
+    m_mapper->addMapping(ui->categoryComboBox, static_cast<int>(LSRecurringExpenseModel::Columns::category));
 }
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExpensesView()
@@ -53,6 +61,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     connect(ui->submitChangesButton, &QPushButton::clicked, this, [&]()
     {
         m_mapper->submit();
+        m_recurringModel->submit();
     });
 
 }
@@ -98,11 +107,16 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
             m_expensesProxyModel->setData(index, value);
         };
 
+        int32_t index = ui->categoryComboBox->currentIndex();
+        QModelIndex modelIndex = m_categoryModel->index(index, static_cast<int>(categories::LSCategoryModel::Columns::id), {});
+        int32_t const categoryId = m_categoryModel->data(modelIndex, Qt::DisplayRole).toInt();
+        setValue(newModelIndex, LSExpenseModel::Columns::category, categoryId);
+
         setValue(newModelIndex, LSExpenseModel::Columns::recipient, ui->recipientLineEdit->text());
-        setValue(newModelIndex, LSExpenseModel::Columns::category, ui->categoryLineEdit->text());
         setValue(newModelIndex, LSExpenseModel::Columns::amount, ui->amountDoubleSpinBox->value());
 
-        QModelIndex currentRecurringExpenseIndex = m_recurringModel->mapToSource( ui->recurringExpensesView->currentIndex() );
+        //QModelIndex currentRecurringExpenseIndex = m_recurringModel->mapToSource( ui->recurringExpensesView->currentIndex() );
+        QModelIndex currentRecurringExpenseIndex = ui->recurringExpensesView->currentIndex();
         int32_t recurringExpenseId = m_recurringModel->data(currentRecurringExpenseIndex, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
         setValue(newModelIndex, LSExpenseModel::Columns::relatedExpense, recurringExpenseId);
 
@@ -122,6 +136,7 @@ LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LS
     m_dateController(dateController),
     m_recurringModel(recurringModel),
     m_expensesProxyModel(expensesProxyModel),
+    m_categoryModel(categoryModel),
     m_settings(settings),
     m_qtAwesome(qtAwesome)
 {
@@ -138,6 +153,8 @@ LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LS
 
     m_toolBarItems = LSExpenseToolBarFactory::setUpToolbar(this, m_recurringModel, categoryModel, static_cast<int>(categories::LSCategoryModel::Columns::category), ui->recurringExpensesView, ui->toolBar, qtAwesome);
 
+    ui->categoryComboBox->setModel(categoryModel);
+    ui->categoryComboBox->setModelColumn(static_cast<int>(categories::LSCategoryModel::Columns::category));
 }
 
 LS::LSRecurringExpensesOverview::~LSRecurringExpensesOverview() {

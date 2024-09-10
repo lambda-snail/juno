@@ -18,10 +18,10 @@ bool LambdaSnail::Juno::expenses::LSRelatedExpenseProxyModel::filterAcceptsRow(i
     // To display newly created rows in the view, we use the heuristic that expenses lacking an amount are 'under construction'
     // If this is removed, new rows will not be added to the model
     QVariant const amount = sourceModel()->index(sourceRow, static_cast<int>(LSExpenseModel::Columns::amount), sourceParent).data();
-    if(relatedExpense.isNull())
-    {
-        return false;
-    }
+    // if(relatedExpense.isNull())
+    // {
+    //     return false;
+    // }
 
     return (relatedExpense.isValid() and relatedExpense.value<int32_t>() == m_relatedExpense) or (amount.isValid() and amount.toInt() == 0);
 }

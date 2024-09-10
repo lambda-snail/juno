@@ -54,6 +54,7 @@ namespace LambdaSnail::Juno::expenses
 
         LSCategoryFilterModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;
+        QAbstractProxyModel* m_categoryModel;
         QDataWidgetMapper* m_mapper{};
 
         QSettings* m_settings;

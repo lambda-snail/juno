@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     LSExpenseModel expenseModel;
     expenseModel.initialize();
     expenseModel.select();
-    expenseModel.setEditStrategy(QSqlTableModel::EditStrategy::OnFieldChange);
+    expenseModel.setEditStrategy(QSqlTableModel::EditStrategy::OnManualSubmit);
 
     LSRelatedExpenseProxyModel relatedExpenseProxyModel(&a);
     relatedExpenseProxyModel.setSourceModel(&expenseModel);
@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
 
     LSRecurringExpenseModel recurringExpensesModel;
     recurringExpensesModel.initialize();
+    recurringExpensesModel.setEditStrategy(QSqlTableModel::EditStrategy::OnFieldChange);
 
     LSCategoryFilterModel recurringCategoryFilterModel(&a, static_cast<int>(LSRecurringExpenseModel::Columns::category));
     recurringCategoryFilterModel.setSourceModel(&recurringExpensesModel);
