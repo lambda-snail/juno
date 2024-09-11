@@ -32,31 +32,13 @@ namespace LambdaSnail::Juno::delegates {
 
     }
 
-    // https://wiki.qt.io/QSqlRelationalDelegate-subclass-for-QSqlRelationalTableModel
     void LSRelationalProxyDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex &index) const
     {
-        if(QAbstractProxyModel const* proxy = qobject_cast<QAbstractProxyModel const*>(index.model()))
+        if(auto const* proxy = qobject_cast<QAbstractProxyModel const*>(index.model()))
         {
-            auto* categoryFilterModel = qobject_cast<expenses::LSCategoryFilterModel const*>(proxy);
-            auto mappedIndex = categoryFilterModel->mapToSource(index);
-
-            if(auto* sqlModel = qobject_cast<QSqlRelationalTableModel*>(proxy->sourceModel()))
-            {
-                QSqlTableModel const* relationalModel = sqlModel->relationModel(index.column());
-                if(relationalModel)
-                {
-                    auto const* comboBox = qobject_cast<QComboBox const*>(editor);
-                    int currentItem = comboBox->currentIndex();
-                    int relatedValueIndex = relationalModel->fieldIndex(sqlModel->relation(index.column()).displayColumn());
-                    int relatedIdIndex = relationalModel->fieldIndex(sqlModel->relation(index.column()).indexColumn());
-
-                    auto relatedColumnValue = relationalModel->data(relationalModel->index(currentItem, relatedValueIndex), Qt::DisplayRole);
-                    sqlModel->setData(mappedIndex, relatedColumnValue, Qt::DisplayRole);
-                    auto relatedColumnId = relationalModel->data(relationalModel->index(currentItem, relatedIdIndex), Qt::EditRole);
-                    sqlModel->setData(mappedIndex, relatedColumnId, Qt::EditRole);
-                    return;
-                }
-            }
+            auto* underlyingModel = proxy->sourceModel();
+            auto const mappedIndex = proxy->mapToSource(index);
+            setModelData(editor, underlyingModel, mappedIndex);
         }
 
         QSqlRelationalDelegate::setModelData(editor, model, index);
