@@ -35,7 +35,10 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
 
     m_mapper->addMapping(ui->billingDaySpinBox, static_cast<int>(LSRecurringExpenseModel::Columns::billingDay));
     m_mapper->addMapping(ui->descriptionLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::description));
+
     m_mapper->addMapping(ui->categoryComboBox, static_cast<int>(LSRecurringExpenseModel::Columns::category));
+    m_categoryComboBoxDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(ui->categoryComboBox);
+    ui->categoryComboBox->setItemDelegate(m_categoryComboBoxDelegate.get());
 }
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExpensesView()
@@ -56,7 +59,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     connect(ui->submitChangesButton, &QPushButton::clicked, this, [&]()
     {
         m_mapper->submit();
-        m_recurringModel->submit();
+        //m_recurringModel->submit();
     });
 
 }

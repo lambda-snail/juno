@@ -51,8 +51,10 @@ namespace LambdaSnail::Juno::expenses
 
         shared::LSDateController* m_dateController;
         std::unique_ptr<ToolbarItems> m_toolBarItems;
+
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
         std::unique_ptr<delegates::LSRelationalProxyDelegate> m_categoryColumnDelegate;
+        std::unique_ptr<delegates::LSRelationalProxyDelegate> m_categoryComboBoxDelegate;;
 
         LSCategoryFilterModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;
