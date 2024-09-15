@@ -49,8 +49,8 @@ namespace LambdaSnail::Juno::expenses
         m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
         ui->tableView->setItemDelegateForColumn(static_cast<int32_t>(ExpenseColumns::date), m_dateColumnDelegate.get());
 
-        ui->tableView->setItemDelegate(new delegates::LSRelationalProxyDelegate(ui->tableView));
-        //ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
+        m_categoryColumnDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(ui->tableView);
+        ui->tableView->setItemDelegate(m_categoryColumnDelegate.get());
     }
 
     LSExpensesOverviewWidget::~LSExpensesOverviewWidget()

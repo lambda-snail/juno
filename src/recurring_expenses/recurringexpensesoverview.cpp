@@ -17,6 +17,7 @@
 #include "shared/applicationcontext.h"
 #include "shared/datecontroller.h"
 #include "shared/date_time/datetimehelpers.h"
+#include "shared/delegates/relationalproxydelegate.h"
 
 namespace LS = LambdaSnail::Juno::expenses;
 
@@ -73,6 +74,9 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
 
     m_dateColumnDelegate = std::make_unique<shared::LSDateFromStringDelegate>(m_settings);
     ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::date), m_dateColumnDelegate.get());
+
+    m_categoryColumnDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(ui->relatedExpensesView);
+    ui->relatedExpensesView->setItemDelegateForColumn(static_cast<int32_t>(LSExpenseModel::Columns::category), m_categoryColumnDelegate.get());
 
     connect(ui->recurringExpensesView, &QTableView::clicked, [&](QModelIndex const& index)
     {

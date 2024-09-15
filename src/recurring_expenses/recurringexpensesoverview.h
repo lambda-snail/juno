@@ -13,6 +13,7 @@
 
 #include "categories/categorymodel.h"
 #include "expenses/categoryfiltermodel.h"
+#include "shared/delegates/relationalproxydelegate.h"
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -49,8 +50,9 @@ namespace LambdaSnail::Juno::expenses
         Ui::RecurringExpensesOverview* ui;
 
         shared::LSDateController* m_dateController;
-        std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
         std::unique_ptr<ToolbarItems> m_toolBarItems;
+        std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<delegates::LSRelationalProxyDelegate> m_categoryColumnDelegate;
 
         LSCategoryFilterModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;

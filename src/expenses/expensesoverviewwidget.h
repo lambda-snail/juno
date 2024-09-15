@@ -11,6 +11,7 @@
 #include <QStatusBar>
 
 #include "categoryfiltermodel.h"
+#include "shared/delegates/relationalproxydelegate.h"
 
 namespace LambdaSnail::Juno::expenses
 {
@@ -41,6 +42,7 @@ namespace LambdaSnail::Juno::expenses
         QAbstractProxyModel * m_categoryModel;
 
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
+        std::unique_ptr<delegates::LSRelationalProxyDelegate> m_categoryColumnDelegate;
 
         QStatusBar* m_statusBar;
         QSettings * m_settings;
