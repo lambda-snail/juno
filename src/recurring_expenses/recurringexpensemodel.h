@@ -13,9 +13,9 @@ namespace LambdaSnail::Juno::expenses
 
         void initialize();
         [[nodiscard]] static QSqlQuery tableDefinition();
-        [[nodiscard]] bool isCurrencyColumn(QModelIndex const &index) const override;
+        [[nodiscard]] bool isCurrencyColumn(QModelIndex const& index) const override;
 
-        [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+        [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
 
         enum class Columns
         {

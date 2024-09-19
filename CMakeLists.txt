@@ -6,7 +6,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_PREFIX_PATH "/opt/Qt/6.7.2/gcc_64")
+# If cmake configuration fails, remember to set the -DCMAKE_PREFIX_PATH to point to the
+# Qt directory. Examples: /opt/Qt/6.7.2/gcc_64 (Linux), C:/Qt/6.7.2/msvc2019_64 (Windows)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wformat=2 -Wconversion -Wimplicit-fallthrough")
@@ -75,6 +76,8 @@ add_executable(juno src/main.cpp
         src/ui/help/aboutwidget.h
         src/ui/help/aboutwidget.ui
         src/expenses/expensetoolbarfactory.h
+        src/shared/delegates/relationalproxydelegate.cpp
+        src/shared/delegates/relationalproxydelegate.h
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
