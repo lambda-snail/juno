@@ -59,11 +59,3 @@ QVariant LS::LSRecurringExpenseModel::data(const QModelIndex &index, int role) c
 
     return LSExpenseModelBase::data(index, role);
 }
-
-bool LambdaSnail::Juno::expenses::LSRecurringExpenseModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    beginInsertRows(index, index.column(), index.column());
-    bool result = LSExpenseModelBase::setData(index, value, role);
-    endInsertRows();
-    return result;
-}

@@ -37,6 +37,8 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
     m_mapper->addMapping(ui->descriptionLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::description));
 
     m_mapper->addMapping(ui->categoryComboBox, static_cast<int>(LSRecurringExpenseModel::Columns::category));
+    m_mapperDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(this);
+    m_mapper->setItemDelegate(m_mapperDelegate.get());
 }
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExpensesView()
@@ -58,7 +60,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     {
         m_mapper->submit();
     });
-
 }
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpensesView()
@@ -152,18 +153,4 @@ LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LS
 
     ui->categoryComboBox->setModel(categoryModel);
     ui->categoryComboBox->setModelColumn(static_cast<int>(categories::LSCategoryModel::Columns::category));
-    //ui->categoryComboBox->setCurrentIndex(static_cast<int>(categories::LSCategoryModel::Columns::id));
-    m_categoryComboBoxDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(this);
-
-    m_mapper->setItemDelegate(m_categoryComboBoxDelegate.get());
-
-
-
-    //ui->categoryComboBox->setItemDelegate(m_categoryComboBoxDelegate.get());
-    //ui->categoryComboBox->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
-
-}
-
-LS::LSRecurringExpensesOverview::~LSRecurringExpensesOverview() {
-    delete ui;
 }

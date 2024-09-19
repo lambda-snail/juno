@@ -36,25 +36,18 @@ namespace LambdaSnail::Juno::expenses
         Q_OBJECT
 
     public:
-        void setUpMapper();
-
-        void setUpRecurringExpensesView();
-
-        void setUpRelatedExpensesView();
-
         explicit LSRecurringExpensesOverview(QWidget *parent, LSRelatedExpenseProxyModel* expensesProxyModel, LSCategoryFilterModel* recurringModel, QAbstractProxyModel* categoryModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome *qtAwesome);
-
-        ~LSRecurringExpensesOverview() override;
+        ~LSRecurringExpensesOverview() override = default;
 
     private:
-        Ui::RecurringExpensesOverview* ui;
+        std::unique_ptr<Ui::RecurringExpensesOverview> ui;
 
         shared::LSDateController* m_dateController;
         std::unique_ptr<ToolbarItems> m_toolBarItems;
 
         std::unique_ptr<shared::LSDateFromStringDelegate> m_dateColumnDelegate;
         std::unique_ptr<delegates::LSRelationalProxyDelegate> m_categoryColumnDelegate;
-        std::unique_ptr<delegates::LSRelationalProxyDelegate> m_categoryComboBoxDelegate;;
+        std::unique_ptr<delegates::LSRelationalProxyDelegate> m_mapperDelegate;;
 
         LSCategoryFilterModel* m_recurringModel;
         LSRelatedExpenseProxyModel* m_expensesProxyModel;
@@ -63,5 +56,9 @@ namespace LambdaSnail::Juno::expenses
 
         QSettings* m_settings;
         fa::QtAwesome* m_qtAwesome;
+
+        void setUpMapper();
+        void setUpRecurringExpensesView();
+        void setUpRelatedExpensesView();
     };
 }
