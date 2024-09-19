@@ -37,8 +37,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
     m_mapper->addMapping(ui->descriptionLineEdit, static_cast<int>(LSRecurringExpenseModel::Columns::description));
 
     m_mapper->addMapping(ui->categoryComboBox, static_cast<int>(LSRecurringExpenseModel::Columns::category));
-    m_categoryComboBoxDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(ui->categoryComboBox);
-    ui->categoryComboBox->setItemDelegate(m_categoryComboBoxDelegate.get());
 }
 
 void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExpensesView()
@@ -59,7 +57,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     connect(ui->submitChangesButton, &QPushButton::clicked, this, [&]()
     {
         m_mapper->submit();
-        //m_recurringModel->submit();
     });
 
 }
@@ -86,7 +83,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
         // index is an index into the model, not the view
         int32_t rowId = m_recurringModel->data(index, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
         m_expensesProxyModel->setRelatedExpense(rowId);
-
         ui->newExpenseButton->setEnabled(true);
     });
 
@@ -156,6 +152,16 @@ LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LS
 
     ui->categoryComboBox->setModel(categoryModel);
     ui->categoryComboBox->setModelColumn(static_cast<int>(categories::LSCategoryModel::Columns::category));
+    //ui->categoryComboBox->setCurrentIndex(static_cast<int>(categories::LSCategoryModel::Columns::id));
+    m_categoryComboBoxDelegate = std::make_unique<delegates::LSRelationalProxyDelegate>(this);
+
+    m_mapper->setItemDelegate(m_categoryComboBoxDelegate.get());
+
+
+
+    //ui->categoryComboBox->setItemDelegate(m_categoryComboBoxDelegate.get());
+    //ui->categoryComboBox->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
 }
 
 LS::LSRecurringExpensesOverview::~LSRecurringExpensesOverview() {
