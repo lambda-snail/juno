@@ -119,8 +119,6 @@ namespace LambdaSnail::Juno
         trayIcon->show();
 
         setWindowIcon(icon);
-
-        //trayIcon->setToolTip(iconComboBox->itemText(index));
     }
 
     LSMainWindow::~LSMainWindow()
@@ -130,7 +128,7 @@ namespace LambdaSnail::Juno
 
     void LSMainWindow::setupDateTool()
     {
-        QString format = m_settings->value(application::ApplicationContext::DbLocationSettingsKey).toString();
+        QString format = m_settings->value(application::ApplicationContext::LocaleDateFormatKey).toString();
         ui->fromDate->setDisplayFormat(format);
         ui->toDate->setDisplayFormat(format);
 
