@@ -26,13 +26,14 @@ namespace LambdaSnail::Juno::expenses
 
         template<typename TView>
         [[nodiscard]]
-        static inline std::unique_ptr<ToolbarItems> setUpToolbar(QWidget *widgetParent,
-                                                                 LSCategoryFilterModel *categoryFilterModel,
-                                                                 QAbstractProxyModel *categoryModel,
-                                                                 int32_t categoryFilterColumn,
-                                                                 TView *view,
-                                                                 QToolBar *toolBar,
-                                                                 fa::QtAwesome *qtAwesome)
+        static inline std::unique_ptr<ToolbarItems> setUpToolbar(
+            QWidget *widgetParent,
+            LSCategoryFilterModel *categoryFilterModel,
+            QAbstractProxyModel *categoryModel,
+            int32_t categoryFilterColumn,
+            TView *view,
+            QToolBar *toolBar,
+            fa::QtAwesome *qtAwesome)
         {
             auto toolbarItems = std::make_unique<ToolbarItems>();
 

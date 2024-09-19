@@ -22,7 +22,7 @@
 
 namespace LS = LambdaSnail::Juno::expenses;
 
-void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpMapper()
+void LS::LSRecurringExpensesOverview::setUpMapper()
 {
     m_mapper = new QDataWidgetMapper(this);
     m_mapper->setModel(m_recurringModel);
@@ -50,16 +50,20 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
     ui->activeFromDateEdit->setCalendarPopup(true);
     ui->activeToDateEdit->setCalendarPopup(true);
 
-    connect(ui->recurringExpensesView, &QTableView::clicked, [&](QModelIndex const& index)
-    {
-        ui->submitChangesButton->setEnabled(true);
-        m_mapper->setCurrentIndex(index.row());
-    });
+    connect(ui->recurringExpensesView, &QTableView::clicked, this, &LSRecurringExpensesOverview::onCurrentRecurringExpenseChanged);
 
     ui->submitChangesButton->setEnabled(false);
-    connect(ui->submitChangesButton, &QPushButton::clicked, this, [&]()
+    connect(ui->submitChangesButton, &QPushButton::clicked, m_mapper, &QDataWidgetMapper::submit);
+
+    // If one row is inserted, we select that as the new active row in the view
+    connect(m_recurringModel, &QAbstractItemModel::rowsInserted, [this](QModelIndex const& parent, int first, int last)
     {
-        m_mapper->submit();
+        if(first == last)
+        {
+            QModelIndex newIndex = m_recurringModel->index(first, ui->recurringExpensesView->modelColumn(), {});
+            onCurrentRecurringExpenseChanged(newIndex);
+            ui->recurringExpensesView->selectionModel()->setCurrentIndex(newIndex, QItemSelectionModel::ClearAndSelect);
+        }
     });
 }
 
@@ -98,9 +102,9 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
         // https://doc.qt.io/qt-6/qsortfilterproxymodel.html#dynamicSortFilter-prop
         m_expensesProxyModel->setDynamicSortFilter(false);
 
-        m_expensesProxyModel->insertRow(newModelIndex);
+        m_expensesProxyModel->insertRow(newModelIndex); // TODO: Error checking and display
 
-        auto setValue = [&](int32_t viewIndex, LSExpenseModel::Columns column, auto value)
+        auto setValue = [&](int32_t const viewIndex, LSExpenseModel::Columns const column, auto const value)
         {
             QModelIndex index = m_expensesProxyModel->index(viewIndex, static_cast<int>(column));
             m_expensesProxyModel->setData(index, value);
@@ -114,7 +118,6 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
         setValue(newModelIndex, LSExpenseModel::Columns::recipient, ui->recipientLineEdit->text());
         setValue(newModelIndex, LSExpenseModel::Columns::amount, ui->amountDoubleSpinBox->value());
 
-        //QModelIndex currentRecurringExpenseIndex = m_recurringModel->mapToSource( ui->recurringExpensesView->currentIndex() );
         QModelIndex currentRecurringExpenseIndex = ui->recurringExpensesView->currentIndex();
         int32_t recurringExpenseId = m_recurringModel->data(currentRecurringExpenseIndex, static_cast<int>(LSRecurringExpenseModel::Roles::IdRole)).toInt();
         setValue(newModelIndex, LSExpenseModel::Columns::relatedExpense, recurringExpenseId);
@@ -124,9 +127,14 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRelatedExpen
         setValue(newModelIndex, LSExpenseModel::Columns::date, suggestedDate);
 
         m_expensesProxyModel->submit();
-
         m_expensesProxyModel->setDynamicSortFilter(true);
     });
+}
+
+void LS::LSRecurringExpensesOverview::onCurrentRecurringExpenseChanged(QModelIndex const &newIndex) const
+{
+    ui->submitChangesButton->setEnabled(true);
+    m_mapper->setCurrentIndex(newIndex.row());
 }
 
 LS::LSRecurringExpensesOverview::LSRecurringExpensesOverview(QWidget* parent, LSRelatedExpenseProxyModel* expensesProxyModel, LSCategoryFilterModel* recurringModel, QAbstractProxyModel* categoryModel, shared::LSDateController* dateController, QSettings* settings, fa::QtAwesome* qtAwesome) :

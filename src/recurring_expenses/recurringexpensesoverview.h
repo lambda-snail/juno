@@ -45,5 +45,8 @@ namespace LambdaSnail::Juno::expenses
         void setUpMapper();
         void setUpRecurringExpensesView();
         void setUpRelatedExpensesView();
+
+    private slots:
+        void onCurrentRecurringExpenseChanged(QModelIndex const& newIndex) const;
     };
 }
