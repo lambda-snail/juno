@@ -121,11 +121,6 @@ namespace LambdaSnail::Juno
         setWindowIcon(icon);
     }
 
-    LSMainWindow::~LSMainWindow()
-    {
-        delete ui;
-    }
-
     void LSMainWindow::setupDateTool()
     {
         QString format = m_settings->value(application::ApplicationContext::LocaleDateFormatKey).toString();

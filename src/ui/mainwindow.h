@@ -1,11 +1,10 @@
 #pragma once
 
+#include "ui_mainwindow.h"
 
 #include <QMainWindow>
-#include <qstackedwidget.h>
-#include <qsystemtrayicon.h>
+#include <QSystemTrayIcon>
 
-#include "expenses/expensemodel.h"
 #include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
 #include "settings/settingsmodel.h"
@@ -29,15 +28,6 @@ namespace LambdaSnail::Juno
         class LSRecurringExpenseModel;
     }
 
-    QT_BEGIN_NAMESPACE
-
-    namespace Ui
-    {
-        class LSMainWindow;
-    }
-
-    QT_END_NAMESPACE
-
     class LSMainWindow : public QMainWindow
     {
         Q_OBJECT
@@ -53,10 +43,10 @@ namespace LambdaSnail::Juno
                      settings::LSSettingsWidget* settingsWidget,
                      fa::QtAwesome *qtAwesome);
 
-        ~LSMainWindow() override;
+        ~LSMainWindow() override = default;
 
     private:
-        Ui::LSMainWindow *ui;
+        std::unique_ptr<Ui::LSMainWindow> ui;
         fa::QtAwesome * m_qtAwesome;
 
         int m_expensesIndex{};
