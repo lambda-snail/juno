@@ -1,35 +1,29 @@
 #pragma once
 
-#include "recurring_expenses/recurringexpensemodel.h"
 #include "recurring_expenses/relatedexpenseproxymodel.h"
 #include "shared/datecontroller.h"
 #include "shared/date_time/datefromstringdelegate.h"
 
 #include "QtAwesome.h"
 
-#include <QAbstractProxyModel>
 #include <QDataWidgetMapper>
 #include <QWidget>
+#include <ui_recurringexpensesoverview.h>
 
-#include "categories/categorymodel.h"
 #include "expenses/categoryfiltermodel.h"
+#include "expenses/expensetoolbarfactory.h"
 #include "shared/delegates/relationalproxydelegate.h"
 
 namespace LambdaSnail::Juno::expenses
 {
-    struct ToolbarItems;
-}
-
-namespace LambdaSnail::Juno::expenses
-{
-    QT_BEGIN_NAMESPACE
-
-    namespace Ui
-    {
-        class RecurringExpensesOverview;
-    }
-
-    QT_END_NAMESPACE
+    // QT_BEGIN_NAMESPACE
+    //
+    // namespace Ui
+    // {
+    //     class RecurringExpensesOverview;
+    // }
+    //
+    // QT_END_NAMESPACE
 
     class LSRecurringExpensesOverview : public QWidget
     {

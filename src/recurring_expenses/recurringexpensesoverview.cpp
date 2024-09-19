@@ -11,6 +11,7 @@
 
 #include "QtAwesome.h"
 #include "relatedexpenseproxymodel.h"
+#include "categories/categorymodel.h"
 #include "shared/date_time/datefromstringdelegate.h"
 #include "expenses/expensemodel.h"
 #include "expenses/expensetoolbarfactory.h"
