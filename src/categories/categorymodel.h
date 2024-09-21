@@ -1,9 +1,11 @@
 #pragma once
 #include <QSqlTableModel>
 
+#include "shared/currency/expensemodelbase.h"
+
 namespace LambdaSnail::Juno::categories
 {
-    class LSCategoryModel : public QSqlTableModel
+    class LSCategoryModel : public expenses::LSExpenseModelBase
     {
         Q_OBJECT
 
@@ -11,11 +13,15 @@ namespace LambdaSnail::Juno::categories
         void initialize();
 
         [[nodiscard]] static QSqlQuery tableDefinition();
+        [[nodiscard]] static QSqlQuery insertDefaultData();
+
+        bool isCurrencyColumn(QModelIndex const& index) const override;
 
         enum class Columns
         {
             id,
-            category
+            category,
+            spending_limit
         };
     };
 }

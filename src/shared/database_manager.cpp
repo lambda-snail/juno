@@ -62,6 +62,12 @@ LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseN
             return { LSDatabaseError(categoryTableDefinition.lastError().text()) };
         }
 
+        QSqlQuery categoryDefaultData(categories::LSCategoryModel::insertDefaultData());
+        if (categoryDefaultData.lastError().isValid())
+        {
+            return { LSDatabaseError(categoryDefaultData.lastError().text()) };
+        }
+
         QSqlQuery expensesTableDefinition(expenses::LSExpenseModel::tableDefinition());
         if (expensesTableDefinition.lastError().isValid())
         {
