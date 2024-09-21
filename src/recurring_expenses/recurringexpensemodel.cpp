@@ -35,11 +35,13 @@ QSqlQuery LS::LSRecurringExpenseModel::tableDefinition()
                 billingDay integer,
                 recipient text,
                 description text,
-                category text,
+                category text default 0 not null,
                 amount integer,
 
                 createdon integer,
                 modifiedon integer
+
+                foreign key(category) references categories(id)
             );
         )");
 }

@@ -47,7 +47,7 @@ QSqlQuery LS::LSExpenseModel::tableDefinition()
                 date varchar(10),
                 recipient text,
                 description text,
-                category integer,
+                category integer default 0 not null,
                 amount integer,
 
                 related_expense integer,
