@@ -46,6 +46,7 @@ void LambdaSnail::Juno::expenses::LSRecurringExpensesOverview::setUpRecurringExp
 {
     ui->recurringExpensesView->setModel(m_recurringModel);
     ui->recurringExpensesView->setModelColumn(static_cast<int>(LSRecurringExpenseModel::Columns::recipient));
+    ui->recurringExpensesView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->activeFromDateEdit->setCalendarPopup(true);
     ui->activeToDateEdit->setCalendarPopup(true);
