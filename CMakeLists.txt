@@ -78,6 +78,9 @@ add_executable(juno src/main.cpp
         src/expenses/expensetoolbarfactory.h
         src/shared/delegates/relationalproxydelegate.cpp
         src/shared/delegates/relationalproxydelegate.h
+        src/budget/budgetoverviewwidget.cpp
+        src/budget/budgetoverviewwidget.h
+        src/budget/budgetoverviewwidget.ui
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
