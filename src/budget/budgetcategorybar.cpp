@@ -3,10 +3,11 @@
 namespace LambdaSnail::Juno::budget
 {
     LSBudgetCategoryBar::LSBudgetCategoryBar(QStringView const &categoryName, double_t currentAmount, double_t limit, QWidget *parent)
-        : m_limit(limit), m_currentAmount(currentAmount), m_categoryName(categoryName)
+        :ui(new Ui::LSBudgetCategoryBar), m_limit(limit), m_currentAmount(currentAmount), m_categoryName(categoryName)
     {
         ui->setupUi(this);
 
+        ui->categoryLabel->setText(categoryName.toString());
         ui->categoryLimitVisual->setMinimum(0);
         connect(ui->categoryLimit, &QDoubleSpinBox::valueChanged, [this](double v)
         {

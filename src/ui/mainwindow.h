@@ -91,6 +91,7 @@ namespace LambdaSnail::Juno
             void onChartsMenuClicked() const;
             void onRecurringMenuClicked() const;
             void onSettingsMenuClicked() const;
+            void onMonthlyBudgetMenuClicked() const;
 
     private:
         void setupMenu();

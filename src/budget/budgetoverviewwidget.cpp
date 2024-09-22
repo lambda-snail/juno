@@ -6,7 +6,7 @@ namespace LambdaSnail::Juno::budget
 {
     void LSBudgetOverviewWidget::buildModelVisual()
     {
-        if(m_budgetCategories.empty())
+        if(not m_budgetCategories.empty())
         {
             m_budgetCategories.clear();
         }
@@ -34,7 +34,7 @@ namespace LambdaSnail::Juno::budget
         }
     }
 
-    LSBudgetOverviewWidget::LSBudgetOverviewWidget(categories::LSCategoryModel *categoryModel, QWidget *parent) : m_categoryModel(categoryModel)
+    LSBudgetOverviewWidget::LSBudgetOverviewWidget(categories::LSCategoryModel *categoryModel, QWidget *parent) : ui(new Ui::BudgetOverviewWidget), m_categoryModel(categoryModel)
     {
         ui->setupUi(this);
         buildModelVisual();

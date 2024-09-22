@@ -35,6 +35,7 @@ namespace LambdaSnail::Juno
         connect(ui->chartsButton, &QPushButton::pressed, this, &LSMainWindow::onChartsMenuClicked);
         connect(ui->recurringButton, &QPushButton::pressed, this, &LSMainWindow::onRecurringMenuClicked);
         connect(ui->settingsButton, &QPushButton::pressed, this, &LSMainWindow::onSettingsMenuClicked);
+        connect(ui->monthlyBudgetButton, &QPushButton::pressed, this, &LSMainWindow::onMonthlyBudgetMenuClicked);
 
         m_expensesIndex = ui->widgetStack->addWidget(m_expensesOverviewWidget);
         m_chartsIndex = ui->widgetStack->addWidget(m_chartsWidget);
@@ -215,5 +216,10 @@ namespace LambdaSnail::Juno
     void LSMainWindow::onSettingsMenuClicked() const
     {
         ui->widgetStack->setCurrentIndex(m_settingsWidgetIndex);
+    }
+
+    void LSMainWindow::onMonthlyBudgetMenuClicked() const
+    {
+        ui->widgetStack->setCurrentIndex(m_budgetIndex);
     }
 }
