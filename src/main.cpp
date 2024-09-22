@@ -6,6 +6,7 @@
 #include <QStandardPaths>
 
 #include "QtAwesome.h"
+#include "budget/budgetoverviewwidget.h"
 
 #include "categories/categorymodel.h"
 #include "expenses/categoryfiltermodel.h"
@@ -96,8 +97,9 @@ int main(int argc, char *argv[]) {
     auto aggregateExpenseModel = new LSAggregateExpenseModel(&categoryProxyModel);
     aggregateExpenseModel->setSourceModel(&expenseModel);
     auto* chartsWidget = new LambdaSnail::Juno::charts::LSExpenseChartsWidget(aggregateExpenseModel);
+    auto* budgetOverview = new LambdaSnail::Juno::budget::LSBudgetOverviewWidget(&categoryModel);
 
-    LambdaSnail::Juno::LSMainWindow mainWindow(&categoryProxyModel, &dateController, &settings, expensesOverviewWidget, recurringExpensesWidget, chartsWidget, settingsWidget, qtAwesome);
+    LambdaSnail::Juno::LSMainWindow mainWindow(&categoryProxyModel, &dateController, &settings, expensesOverviewWidget, recurringExpensesWidget, chartsWidget, budgetOverview, settingsWidget, qtAwesome);
     mainWindow.show();
 
     return QApplication::exec();

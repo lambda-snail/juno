@@ -5,6 +5,7 @@
 #include <QSystemTrayIcon>
 
 #include "QtAwesome.h"
+#include "budget/budgetoverviewwidget.h"
 #include "categories/categorymodel.h"
 
 #include "expenses/expensesoverviewwidget.h"
@@ -20,6 +21,11 @@ namespace LambdaSnail::Juno
 {
     void LSMainWindow::setupMenu()
     {
+        m_expensesOverviewWidget->setParent(ui->widgetStack);
+        m_recurringExpensesWidget->setParent(ui->widgetStack);
+        m_budgetWidget->setParent(ui->widgetStack);
+        m_chartsWidget->setParent(ui->widgetStack);
+
         ui->expensesButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_balance_scale));
         ui->chartsButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_area_chart));
         ui->recurringButton->setIcon(m_qtAwesome->icon(fa::fa_solid, fa::fa_calendar_days));
@@ -32,6 +38,7 @@ namespace LambdaSnail::Juno
 
         m_expensesIndex = ui->widgetStack->addWidget(m_expensesOverviewWidget);
         m_chartsIndex = ui->widgetStack->addWidget(m_chartsWidget);
+        m_budgetIndex = ui->widgetStack->addWidget(m_budgetWidget);
         m_recurringExpensesWidgetIndex = ui->widgetStack->addWidget(m_recurringExpensesWidget);
         m_settingsWidgetIndex = ui->widgetStack->addWidget(m_settingsWidget);
     }
@@ -43,6 +50,7 @@ namespace LambdaSnail::Juno
                                expenses::LSExpensesOverviewWidget* expensesOverviewWidget,
                                expenses::LSRecurringExpensesOverview* recurringExpensesOverviewWidget,
                                charts::LSExpenseChartsWidget* expenseChartWidget,
+                               LambdaSnail::Juno::budget::LSBudgetOverviewWidget* budgetWidget,
                                settings::LSSettingsWidget *settingsWidget,
                                fa::QtAwesome *qtAwesome) : QMainWindow(nullptr),
                                                            ui(new Ui::LSMainWindow),
@@ -51,6 +59,7 @@ namespace LambdaSnail::Juno
                                                            m_recurringExpensesWidget(recurringExpensesOverviewWidget),
                                                            m_settingsWidget(settingsWidget),
                                                            m_chartsWidget(expenseChartWidget),
+                                                           m_budgetWidget(budgetWidget),
                                                            m_dateController(dateController),
                                                            m_categoryModel(categoryModel),
                                                            m_settings(settings)
@@ -58,10 +67,6 @@ namespace LambdaSnail::Juno
         ui->setupUi(this);
 
         setWindowTitle("Juno");
-        
-        m_expensesOverviewWidget->setParent(ui->widgetStack);
-        m_recurringExpensesWidget->setParent(ui->widgetStack);
-        m_chartsWidget->setParent(ui->widgetStack);
 
         m_aboutDialog = new LSAboutWidget(this);
 

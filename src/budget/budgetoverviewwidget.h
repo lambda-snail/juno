@@ -2,18 +2,26 @@
 
 #include <ui_budgetoverviewwidget.h>
 
+#include "budgetcategorybar.h"
+#include "categories/categorymodel.h"
+
 namespace LambdaSnail::Juno::budget
 {
-    class BudgetOverviewWidget : public QWidget
+    class LSBudgetOverviewWidget : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit BudgetOverviewWidget(QWidget *parent = nullptr);
+        void buildModelVisual();
 
-        ~BudgetOverviewWidget() override = default;
+        explicit LSBudgetOverviewWidget(categories::LSCategoryModel* categoryModel, QWidget *parent = nullptr);
+
+        ~LSBudgetOverviewWidget() override = default;
 
     private:
         std::unique_ptr<Ui::BudgetOverviewWidget> ui;
+        categories::LSCategoryModel* m_categoryModel;
+
+        std::vector<std::unique_ptr<LSBudgetCategoryBar>> m_budgetCategories{};
     };
 }

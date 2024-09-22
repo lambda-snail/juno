@@ -81,6 +81,9 @@ add_executable(juno src/main.cpp
         src/budget/budgetoverviewwidget.cpp
         src/budget/budgetoverviewwidget.h
         src/budget/budgetoverviewwidget.ui
+        src/budget/budgetcategorybar.cpp
+        src/budget/budgetcategorybar.h
+        src/budget/budgetcategorybar.ui
 )
 
 # https://cmake.org/cmake/help/v3.9/prop_tgt/AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR
