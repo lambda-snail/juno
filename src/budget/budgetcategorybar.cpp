@@ -9,8 +9,6 @@ namespace LambdaSnail::Juno::budget
     {
         ui->setupUi(this);
 
-        m_currentAmount = 20;
-
         int32_t constexpr categoryColumn = static_cast<int32_t>(categories::LSCategoryModel::Columns::category);
         int32_t constexpr limitColumn = static_cast<int32_t>(categories::LSCategoryModel::Columns::spending_limit);
 

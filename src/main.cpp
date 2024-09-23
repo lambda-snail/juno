@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
     auto aggregateExpenseModel = new LSAggregateExpenseModel(&categoryProxyModel);
     aggregateExpenseModel->setSourceModel(&expenseModel);
     auto* chartsWidget = new LambdaSnail::Juno::charts::LSExpenseChartsWidget(aggregateExpenseModel);
-    auto* budgetOverview = new LambdaSnail::Juno::budget::LSBudgetOverviewWidget(&categoryModel);
+    auto* budgetOverview = new LambdaSnail::Juno::budget::LSBudgetOverviewWidget(&categoryModel, aggregateExpenseModel);
 
     LambdaSnail::Juno::LSMainWindow mainWindow(&categoryProxyModel, &dateController, &settings, expensesOverviewWidget, recurringExpensesWidget, chartsWidget, budgetOverview, settingsWidget, qtAwesome);
     mainWindow.show();
