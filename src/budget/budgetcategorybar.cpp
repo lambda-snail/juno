@@ -8,7 +8,7 @@ namespace LambdaSnail::Juno::budget
         ui->setupUi(this);
 
         ui->categoryLabel->setText(categoryName.toString());
-        ui->categoryLimitVisual->setMinimum(0);
+        updateValues();
         connect(ui->categoryLimit, &QDoubleSpinBox::valueChanged, [this](double v)
         {
             setLimit(v);
@@ -18,17 +18,24 @@ namespace LambdaSnail::Juno::budget
     void LSBudgetCategoryBar::setCurrentAmount(double_t amount)
     {
         m_currentAmount = amount;
-        ui->categoryLimit->setValue(static_cast<int32_t>(m_currentAmount));
+        updateValues();
     }
 
     void LSBudgetCategoryBar::setLimit(double_t limit)
     {
         m_limit = limit;
-        ui->categoryLimitVisual->setMaximum(static_cast<int32_t>(m_limit));
+        updateValues();
     }
 
     QAbstractSpinBox* LSBudgetCategoryBar::getLimitEditor() const
     {
         return ui->categoryLimit;
+    }
+
+    void LSBudgetCategoryBar::updateValues() const
+    {
+        ui->categoryLimitVisual->setMinimum(0);
+        ui->categoryLimitVisual->setMaximum(static_cast<int32_t>(m_limit));
+        ui->categoryLimitVisual->setValue(static_cast<int32_t>(m_currentAmount));
     }
 }

@@ -30,5 +30,7 @@ namespace LambdaSnail::Juno::budget
         double_t m_limit;
         double_t m_currentAmount;
         QStringView const& m_categoryName;
+
+        void updateValues() const;
     };
 }
