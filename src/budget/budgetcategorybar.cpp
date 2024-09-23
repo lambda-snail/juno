@@ -11,19 +11,24 @@ namespace LambdaSnail::Juno::budget
         ui->categoryLimitVisual->setMinimum(0);
         connect(ui->categoryLimit, &QDoubleSpinBox::valueChanged, [this](double v)
         {
-            this->setLimit(v);
+            setLimit(v);
         });
     }
 
     void LSBudgetCategoryBar::setCurrentAmount(double_t amount)
     {
         m_currentAmount = amount;
-        ui->categoryLimitVisual->setValue(static_cast<int32_t>(m_currentAmount));
+        ui->categoryLimit->setValue(static_cast<int32_t>(m_currentAmount));
     }
 
     void LSBudgetCategoryBar::setLimit(double_t limit)
     {
         m_limit = limit;
         ui->categoryLimitVisual->setMaximum(static_cast<int32_t>(m_limit));
+    }
+
+    QAbstractSpinBox* LSBudgetCategoryBar::getLimitEditor() const
+    {
+        return ui->categoryLimit;
     }
 }

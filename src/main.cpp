@@ -80,6 +80,7 @@ int main(int argc, char *argv[]) {
 
     LSCategoryModel categoryModel;
     categoryModel.initialize();
+    //categoryModel.setEditStrategy(QSqlTableModel::EditStrategy::OnFieldChange);
 
     QIdentityProxyModel categoryProxyModel;
     categoryProxyModel.setSourceModel(&categoryModel);

@@ -22,6 +22,8 @@ namespace LambdaSnail::Juno::budget
         void setCurrentAmount(double_t amount);
         void setLimit(double_t limit);
 
+        [[nodiscard]] QAbstractSpinBox* getLimitEditor() const;
+
     private:
         std::unique_ptr<Ui::LSBudgetCategoryBar> ui;
 

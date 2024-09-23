@@ -1,5 +1,7 @@
 #include "budgetoverviewwidget.h"
 
+#include <QDataWidgetMapper>
+
 #include "budgetcategorybar.h"
 
 namespace LambdaSnail::Juno::budget
@@ -9,11 +11,12 @@ namespace LambdaSnail::Juno::budget
         if(not m_budgetCategories.empty())
         {
             m_budgetCategories.clear();
+            m_mapper->clearMapping();
         }
 
-        int32_t numCategories = m_categoryModel->rowCount();
-        int32_t categoryColumn = static_cast<int32_t>(categories::LSCategoryModel::Columns::category);
-        int32_t limitColumn = static_cast<int32_t>(categories::LSCategoryModel::Columns::spending_limit);
+        int32_t const numCategories = m_categoryModel->rowCount();
+        int32_t constexpr categoryColumn = static_cast<int32_t>(categories::LSCategoryModel::Columns::category);
+        int32_t constexpr limitColumn = static_cast<int32_t>(categories::LSCategoryModel::Columns::spending_limit);
 
         for(int32_t c = 0; c < numCategories; ++c)
         {
@@ -25,6 +28,7 @@ namespace LambdaSnail::Juno::budget
 
             // TODO: Get current amount
             auto bar = std::make_unique<LSBudgetCategoryBar>(categoryName, 20, limit, this);
+            m_mapper->addMapping(bar.get()->getLimitEditor(), limitColumn);
             m_budgetCategories.push_back(std::move(bar));
         }
 
@@ -37,6 +41,11 @@ namespace LambdaSnail::Juno::budget
     LSBudgetOverviewWidget::LSBudgetOverviewWidget(categories::LSCategoryModel *categoryModel, QWidget *parent) : ui(new Ui::BudgetOverviewWidget), m_categoryModel(categoryModel)
     {
         ui->setupUi(this);
+
+        m_mapper = new QDataWidgetMapper(this);
+        m_mapper->setModel(m_categoryModel);
+        m_mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
+
         buildModelVisual();
     }
 }
