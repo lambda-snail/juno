@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 
+#include "budget/budgetoverviewwidget.h"
 #include "expense_charts/expensechartswidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
 #include "settings/settingsmodel.h"
@@ -40,6 +41,7 @@ namespace LambdaSnail::Juno
                      expenses::LSExpensesOverviewWidget* expensesOverviewWidget,
                      expenses::LSRecurringExpensesOverview* recurringExpensesOverviewWidget,
                      charts::LSExpenseChartsWidget* expenseChartWidget,
+                     LambdaSnail::Juno::budget::LSBudgetOverviewWidget* budgetWidget,
                      settings::LSSettingsWidget* settingsWidget,
                      fa::QtAwesome *qtAwesome);
 
@@ -56,10 +58,13 @@ namespace LambdaSnail::Juno
         expenses::LSRecurringExpensesOverview* m_recurringExpensesWidget;
 
         int m_settingsWidgetIndex{};
-        settings::LSSettingsWidget * m_settingsWidget;
+        settings::LSSettingsWidget* m_settingsWidget;
 
         int m_chartsIndex{};
-        QWidget * m_chartsWidget;
+        QWidget* m_chartsWidget;
+
+        int m_budgetIndex{};
+        budget::LSBudgetOverviewWidget* m_budgetWidget;
 
         shared::LSDateController * m_dateController;
         QAbstractProxyModel * m_categoryModel;
@@ -86,6 +91,7 @@ namespace LambdaSnail::Juno
             void onChartsMenuClicked() const;
             void onRecurringMenuClicked() const;
             void onSettingsMenuClicked() const;
+            void onMonthlyBudgetMenuClicked() const;
 
     private:
         void setupMenu();

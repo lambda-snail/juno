@@ -35,7 +35,7 @@
    <property name="minimumSize">
     <size>
      <width>200</width>
-     <height>374</height>
+     <height>412</height>
     </size>
    </property>
    <attribute name="dockWidgetArea">
@@ -93,6 +93,26 @@
       <widget class="QPushButton" name="chartsButton">
        <property name="text">
         <string>Charts</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="monthlyBudgetButton">
+       <property name="text">
+        <string>This Month</string>
        </property>
       </widget>
      </item>

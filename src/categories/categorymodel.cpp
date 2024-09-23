@@ -33,6 +33,11 @@ namespace LambdaSnail::Juno::categories
         return QSqlQuery("insert into categories values (0, 'Uncategorized', 0)");
     }
 
+    bool LSCategoryModel::setData(const QModelIndex &index, const QVariant &value, int role)
+    {
+        return LSExpenseModelBase::setData(index, value, role);
+    }
+
     bool LSCategoryModel::isCurrencyColumn(QModelIndex const &index) const
     {
         return index.column() == static_cast<uint32_t>(Columns::spending_limit);

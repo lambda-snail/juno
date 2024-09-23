@@ -14,6 +14,7 @@ namespace LambdaSnail::Juno::categories
 
         [[nodiscard]] static QSqlQuery tableDefinition();
         [[nodiscard]] static QSqlQuery insertDefaultData();
+        bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
         bool isCurrencyColumn(QModelIndex const& index) const override;
 
