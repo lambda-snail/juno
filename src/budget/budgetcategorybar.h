@@ -1,8 +1,12 @@
 #pragma once
 
+#include <qdatawidgetmapper.h>
+
 #include "ui_budgetcategorybar.h"
 
 #include <QWidget>
+
+#include "categories/categorymodel.h"
 
 namespace LambdaSnail::Juno::budget
 {
@@ -15,7 +19,7 @@ namespace LambdaSnail::Juno::budget
         Q_PROPERTY(double_t const& m_limit WRITE setLimit);
 
     public:
-        explicit LSBudgetCategoryBar(QStringView const& categoryName, double currentAmount, double limit, QWidget *parent = nullptr);
+        explicit LSBudgetCategoryBar(categories::LSCategoryModel* categoryModel, int32_t categoryIndex, QWidget *parent = nullptr);
 
         ~LSBudgetCategoryBar() override = default;
 
@@ -26,11 +30,12 @@ namespace LambdaSnail::Juno::budget
 
     private:
         std::unique_ptr<Ui::LSBudgetCategoryBar> ui;
+        QDataWidgetMapper* m_mapper;
 
-        double_t m_limit;
-        double_t m_currentAmount;
-        QStringView const& m_categoryName;
+        double_t m_limit{};
+        double_t m_currentAmount{};
+        QString m_categoryName{};
 
-        void updateValues() const;
+        void updateProgressBar() const;
     };
 }

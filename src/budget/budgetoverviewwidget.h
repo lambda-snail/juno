@@ -24,6 +24,5 @@ namespace LambdaSnail::Juno::budget
         categories::LSCategoryModel* m_categoryModel;
 
         std::vector<std::unique_ptr<LSBudgetCategoryBar>> m_budgetCategories{};
-        QDataWidgetMapper* m_mapper;
     };
 }
