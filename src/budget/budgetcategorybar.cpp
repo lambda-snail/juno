@@ -32,6 +32,7 @@ namespace LambdaSnail::Juno::budget
         m_mapper->setCurrentIndex(categoryIndex);
 
         ui->categoryLabel->setText(m_categoryName);
+        ui->categoryLabel->setFixedWidth(200);
     }
 
     void LSBudgetCategoryBar::setCurrentAmount(double_t amount)
