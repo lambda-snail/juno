@@ -9,7 +9,6 @@
 #include "categories/categorymodel.h"
 
 #include "expenses/expensesoverviewwidget.h"
-#include "expense_charts/aggregateexpensemodel.h"
 #include "expense_charts/expensechartswidget.h"
 #include "help/aboutwidget.h"
 #include "recurring_expenses/recurringexpensesoverview.h"
@@ -51,7 +50,7 @@ namespace LambdaSnail::Juno
                                expenses::LSExpensesOverviewWidget* expensesOverviewWidget,
                                expenses::LSRecurringExpensesOverview* recurringExpensesOverviewWidget,
                                charts::LSExpenseChartsWidget* expenseChartWidget,
-                               LambdaSnail::Juno::budget::LSBudgetOverviewWidget* budgetWidget,
+                               budget::LSBudgetOverviewWidget* budgetWidget,
                                settings::LSSettingsWidget *settingsWidget,
                                fa::QtAwesome *qtAwesome) : QMainWindow(nullptr),
                                                            ui(new Ui::LSMainWindow),
@@ -149,7 +148,7 @@ namespace LambdaSnail::Juno
             m_dateController->updateDateLimits();
         });
 
-        // Filer dates set to current year for convenience
+        // Filter dates set to current year for convenience
         int const currentYear = QDate::currentDate().year();
         ui->fromDate->setDate(QDate(currentYear, 1, 1));
         ui->toDate->setDate(QDate(currentYear, 12, 31));
@@ -170,12 +169,22 @@ namespace LambdaSnail::Juno
 
         ui->deleteCategoryButton->setDisabled(true);
 
-        connect(ui->newCategoryButton, &QPushButton::clicked, this, [model = m_categoryModel]()
+        connect(ui->newCategoryButton, &QPushButton::clicked, [model = m_categoryModel, view = ui->categoryView]()
         {
-            model->insertRow(0);
+            if(model->insertRow(0))
+            {
+                auto categoryIndex = model->index(0, static_cast<int>(categories::LSCategoryModel::Columns::category));
+                model->setData(categoryIndex, QVariant("New Category"));
+
+                auto limitIndex = model->index(0, static_cast<int>(categories::LSCategoryModel::Columns::spending_limit));
+                model->setData(limitIndex, QVariant(0));
+
+                model->submit();
+                view->selectionModel()->setCurrentIndex(categoryIndex, QItemSelectionModel::ClearAndSelect);
+            }
         });
 
-        connect(ui->deleteCategoryButton, &QPushButton::clicked, this, [model = m_categoryModel, view = ui->categoryView, button = ui->deleteCategoryButton]()
+        connect(ui->deleteCategoryButton, &QPushButton::clicked, [model = m_categoryModel, view = ui->categoryView, button = ui->deleteCategoryButton]()
         {
             QModelIndex const viewIndex = view->currentIndex();
             QModelIndex const index = model->mapToSource(viewIndex);
@@ -188,10 +197,10 @@ namespace LambdaSnail::Juno
             button->setEnabled(false);
         });
 
-        connect(ui->categoryView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+        connect(ui->categoryView->selectionModel(), &QItemSelectionModel::selectionChanged,
             [view = ui->categoryView, button = ui->deleteCategoryButton](const QItemSelection &selected, const QItemSelection &deselected)
         {
-                if(selected.size() > 0)
+                if(not selected.empty())
                 {
                     button->setEnabled(true);
                 }
