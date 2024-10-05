@@ -54,7 +54,7 @@ QSqlQuery LS::LSExpenseModel::tableDefinition()
                 createdon integer,
                 modifiedon integer,
 
-                foreign key(related_expense) references recurring_expenses(id)
+                foreign key(related_expense) references recurring_expenses(id),
                 foreign key(category) references categories(id)
             );
         )");

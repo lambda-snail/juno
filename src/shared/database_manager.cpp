@@ -50,16 +50,16 @@ LS::LSDatabaseManager::setDatabase(QString const& path, QString const& databaseN
     {
         // Note that QSqlQuery executes the query on construction
 
-        QSqlQuery recurringExpensesTableDefinition(expenses::LSRecurringExpenseModel::tableDefinition());
-        if (recurringExpensesTableDefinition.lastError().isValid())
-        {
-            return { LSDatabaseError(recurringExpensesTableDefinition.lastError().text()) };
-        }
-
         QSqlQuery categoryTableDefinition(categories::LSCategoryModel::tableDefinition());
         if (categoryTableDefinition.lastError().isValid())
         {
             return { LSDatabaseError(categoryTableDefinition.lastError().text()) };
+        }
+
+        QSqlQuery recurringExpensesTableDefinition(expenses::LSRecurringExpenseModel::tableDefinition());
+        if (recurringExpensesTableDefinition.lastError().isValid())
+        {
+            return { LSDatabaseError(recurringExpensesTableDefinition.lastError().text()) };
         }
 
         QSqlQuery categoryDefaultData(categories::LSCategoryModel::insertDefaultData());

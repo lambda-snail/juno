@@ -39,7 +39,7 @@ QSqlQuery LS::LSRecurringExpenseModel::tableDefinition()
                 amount integer,
 
                 createdon integer,
-                modifiedon integer
+                modifiedon integer,
 
                 foreign key(category) references categories(id)
             );

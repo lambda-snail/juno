@@ -21,7 +21,7 @@ namespace LambdaSnail::Juno::categories
             create table categories (
                 id integer primary key,
                 category varchar(256),
-                spending_limit int default 0 not null
+                spending_limit int default 0 not null,
 
                 unique(category)
             );
